@@ -1,4 +1,4 @@
-package satpredict;
+package sattrack;
 
 public class SatTrackFactory {
 }

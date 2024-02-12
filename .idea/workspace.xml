@@ -5,38 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/audio/AudioRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/audio/AudioRecordWin.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/audio/AudioRecorderFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/data/DataBaseEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/data/Pass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/database/Database.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/database/DatabaseFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/database/DatabaseMySQL.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/decode/Decoder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/decode/DecoderFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/instrument/Instrument.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/instrument/InstrumentFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/instrument/Rotator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/instrument/RotatorGS232B.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/instrument/Transceiver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/instrument/TransceiverIC9100.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/satpredict/SatTrack.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/satpredict/SatTrackFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/FreqConvert.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/ResultHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/Serial.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/Time.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utils/enums/Modulation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/instrument/InstrumentFactoryTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/utils/TimeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/data/Satellite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sattrack/SatTrack.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sattrack/SatTrackPredict4Java.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/sattrack/SatTrackPredict4JavaTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data/Pass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/Pass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/satpredict/SatTrack.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/satpredict/SatTrackFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sattrack/SatTrackFactory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +43,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "TestNG.InstrumentFactoryTest.executor": "Run",
+    "TestNG.SatTrackPredict4JavaTest.executor": "Debug",
     "TestNG.TimeTest.testDelayMillis.executor": "Run",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "TestNG",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.TestNG": "",
@@ -86,11 +62,12 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="satpredict" />
       <recent name="utils" />
       <recent name="instrument" />
     </key>
   </component>
-  <component name="RunManager" selected="TestNG.TimeTest.testDelayMillis">
+  <component name="RunManager" selected="TestNG.SatTrackPredict4JavaTest">
     <configuration name="InstrumentFactoryTest" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="VE3RMC-control" />
       <extension name="coverage">
@@ -101,6 +78,23 @@
       </extension>
       <option name="PACKAGE_NAME" value="instrument" />
       <option name="MAIN_CLASS_NAME" value="instrument.InstrumentFactoryTest" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SatTrackPredict4JavaTest" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="VE3RMC-control" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="sattrack.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="sattrack" />
+      <option name="MAIN_CLASS_NAME" value="sattrack.SatTrackPredict4JavaTest" />
       <option name="TEST_OBJECT" value="CLASS" />
       <properties />
       <listeners />
@@ -128,6 +122,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="TestNG.SatTrackPredict4JavaTest" />
         <item itemvalue="TestNG.TimeTest.testDelayMillis" />
         <item itemvalue="TestNG.InstrumentFactoryTest" />
       </list>
@@ -150,10 +145,22 @@
       <updated>1707682295575</updated>
       <workItem from="1707682304371" duration="44000" />
       <workItem from="1707682366862" duration="11449000" />
+      <workItem from="1707748221253" duration="6471000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sattrack/SatTrackPredict4Java.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
