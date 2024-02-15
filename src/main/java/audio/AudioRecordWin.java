@@ -8,7 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-public class AudioRecordWin implements AudioRecord{
+public class AudioRecordWin implements AudioRecord {
 
     private int sampleRate = 44100;
     private int recordLenS = 60;

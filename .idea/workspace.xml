@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/data/Satellite.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sattrack/SatTrack.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/sattrack/SatTrackPredict4Java.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/sattrack/SatTrackPredict4JavaTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data/Pass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/Pass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/satpredict/SatTrack.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/satpredict/SatTrackFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sattrack/SatTrackFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/decode/DecoderDireWolf.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/audio/AudioRecordWinTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/instrument/RotatorGS232BTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/instrument/TransceiverIC9100Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/audio/AudioRecordWin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/audio/AudioRecordWin.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,9 +41,11 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "TestNG.AudioRecordWinTest.testStartRecording.executor": "Run",
     "TestNG.InstrumentFactoryTest.executor": "Run",
     "TestNG.SatTrackPredict4JavaTest.executor": "Debug",
     "TestNG.TimeTest.testDelayMillis.executor": "Run",
+    "TestNG.TransceiverIC9100Test.testReadInstrument.executor": "Debug",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "TestNG",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.TestNG": "",
     "git-widget-placeholder": "master",
@@ -62,12 +63,31 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="audio" />
+      <recent name="instrument" />
       <recent name="satpredict" />
       <recent name="utils" />
-      <recent name="instrument" />
     </key>
   </component>
-  <component name="RunManager" selected="TestNG.SatTrackPredict4JavaTest">
+  <component name="RunManager" selected="TestNG.AudioRecordWinTest.testStartRecording">
+    <configuration name="AudioRecordWinTest.testStartRecording" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="VE3RMC-control" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="audio.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="audio" />
+      <option name="MAIN_CLASS_NAME" value="audio.AudioRecordWinTest" />
+      <option name="METHOD_NAME" value="testStartRecording" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="InstrumentFactoryTest" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="VE3RMC-control" />
       <extension name="coverage">
@@ -120,8 +140,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TransceiverIC9100Test.testReadInstrument" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="VE3RMC-control" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="instrument.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="instrument" />
+      <option name="MAIN_CLASS_NAME" value="instrument.TransceiverIC9100Test" />
+      <option name="METHOD_NAME" value="testReadInstrument" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="TestNG.AudioRecordWinTest.testStartRecording" />
+        <item itemvalue="TestNG.TransceiverIC9100Test.testReadInstrument" />
         <item itemvalue="TestNG.SatTrackPredict4JavaTest" />
         <item itemvalue="TestNG.TimeTest.testDelayMillis" />
         <item itemvalue="TestNG.InstrumentFactoryTest" />
@@ -145,7 +185,11 @@
       <updated>1707682295575</updated>
       <workItem from="1707682304371" duration="44000" />
       <workItem from="1707682366862" duration="11449000" />
-      <workItem from="1707748221253" duration="6471000" />
+      <workItem from="1707748221253" duration="7670000" />
+      <workItem from="1707792460181" duration="669000" />
+      <workItem from="1707843374531" duration="2141000" />
+      <workItem from="1707935324808" duration="653000" />
+      <workItem from="1707967995990" duration="1475000" />
     </task>
     <servers />
   </component>
