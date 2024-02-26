@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/decode/DecoderDireWolf.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/audio/AudioRecordWinTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/instrument/RotatorGS232BTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/instrument/TransceiverIC9100Test.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/Log.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/utils/LogTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/audio/AudioRecordWin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/audio/AudioRecordWin.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +41,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "TestNG.AudioRecordWinTest.testStartRecording.executor": "Run",
     "TestNG.InstrumentFactoryTest.executor": "Run",
+    "TestNG.LogTest.executor": "Run",
+    "TestNG.LogTest.testLogCreation.executor": "Run",
     "TestNG.SatTrackPredict4JavaTest.executor": "Debug",
     "TestNG.TimeTest.testDelayMillis.executor": "Run",
     "TestNG.TransceiverIC9100Test.testReadInstrument.executor": "Debug",
@@ -63,13 +63,14 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="utils" />
+      <recent name="decode" />
+      <recent name="database" />
       <recent name="audio" />
       <recent name="instrument" />
-      <recent name="satpredict" />
-      <recent name="utils" />
     </key>
   </component>
-  <component name="RunManager" selected="TestNG.AudioRecordWinTest.testStartRecording">
+  <component name="RunManager" selected="TestNG.LogTest.testLogCreation">
     <configuration name="AudioRecordWinTest.testStartRecording" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="VE3RMC-control" />
       <extension name="coverage">
@@ -88,17 +89,35 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="InstrumentFactoryTest" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="LogTest" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="VE3RMC-control" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="instrument.*" />
+          <option name="PATTERN" value="utils.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="instrument" />
-      <option name="MAIN_CLASS_NAME" value="instrument.InstrumentFactoryTest" />
+      <option name="PACKAGE_NAME" value="utils" />
+      <option name="MAIN_CLASS_NAME" value="utils.LogTest" />
       <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LogTest.testLogCreation" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="VE3RMC-control" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="utils" />
+      <option name="MAIN_CLASS_NAME" value="utils.LogTest" />
+      <option name="METHOD_NAME" value="testLogCreation" />
+      <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
       <method v="2">
@@ -116,24 +135,6 @@
       <option name="PACKAGE_NAME" value="sattrack" />
       <option name="MAIN_CLASS_NAME" value="sattrack.SatTrackPredict4JavaTest" />
       <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TimeTest.testDelayMillis" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="VE3RMC-control" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="utils.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="utils" />
-      <option name="MAIN_CLASS_NAME" value="utils.TimeTest" />
-      <option name="METHOD_NAME" value="testDelayMillis" />
-      <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
       <method v="2">
@@ -160,11 +161,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="TestNG.LogTest.testLogCreation" />
+        <item itemvalue="TestNG.LogTest" />
         <item itemvalue="TestNG.AudioRecordWinTest.testStartRecording" />
         <item itemvalue="TestNG.TransceiverIC9100Test.testReadInstrument" />
         <item itemvalue="TestNG.SatTrackPredict4JavaTest" />
-        <item itemvalue="TestNG.TimeTest.testDelayMillis" />
-        <item itemvalue="TestNG.InstrumentFactoryTest" />
       </list>
     </recent_temporary>
   </component>
@@ -189,7 +190,10 @@
       <workItem from="1707792460181" duration="669000" />
       <workItem from="1707843374531" duration="2141000" />
       <workItem from="1707935324808" duration="653000" />
-      <workItem from="1707967995990" duration="1475000" />
+      <workItem from="1707967995990" duration="2074000" />
+      <workItem from="1708216753781" duration="1472000" />
+      <workItem from="1708793697889" duration="58000" />
+      <workItem from="1708983055036" duration="3434000" />
     </task>
     <servers />
   </component>
