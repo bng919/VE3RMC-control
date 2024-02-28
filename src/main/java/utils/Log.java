@@ -1,6 +1,9 @@
 package utils;
 
+import utils.enums.Verbosity;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -8,15 +11,17 @@ import java.time.format.DateTimeFormatter;
 
 public class Log {
 
-    String path;
+    public static Verbosity verbose = Verbosity.INFO;
+    static String path;
     LocalDateTime start;
-    String timeStamp;
-    File createLog;
-    FileWriter log;
+    static String timeStamp;
+    static File createLog;
+    static FileWriter log;
     DateTimeFormatter plainFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS");
     DateTimeFormatter richFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS");
+    static int storeDecodedCount = 0;
 
-    public Log(String path) {
+    public Log(String path, Verbosity verbose) {
         this.path = path;
 
         start = LocalDateTime.now();
@@ -38,7 +43,24 @@ public class Log {
 
     }
 
-    public void info(String s) {
+    public static void debug(String s) {
+        if (!verbose.isEqOrHigher(Verbosity.DEBUG)) {
+            return;
+        }
+        try {
+            log = new FileWriter(createLog, true);
+            log.append("\nDEBUG: " + s);
+            log.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not write to log file.");
+        }
+    }
+
+
+    public static void info(String s) {
+        if (!verbose.isEqOrHigher(Verbosity.INFO)) {
+            return;
+        }
         try {
             log = new FileWriter(createLog, true);
             log.append("\nINFO: " + s);
@@ -48,7 +70,10 @@ public class Log {
         }
     }
 
-    public void warn(String s) {
+    public static void warn(String s) {
+        if (!verbose.isEqOrHigher(Verbosity.WARN)) {
+            return;
+        }
         try {
             log = new FileWriter(createLog, true);
             log.append("\nWARN: " + s);
@@ -58,7 +83,10 @@ public class Log {
         }
     }
 
-    public void error(String s) {
+    public static void error(String s) {
+        if (!verbose.isEqOrHigher(Verbosity.ERROR)) {
+            return;
+        }
         try {
             log = new FileWriter(createLog, true);
             log.append("\nERROR: " + s);
@@ -66,6 +94,35 @@ public class Log {
         } catch (IOException e) {
             throw new RuntimeException("Could not write to log file.");
         }
+    }
+
+    public static void storeDecodedData(byte[] d) {
+        String decodedPath = path + timeStamp + "\\DecodedData\\Packet" + storeDecodedCount;
+        if(! new File(decodedPath).mkdirs()) {
+            throw new RuntimeException("Error creating log folder.");
+        }
+        File dataFile = new File(decodedPath + "\\data.bin");
+        try {
+            dataFile.createNewFile();
+            FileOutputStream outStream = new FileOutputStream(dataFile, false);
+            outStream.write(d, 0, d.length);
+            outStream.flush();
+            outStream.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        File textFile = new File(decodedPath + "\\data.txt");
+        try {
+            textFile.createNewFile();
+            FileWriter textWriter = new FileWriter(textFile);
+            textWriter.write(HexFormat.hexDump(d));
+            textWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        storeDecodedCount++;
     }
 
 }
