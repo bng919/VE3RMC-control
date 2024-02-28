@@ -23,6 +23,7 @@ public class Log {
 
     public Log(String path, Verbosity verbose) {
         this.path = path;
+        this.verbose = verbose;
 
         start = LocalDateTime.now();
         timeStamp = start.format(plainFormatter);
@@ -31,68 +32,48 @@ public class Log {
         }
         createLog = new File(path + timeStamp + "\\log.txt");
         try {
-            if(! createLog.createNewFile()) {
+            if(!createLog.createNewFile()) {
                 throw new RuntimeException("Error creating log file.");
             }
-            log = new FileWriter(createLog);
-            log.write("VE3RMC-control started " + start.format(richFormatter));
-            log.close();
         } catch (IOException e) {
             throw new RuntimeException("Error creating log file.");
         }
+        printToConsoleAndFile("VE3RMC-control started " + start.format(richFormatter));
+    }
 
+    private static void printToConsoleAndFile(String out) {
+        System.out.println(out);
+        try {
+            log = new FileWriter(createLog, true);
+            log.append(out);
+            log.append("\n");
+            log.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not write to log file.");
+        }
     }
 
     public static void debug(String s) {
-        if (!verbose.isEqOrHigher(Verbosity.DEBUG)) {
-            return;
-        }
-        try {
-            log = new FileWriter(createLog, true);
-            log.append("\nDEBUG: " + s);
-            log.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Could not write to log file.");
+        if (verbose.isEqOrHigher(Verbosity.DEBUG)) {
+            printToConsoleAndFile("DEBUG: " + s);
         }
     }
-
 
     public static void info(String s) {
-        if (!verbose.isEqOrHigher(Verbosity.INFO)) {
-            return;
-        }
-        try {
-            log = new FileWriter(createLog, true);
-            log.append("\nINFO: " + s);
-            log.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Could not write to log file.");
+        if (verbose.isEqOrHigher(Verbosity.INFO)) {
+            printToConsoleAndFile("INFO: " + s);
         }
     }
-
+    
     public static void warn(String s) {
-        if (!verbose.isEqOrHigher(Verbosity.WARN)) {
-            return;
-        }
-        try {
-            log = new FileWriter(createLog, true);
-            log.append("\nWARN: " + s);
-            log.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Could not write to log file.");
+        if (verbose.isEqOrHigher(Verbosity.WARN)) {
+            printToConsoleAndFile("WARN: " + s);
         }
     }
 
     public static void error(String s) {
-        if (!verbose.isEqOrHigher(Verbosity.ERROR)) {
-            return;
-        }
-        try {
-            log = new FileWriter(createLog, true);
-            log.append("\nERROR: " + s);
-            log.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Could not write to log file.");
+        if (verbose.isEqOrHigher(Verbosity.ERROR)) {
+            printToConsoleAndFile("ERROR: " + s);
         }
     }
 
@@ -121,7 +102,6 @@ public class Log {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         storeDecodedCount++;
     }
 
