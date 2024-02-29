@@ -2,10 +2,12 @@ package utils;
 
 import utils.enums.Verbosity;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -42,6 +44,15 @@ public class Log {
             throw new RuntimeException("Error creating log file.");
         }
         printToConsoleAndFile("VE3RMC-control started " + start.format(richFormatter));
+        String hostname = null;
+        try {
+            hostname = new BufferedReader(
+                    new InputStreamReader(Runtime.getRuntime().exec("hostname").getInputStream()))
+                    .readLine();
+        } catch (IOException e) {
+            hostname = "Unknown";
+        }
+        printToConsoleAndFile("Run on: " + hostname);
     }
 
     public static File getNextAudioFile() {
