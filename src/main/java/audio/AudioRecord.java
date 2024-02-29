@@ -2,9 +2,9 @@ package audio;
 
 import utils.ResultHelper;
 
-public interface AudioRecord {
+public interface AudioRecord extends Runnable {
 
-    ResultHelper startRecording(int recordDurationS);
+    ResultHelper startRecording();
 
     //ResultHelper stopRecording();
 

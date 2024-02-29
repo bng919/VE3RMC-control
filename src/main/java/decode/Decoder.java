@@ -2,9 +2,9 @@ package decode;
 
 import java.util.List;
 
-public interface Decoder {
+public interface Decoder extends Runnable {
 
-    public void startDecoder(int durationS);
+    public void startDecoder();
 
     public List<byte[]> getDecodedData();
 

@@ -12,13 +12,20 @@ import java.io.IOException;
 public class AudioRecordWin implements AudioRecord {
 
     private int sampleRate;
+    private int recordDurationS;
 
-    public AudioRecordWin(int sampleRate) {
+    public AudioRecordWin(int recordDurationS, int sampleRate) {
         this.sampleRate = sampleRate;
+        this.recordDurationS = recordDurationS;
         //TODO: Other parameters with constructor
     }
 
-    public ResultHelper startRecording(int recordDurationS) {
+    public void run() {
+        Log.debug("Running audio recorder in thread " + Thread.currentThread().threadId());
+        startRecording();
+    }
+
+    public ResultHelper startRecording() {
         try {
             Log.info("Starting audio recording service.");
             Log.debug("Setting up audio recorder with sample rate " + sampleRate);
@@ -51,6 +58,7 @@ public class AudioRecordWin implements AudioRecord {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(audioData);
             AudioInputStream audioInputStream = new AudioInputStream(byteArrayInputStream, format, audioData.length / format.getFrameSize());
 
+            //TODO: Audio shouldn't be saved here as it breaks modularity. Should pass the stream back to main to be saved there.
             File writeFile = Log.getNextAudioFile();
             Log.info("Saving audio to " + writeFile.getAbsolutePath());
             AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, writeFile);

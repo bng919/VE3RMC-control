@@ -18,9 +18,9 @@ public class AudioRecordWinTest {
     @Test
     public void testStartRecording() {
         int recordDuration = 10;
-        AudioRecordWin a = new AudioRecordWin(44100);
+        AudioRecordWin a = new AudioRecordWin(recordDuration,44100);
         long startTime = java.time.Instant.now().getEpochSecond();
-        ResultHelper rst = a.startRecording(recordDuration);
+        ResultHelper rst = a.startRecording();
         long stopTime = java.time.Instant.now().getEpochSecond();
         // Check if actual record time matches requested duration with tolerance to account for overhead
         boolean timeEqual = (stopTime-startTime) >= recordDuration && (stopTime-startTime) <= recordDuration+1;

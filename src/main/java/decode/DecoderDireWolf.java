@@ -15,12 +15,19 @@ public class DecoderDireWolf implements Decoder {
     private List<byte[]> decodedData = new ArrayList<>();
     private String direWolfDir;
     private int kissPort = 8001;
+    private int durationS;
 
-    public DecoderDireWolf(String direWolfDir) {
+    public DecoderDireWolf(int durationS, String direWolfDir) {
         this.direWolfDir = direWolfDir;
+        this.durationS = durationS;
     }
 
-    public void startDecoder(int durationS) {
+    public void run() {
+        Log.debug("Running DireWolf decoder in thread " + Thread.currentThread().threadId());
+        startDecoder();
+    }
+
+    public void startDecoder() {
         ProcessBuilder direWolfPb = new ProcessBuilder(direWolfDir + "\\direwolf", "-B 9600");
         direWolfPb.directory(new File(direWolfDir));
         Process direWolfP = null;
@@ -32,7 +39,7 @@ public class DecoderDireWolf implements Decoder {
             throw new RuntimeException(e);
         }
         Log.debug("Waiting for DireWolf to setup");
-        Time.delayMillis(400); // Give direwolf time to set up
+        Time.delayMillis(1000); // Give direwolf time to set up
 
         Socket s;
         InputStream in;
