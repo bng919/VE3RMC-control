@@ -20,7 +20,7 @@ public class DecoderDireWolf implements Decoder {
         this.direWolfDir = direWolfDir;
     }
 
-    public void startDecoder(long duration) {
+    public void startDecoder(int durationS) {
         ProcessBuilder direWolfPb = new ProcessBuilder(direWolfDir + "\\direwolf", "-B 9600");
         direWolfPb.directory(new File(direWolfDir));
         Process direWolfP = null;
@@ -47,8 +47,8 @@ public class DecoderDireWolf implements Decoder {
 
         Log.info("DireWolf started successfully");
 
-        long endTime = System.currentTimeMillis() + duration;
-        Log.debug("Monitoring DireWolf KISS port for " + duration/1000 + "s.");
+        long endTime = System.currentTimeMillis() + durationS*1000L;
+        Log.debug("Monitoring DireWolf KISS port for " + durationS + "s.");
         durationLoop:
         while (System.currentTimeMillis() < endTime) {
             try {
