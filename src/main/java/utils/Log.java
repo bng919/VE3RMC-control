@@ -12,14 +12,14 @@ import java.time.format.DateTimeFormatter;
 public class Log {
 
     public static Verbosity verbose = Verbosity.INFO;
-    static String path;
-    LocalDateTime start;
-    static String timeStamp;
-    static File createLog;
-    static FileWriter log;
-    DateTimeFormatter plainFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS");
-    DateTimeFormatter richFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS");
-    static int storeDecodedCount = 0;
+    private static String path;
+    private LocalDateTime start;
+    private static String timeStamp;
+    private static File createLog;
+    private static FileWriter log;
+    private static DateTimeFormatter plainFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS");
+    private static DateTimeFormatter richFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS");
+    private static int storeDecodedCount = 0;
 
     public Log(String path, Verbosity verbose) {
         this.path = path;
@@ -42,11 +42,12 @@ public class Log {
     }
 
     private static void printToConsoleAndFile(String out) {
-        System.out.println(out);
+        String timeStamp = LocalDateTime.now().format(richFormatter);
+        String formattedOut = timeStamp + " " + out + "\n";
+        System.out.print(formattedOut);
         try {
             log = new FileWriter(createLog, true);
-            log.append(out);
-            log.append("\n");
+            log.append(formattedOut);
             log.close();
         } catch (IOException e) {
             throw new RuntimeException("Could not write to log file.");
