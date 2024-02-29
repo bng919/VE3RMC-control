@@ -12,7 +12,8 @@ import java.time.format.DateTimeFormatter;
 public class Log {
 
     public static Verbosity verbose = Verbosity.INFO;
-    private static String path;
+    private static String basePath;
+    private static String dataPath;
     private LocalDateTime start;
     private static String timeStamp;
     private static File createLog;
@@ -20,17 +21,19 @@ public class Log {
     private static DateTimeFormatter plainFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS");
     private static DateTimeFormatter richFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS");
     private static int storeDecodedCount = 0;
+    private static int storeAudioCount = 0;
 
     public Log(String path, Verbosity verbose) {
-        this.path = path;
-        this.verbose = verbose;
-
         start = LocalDateTime.now();
         timeStamp = start.format(plainFormatter);
-        if(! new File(path + timeStamp).mkdirs()) {
+        Log.basePath = path + timeStamp;
+        Log.verbose = verbose;
+
+        dataPath = basePath + "\\PassData";
+        if(! new File(dataPath).mkdirs()) {
             throw new RuntimeException("Error creating log folder.");
         }
-        createLog = new File(path + timeStamp + "\\log.txt");
+        createLog = new File(basePath + "\\log.txt");
         try {
             if(!createLog.createNewFile()) {
                 throw new RuntimeException("Error creating log file.");
@@ -39,6 +42,16 @@ public class Log {
             throw new RuntimeException("Error creating log file.");
         }
         printToConsoleAndFile("VE3RMC-control started " + start.format(richFormatter));
+    }
+
+    public static File getNextAudioFile() {
+        String audioPath = dataPath + "\\audio";
+        if(! new File(audioPath).mkdirs()) {
+            throw new RuntimeException("Error creating audio folder.");
+        }
+        File nextAudioFile = new File(dataPath + "\\audio\\recording" + storeAudioCount + ".wav");
+        storeAudioCount++;
+        return nextAudioFile;
     }
 
     private static void printToConsoleAndFile(String out) {
@@ -79,7 +92,7 @@ public class Log {
     }
 
     public static void storeDecodedData(byte[] d) {
-        String decodedPath = path + timeStamp + "\\DecodedData\\Packet" + storeDecodedCount;
+        String decodedPath = dataPath + "\\DecodedData\\Packet" + storeDecodedCount;
         if(! new File(decodedPath).mkdirs()) {
             throw new RuntimeException("Error creating log folder.");
         }
