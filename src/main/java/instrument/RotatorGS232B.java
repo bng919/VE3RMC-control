@@ -9,7 +9,7 @@ public class RotatorGS232B implements Rotator {
 
     private static final int AZ_TOLERANCE_DEG = 2;
     private static final int EL_TOLERANCE_DEG = 2;
-    private static final int MOTION_TIMEOUT_MILLIS = 20000; //TODO: Tune value to experimental results
+    private static final int MOTION_TIMEOUT_MILLIS = 40000; //TODO: Scale based on delta to move
     Serial serial;
     private int currAz;
     private int currEl;
@@ -17,7 +17,7 @@ public class RotatorGS232B implements Rotator {
 
     public RotatorGS232B() throws InterruptedException {
         //TODO: Read parameters from config file
-        this.serial = new Serial("COM3", 2400, 8, 1, 0);
+        this.serial = new Serial("COM4", 2400, 8, 1, 0);
         readInstrument();
     }
 
@@ -80,8 +80,9 @@ public class RotatorGS232B implements Rotator {
         this.serial.close();
 
         long motionStart = System.currentTimeMillis();
+        //readInstrument();
         while (this.currAz <= az-AZ_TOLERANCE_DEG || this.currAz >= az+AZ_TOLERANCE_DEG) {
-            if ((System.currentTimeMillis()-motionStart) <= MOTION_TIMEOUT_MILLIS) {
+            if ((System.currentTimeMillis()-motionStart) >= MOTION_TIMEOUT_MILLIS) {
                 return ResultHelper.createFailedResult();
             }
             TimeUnit.MILLISECONDS.sleep(200);

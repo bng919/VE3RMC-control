@@ -1,10 +1,14 @@
 package instrument;
 
 import org.mockito.Mockito;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import utils.Log;
 import utils.Serial;
+import utils.Time;
 import utils.enums.Modulation;
+import utils.enums.Verbosity;
 
 import static org.testng.Assert.*;
 
@@ -14,26 +18,69 @@ public class TransceiverIC9100Test {
 
     @BeforeClass
     public void setup() {
-        serial = Mockito.mock(Serial.class);
-        byte[] rst = {(byte) 0xfe, (byte) 0xfe, 0x7c, 0x00, 0x03, (byte) 0xfd, (byte) 0xfe, (byte) 0xfe, 0x00, 0x7c, 0x03, 0x01, 0x00, 0x07, 0x45, 0x01, (byte) 0xFD};
-        Mockito.when(serial.read()).thenReturn(rst);
+        new Log(".\\logs\\", Verbosity.DEBUG);
+        //serial = Mockito.mock(Serial.class);
+        //byte[] rst = {(byte) 0xfe, (byte) 0xfe, 0x7c, 0x00, 0x03, (byte) 0xfd, (byte) 0xfe, (byte) 0xfe, 0x00, 0x7c, 0x03, 0x01, 0x00, 0x07, 0x45, 0x01, (byte) 0xFD};
+        //Mockito.when(serial.read()).thenReturn(rst);
     }
 
     @Test
-    public void testReadInstrument() throws InterruptedException {
+    public void testReadWriteInstrument() throws InterruptedException {
+        TransceiverIC9100 transceiverIC9100 = new TransceiverIC9100();
 
-        TransceiverIC9100 tran = new TransceiverIC9100();
-        tran.readInstrument();
+        // Switching frequencies and mode on UHF (testcase 1.b.i)
+        setReadAssert(transceiverIC9100, 145000000, Modulation.FM);
+        setReadAssert(transceiverIC9100, 144000000, Modulation.FM);
+        setReadAssert(transceiverIC9100, 145000000, Modulation.AM);
+        setReadAssert(transceiverIC9100, 144000000, Modulation.AM);
 
-        assertEquals(tran.getFrequencyHz(), 145000000L);
-        assertEquals(tran.getModulation(), Modulation.FM);
+        //Switch to VHF (testcase 1.b.iv), and test switching frequencies and mode on VHF (testcase 1.b.i)
+        /*setReadAssert(transceiverIC9100, 445000000, Modulation.FM);
+        setReadAssert(transceiverIC9100, 444000000, Modulation.FM);
+        setReadAssert(transceiverIC9100, 445000000, Modulation.AM);
+        setReadAssert(transceiverIC9100, 444000000, Modulation.AM);*/
+
+        //Invalid frequency test (testcase 1.b.iii)
+        setReadAssert(transceiverIC9100, 140000000, Modulation.FM);
+        transceiverIC9100.setFrequency(135000000);
+        transceiverIC9100.readInstrument();
+        assertEquals(transceiverIC9100.getFrequencyHz(), 140000000);
+
+        /*setReadAssert(transceiverIC9100, 440000000, Modulation.FM);
+        transceiverIC9100.setFrequency(419000000);
+        transceiverIC9100.readInstrument();
+        assertEquals(transceiverIC9100.getFrequencyHz(), 440000000);*/
+
+        //Single Hz set test (testcase 1.b.v)
+        setReadAssert(transceiverIC9100, 141234567, Modulation.FM);
+
+        //Sweep frequency (testcase 1.b.ii)
+        long startFreq = 140000000L;
+        long stopFreq = 141000000L;
+        long stepFreq = 10000L;
+
+        for (long f = startFreq; f <= stopFreq; f+=stepFreq) {
+            transceiverIC9100.setFrequency(f);
+        }
+        transceiverIC9100.readInstrument();
+        assertEquals(transceiverIC9100.getFrequencyHz(), stopFreq);
+
+
     }
 
-    @Test
-    public void testSetFrequency() {
+    @AfterClass
+    public void cleanUp() throws InterruptedException {
+        TransceiverIC9100 transceiverIC9100 = new TransceiverIC9100();
+        transceiverIC9100.setFrequency(145000000);
+        transceiverIC9100.setModulation(Modulation.FM);
     }
 
-    @Test
-    public void testSetModulation() {
+    private void setReadAssert(TransceiverIC9100 transceiverIC9100, long freq, Modulation mode) throws InterruptedException {
+        transceiverIC9100.setFrequency(freq);
+        transceiverIC9100.setModulation(mode);
+        transceiverIC9100.readInstrument();
+        assertEquals(transceiverIC9100.getFrequencyHz(), freq);
+        assertEquals(transceiverIC9100.getModulation(), mode);
     }
+
 }

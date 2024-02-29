@@ -77,20 +77,21 @@ public class TransceiverIC9100 implements Transceiver {
 
         Command writeFreqCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x00).data(rst).buildCommand();
 
-        System.out.println("\n");
+
+        /*System.out.println("\n");
         byte[] dat = writeFreqCmd.getCmdByteArr();
         for (int i = 0; i < dat.length; i++) {
             System.out.print(dat[i] + ":");
         }
-        System.out.println("\n");
+        System.out.println("\n");*/
 
         this.serial.open();
         this.serial.write(writeFreqCmd.getCmdByteArr());
         TimeUnit.MILLISECONDS.sleep(200);
         this.serial.close();
         readInstrument();
-        System.out.println("this.freqHz = " + this.freqHz);
-        System.out.println("freqHz = " + freqHz);
+        /*System.out.println("this.freqHz = " + this.freqHz);
+        System.out.println("freqHz = " + freqHz);*/
         if (this.freqHz != freqHz) {
             return ResultHelper.createFailedResult();
         }
@@ -106,12 +107,12 @@ public class TransceiverIC9100 implements Transceiver {
         }
         Command writeModeCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x01).data(writeData).buildCommand();
 
-        System.out.println("\n");
+        /*System.out.println("\n");
         byte[] dat = writeModeCmd.getCmdByteArr();
         for (int i = 0; i < dat.length; i++) {
             System.out.print(dat[i] + ":");
         }
-        System.out.println("\n");
+        System.out.println("\n");*/
 
         this.serial.open();
         this.serial.write(writeModeCmd.getCmdByteArr());
