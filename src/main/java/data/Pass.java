@@ -1,24 +1,25 @@
 package data;
 
 import java.util.Date;
+import java.util.List;
 
 public class Pass {
 
     private Satellite sat;
     private Date aos;
     private Date los;
-    private int durationS;
+    private long durationS;
     private int profileStepS;
-    private int[] azProfile;
-    private int[] elProfile;
-    private int[] dlFreqHzAdjProfile;
+    private List<Double> azProfile;
+    private List<Double> elProfile;
+    private List<Long> dlFreqHzAdjProfile;
 
 
-    public Pass(Satellite sat, Date aos, Date los, int durationS, int profileStepS, int[] azProfile, int[] elProfile, int[] dlFreqHzAdjProfile) {
+    public Pass(Satellite sat, Date aos, Date los, int profileStepS, List<Double> azProfile, List<Double> elProfile, List<Long> dlFreqHzAdjProfile) {
         this.sat = sat;
         this.aos = aos;
         this.los = los;
-        this.durationS = durationS;
+        this.durationS = (los.getTime()-aos.getTime())/1000;
         this.profileStepS = profileStepS;
         this.azProfile = azProfile;
         this.elProfile = elProfile;
@@ -49,7 +50,7 @@ public class Pass {
         this.los = los;
     }
 
-    public int getDurationS() {
+    public long getDurationS() {
         return durationS;
     }
 
@@ -57,19 +58,19 @@ public class Pass {
         this.durationS = durationS;
     }
 
-    public int[] getAzProfile() {
+    public List<Double> getAzProfile() {
         return azProfile;
     }
 
-    public void setAzProfile(int[] azProfile) {
+    public void setAzProfile(List<Double> azProfile) {
         this.azProfile = azProfile;
     }
 
-    public int[] getElProfile() {
+    public List<Double> getElProfile() {
         return elProfile;
     }
 
-    public void setElProfile(int[] elProfile) {
+    public void setElProfile(List<Double> elProfile) {
         this.elProfile = elProfile;
     }
 
@@ -81,11 +82,16 @@ public class Pass {
         this.profileStepS = profileStepS;
     }
 
-    public int[] getDlFreqHzAdjProfile() {
+    public List<Long> getDlFreqHzAdjProfile() {
         return dlFreqHzAdjProfile;
     }
 
-    public void setDlFreqHzAdjProfile(int[] dlFreqHzAdjProfile) {
+    public void setDlFreqHzAdjProfile(List<Long> dlFreqHzAdjProfile) {
         this.dlFreqHzAdjProfile = dlFreqHzAdjProfile;
+    }
+
+    @Override
+    public String toString() {
+        return this.sat + " pass beginning " + this.aos + ", ending " + this.los;
     }
 }
