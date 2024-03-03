@@ -32,6 +32,10 @@ public class RotatorGS232B implements Rotator {
 
         int azOffset = 3;
         int elOffset = 11;
+        if(rst[3] == '-') { //Az can read as -000, disregard minus sign
+            azOffset++;
+            elOffset++;
+        }
 
         int azAngle = 0;
         int elAngle = 0;
