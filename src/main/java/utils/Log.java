@@ -8,7 +8,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Log {
@@ -16,7 +17,7 @@ public class Log {
     public static Verbosity verbose = Verbosity.INFO;
     private static String basePath;
     private static String dataPath;
-    private LocalDateTime start;
+    private ZonedDateTime start;
     private static String timeStamp;
     private static File createLog;
     private static FileWriter log;
@@ -26,7 +27,7 @@ public class Log {
     private static int storeAudioCount = 0;
 
     public Log(String path, Verbosity verbose) {
-        start = LocalDateTime.now();
+        start = ZonedDateTime.now(ZoneId.of("UTC"));
         timeStamp = start.format(plainFormatter);
         Log.basePath = path + timeStamp;
         Log.verbose = verbose;
@@ -66,7 +67,7 @@ public class Log {
     }
 
     private static void printToConsoleAndFile(String out) {
-        String timeStamp = LocalDateTime.now().format(richFormatter);
+        String timeStamp = ZonedDateTime.now(ZoneId.of("UTC")).format(richFormatter);
         String formattedOut = timeStamp + " " + out + "\n";
         System.out.print(formattedOut);
         try {
