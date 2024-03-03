@@ -76,4 +76,9 @@ public class Satellite {
     public void setNominalUlFreqHz(long nominalUlFreqHz) {
         this.nominalUlFreqHz = nominalUlFreqHz;
     }
+
+    @Override
+    public String toString() {
+        return "Satellite " + this.id;
+    }
 }
