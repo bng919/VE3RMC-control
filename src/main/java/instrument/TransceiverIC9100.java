@@ -1,5 +1,6 @@
 package instrument;
 
+import utils.FreqHelper;
 import utils.ResultHelper;
 import utils.Serial;
 import utils.enums.Modulation;
@@ -17,6 +18,19 @@ public class TransceiverIC9100 implements Transceiver {
         //TODO: Read parameters from config file
         this.serial = new Serial("COM5", 19200, 8, 1, 0);
         readInstrument();
+    }
+
+    private ResultHelper swapMainSub() throws InterruptedException {
+        long preSwapVFOFreq = this.freqHz;
+        Command swapMainSub = new CommandBuilder().address(this.transAddr).command((byte) 0x07).subCommand((byte) 0xB0)
+                .buildCommand();
+        this.serial.open();
+        this.serial.write(swapMainSub.getCmdByteArr());
+        readInstrument();
+        if (preSwapVFOFreq == this.freqHz) {
+            return ResultHelper.createFailedResult();
+        }
+        return ResultHelper.createSuccessfulResult();
     }
 
     public void readInstrument() throws InterruptedException {
@@ -64,6 +78,11 @@ public class TransceiverIC9100 implements Transceiver {
     }
 
     public ResultHelper setFrequency(long freqHz) throws InterruptedException {
+        if (FreqHelper.isUHF(this.freqHz) != FreqHelper.isUHF(freqHz)) {
+            if(!swapMainSub().isSuccessful()) {
+                return ResultHelper.createFailedResult();
+            }
+        }
         byte[] rst = new byte[5];
         int[] digits = new int[10];
         long modFreqHz = freqHz;
