@@ -1,5 +1,6 @@
 package sattrack;
 
+import data.Pass;
 import data.Satellite;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
@@ -14,13 +15,16 @@ public class SatTrackPredict4JavaTest {
     @BeforeClass
     public void setup() {
         sat = Mockito.mock(Satellite.class);
+        Mockito.when(sat.getId()).thenReturn("TESTSAT");
         Mockito.when(sat.getTle()).thenReturn(testTle);
+        Mockito.when(sat.getNominalDlFreqHz()).thenReturn(140000000L);
     }
 
     @Test
     public void testGetNextPass() {
         SatTrack tracker = new SatTrackPredict4Java();
-        tracker.getNextPass(sat);
+        Pass nextPass = tracker.getNextPass(sat);
+        System.out.println(nextPass);
     }
 
 }
