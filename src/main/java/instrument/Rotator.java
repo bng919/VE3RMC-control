@@ -2,7 +2,7 @@ package instrument;
 
 import utils.ResultHelper;
 
-public interface Rotator extends Instrument{
+public interface Rotator extends Instrument {
 
     int getAz();
 
