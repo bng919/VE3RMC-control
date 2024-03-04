@@ -1,5 +1,7 @@
 package instrument;
 
+import utils.HexFormat;
+import utils.Log;
 import utils.ResultHelper;
 import utils.Serial;
 
@@ -26,7 +28,7 @@ public class RotatorGS232B implements Rotator {
 
         this.serial.open();
         this.serial.write(readAzElCmd);
-        TimeUnit.MILLISECONDS.sleep(200);
+        TimeUnit.MILLISECONDS.sleep(250);
         byte[] rst = this.serial.read();
         this.serial.close();
 
@@ -40,13 +42,18 @@ public class RotatorGS232B implements Rotator {
         int azAngle = 0;
         int elAngle = 0;
 
-        //TODO: Cleanup to loop
-        azAngle += (rst[0 + azOffset] - 48)*100;
-        elAngle += (rst[0 + elOffset] - 48)*100;
-        azAngle += (rst[1 + azOffset] - 48)*10;
-        elAngle += (rst[1 + elOffset] - 48)*10;
-        azAngle += (rst[2 + azOffset] - 48);
-        elAngle += (rst[2 + elOffset] - 48);
+        try { //TODO: REMOVE TRY CATCH
+            //TODO: Cleanup to loop
+            azAngle += (rst[0 + azOffset] - 48) * 100;
+            elAngle += (rst[0 + elOffset] - 48) * 100;
+            azAngle += (rst[1 + azOffset] - 48) * 10;
+            elAngle += (rst[1 + elOffset] - 48) * 10;
+            azAngle += (rst[2 + azOffset] - 48);
+            elAngle += (rst[2 + elOffset] - 48);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Log.error(e.getMessage());
+            Log.error(HexFormat.hexDump(rst));
+        }
 
         this.currAz = azAngle;
         this.currEl = elAngle;
@@ -70,7 +77,9 @@ public class RotatorGS232B implements Rotator {
     }
 
     public ResultHelper goToAz(int az) throws InterruptedException {
-        //TODO: Error check pos
+        if (az < 0 || az > 360) {
+            return ResultHelper.createFailedResult();
+        }
         byte[] setAzCmd = "M".getBytes();
         byte[] posByte = String.valueOf(az).getBytes();
         byte[] cmd = {setAzCmd[0], 0x30, 0x30, 0x30, 0x0D};
@@ -96,7 +105,9 @@ public class RotatorGS232B implements Rotator {
     }
 
     public ResultHelper goToEl(int el) throws InterruptedException {
-        //TODO: Error check pos
+        if (el < 0 || el > 180) {
+            return ResultHelper.createFailedResult();
+        }
         readInstrument();
         byte[] posByte = String.valueOf(el).getBytes();
         byte[] currAzByte = String.valueOf(this.currAz).getBytes();
@@ -114,7 +125,7 @@ public class RotatorGS232B implements Rotator {
 
         long motionStart = System.currentTimeMillis();
         while (this.currEl <= el-EL_TOLERANCE_DEG || this.currEl >= el+EL_TOLERANCE_DEG) {
-            if ((System.currentTimeMillis()-motionStart) <= MOTION_TIMEOUT_MILLIS) {
+            if ((System.currentTimeMillis()-motionStart) >= MOTION_TIMEOUT_MILLIS) {
                 return ResultHelper.createFailedResult();
             }
             TimeUnit.MILLISECONDS.sleep(200);
@@ -124,8 +135,15 @@ public class RotatorGS232B implements Rotator {
     }
 
     public ResultHelper goToAzEl(int az, int el) throws InterruptedException {
-        ResultHelper azRst = goToAz(az);
-        ResultHelper elRst = goToEl(el);
+        // Assume successful
+        ResultHelper azRst = ResultHelper.createSuccessfulResult();
+        ResultHelper elRst = ResultHelper.createSuccessfulResult();
+        if (Math.abs(this.currAz - az) > AZ_TOLERANCE_DEG) {
+            azRst = goToAz(az);
+        }
+        if (Math.abs(this.currEl - el) > EL_TOLERANCE_DEG) {
+            elRst = goToEl(el);
+        }
         return azRst.and(elRst);
     }
 }
