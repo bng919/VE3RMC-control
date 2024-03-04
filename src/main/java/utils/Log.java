@@ -8,6 +8,9 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -53,6 +56,7 @@ public class Log {
         } catch (IOException e) {
             hostname = "Unknown";
         }
+        printToConsoleAndFile("Log saved to: " + createLog.getAbsolutePath());
         printToConsoleAndFile("Run on: " + hostname);
     }
 
@@ -74,8 +78,14 @@ public class Log {
             log = new FileWriter(createLog, true);
             log.append(formattedOut);
             log.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Could not write to log file.");
+        } catch (IOException e) { //TODO: Get rid of this catastrophe.... log4j
+            try {
+                log = new FileWriter(createLog, true);
+                log.append(formattedOut);
+                log.close();
+            } catch (IOException e2) {
+                throw new RuntimeException("Could not write to log file.");
+            }
         }
     }
 
@@ -122,9 +132,13 @@ public class Log {
         File textFile = new File(decodedPath + "\\data.txt");
         try {
             textFile.createNewFile();
-            FileWriter textWriter = new FileWriter(textFile);
+            Writer textWriter = new OutputStreamWriter(new FileOutputStream(textFile), StandardCharsets.UTF_8);
             textWriter.write(HexFormat.hexDump(d));
             textWriter.close();
+            //TODO: Which is better?
+            /*FileWriter textWriter = new FileWriter(textFile);
+            textWriter.write(HexFormat.hexDump(d));
+            textWriter.close();*/
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
