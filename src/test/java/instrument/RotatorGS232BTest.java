@@ -1,5 +1,6 @@
 package instrument;
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import utils.Log;
@@ -22,10 +23,20 @@ public class RotatorGS232BTest {
         Log.info("AZ: " + rotatorGS232B.getAz());
         Log.info("EL: " + rotatorGS232B.getEl());
 
-        rotatorGS232B.goToAz(270);
+        Assert.assertTrue(rotatorGS232B.goToAz(270).isSuccessful());
+        Assert.assertTrue(Math.abs(rotatorGS232B.getAz()-270) < 2);
 
         Log.info("AZ: " + rotatorGS232B.getAz());
         Log.info("EL: " + rotatorGS232B.getEl());
+
+        Assert.assertTrue(rotatorGS232B.goToEl(45).isSuccessful());
+        Assert.assertTrue(Math.abs(rotatorGS232B.getEl() - 45) < 2);
+
+        Log.info("AZ: " + rotatorGS232B.getAz());
+        Log.info("EL: " + rotatorGS232B.getEl());
+
+        Assert.assertFalse(rotatorGS232B.goToAz(-1).isSuccessful());
+
 
     }
 
