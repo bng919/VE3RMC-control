@@ -3,9 +3,9 @@ import data.Pass;
 import data.Satellite;
 import decode.DecoderDireWolf;
 import instrument.Rotator;
-import instrument.StubRotatorGS232B;
-import instrument.StubTransceiverIC9100;
+import instrument.RotatorGS232B;
 import instrument.Transceiver;
+import instrument.TransceiverIC9100;
 import sattrack.SatTrack;
 import sattrack.SatTrackPredict4Java;
 import utils.Log;
@@ -22,11 +22,11 @@ public class Main {
 
         new Log(".\\logs\\", Verbosity.DEBUG);
 
-        String[] testTle = {"ISS", "1 56184U 23054G   24063.54587157  .00022452  00000-0  70076-3 0  9993",
-                "2 56184  97.3825 321.2161 0007773 178.1199 182.0074 15.33188012 49913"};
+        String[] testTle = {"TEST", "1 39469U 13072H   24062.30883059 +.00013669 +00000+0 +82190-3 0    15",
+                "2 39469 120.5021 125.8073 0193146 215.6961 143.1050 14.97020769549865"};
 
         //TODO: Satellite shouldn't need currAz, currAl, or visible to be instantiated
-        Satellite sat = new Satellite("ISS", testTle, 0, 0, false, 145000000, 146000000);
+        Satellite sat = new Satellite("TEST", testTle, 0, 0, false, 437479000, 146000000);
 
         SatTrack satTrack = new SatTrackPredict4Java();
         Pass pass = satTrack.getNextPass(sat);
@@ -34,9 +34,9 @@ public class Main {
         List<Double> elProfile = pass.getElProfile();
 
         /*Rotator rotator = InstrumentFactory.createRotator("RotatorGS232B");*/
-        Rotator rotator = new StubRotatorGS232B();
+        Rotator rotator = new RotatorGS232B();
 
-        Transceiver transceiver = new StubTransceiverIC9100();
+        Transceiver transceiver = new TransceiverIC9100();
 
         ZonedDateTime setupTime = pass.getAos().minusMinutes(1);
         Log.debug("Waiting for " + setupTime + " before rotator setup");
@@ -52,13 +52,13 @@ public class Main {
 
 
         AudioRecordWin audio = new AudioRecordWin(pass.getDurationS(), 44100);
-        DecoderDireWolf dec = new DecoderDireWolf(pass.getDurationS(), "C:\\Users\\benng\\Documents\\Uni\\School Work\\Fifth Year\\Fall\\ENPH455\\Code\\direwolf-1.7.0-9807304_i686");
+        DecoderDireWolf dec = new DecoderDireWolf(pass.getDurationS(), "C:\\Amateur Radio\\Direwolf\\Direwolf-Executable\\direwolf-1.7.0-9807304_i686");
 
         Thread audioThread = new Thread(audio);
         Thread decoderThread = new Thread(dec);
 
 
-        Log.debug("Waiting for AOS at" + pass.getAos());
+        Log.debug("Waiting for AOS at " + pass.getAos());
         while (ZonedDateTime.now(ZoneId.of("UTC")).isBefore(pass.getAos())) {
 
         }
@@ -67,10 +67,18 @@ public class Main {
         decoderThread.start();
 
         for (int i = 0; i < azProfile.size(); i++) {
+            long startTime = System.currentTimeMillis();
             Log.debug("Moving to position Az " + azProfile.get(i).intValue() + ", El " + elProfile.get(i).intValue());
             rotator.goToAzEl(azProfile.get(i).intValue(), elProfile.get(i).intValue());
+            Log.debug("Set frequency to " + pass.getDlFreqHzAdjProfile().get(i));
             transceiver.setFrequency(pass.getDlFreqHzAdjProfile().get(i));
-            Time.delayMillis(pass.getProfileStepS()*1000L);
+            long stopTime = System.currentTimeMillis();
+            if (stopTime-startTime < pass.getDurationS()*1000L) {
+                Time.delayMillis((pass.getProfileStepS()*1000L) - (stopTime-startTime));
+            } else {
+                Log.warn("TIME MISALIGNMENT: Setting rotator and transceiver took longer than specified delay.\n" +
+                        "Rotator position may lag desired position!");
+            }
         }
 
         try {
