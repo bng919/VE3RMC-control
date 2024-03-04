@@ -21,7 +21,7 @@ public class InstrumentFactoryTest {
     @Test
     public void testCreateInstrumentRotator() {
         try {
-            Instrument rst = InstrumentFactory.createInstrument("RotatorGS232B");
+            Instrument rst = InstrumentFactory.createRotator("RotatorGS232B");
             assertTrue(rst instanceof Rotator);
             assertTrue(rst instanceof RotatorGS232B);
 
@@ -33,7 +33,7 @@ public class InstrumentFactoryTest {
     @Test
     public void testCreateInstrumentTransceiver() {
         try {
-            Instrument rst = InstrumentFactory.createInstrument("TransceiverIC9100");
+            Instrument rst = InstrumentFactory.createTransceiver("TransceiverIC9100");
             assertTrue(rst instanceof Transceiver);
             assertTrue(rst instanceof TransceiverIC9100);
         } catch (Exception e) {
@@ -44,21 +44,21 @@ public class InstrumentFactoryTest {
     @Test
     public void testCreateInstrumentEmptyString() {
         assertThrows(RuntimeException.class, () -> {
-            InstrumentFactory.createInstrument("");
+            InstrumentFactory.createRotator("");
         });
     }
 
     @Test
     public void testCreateInstrumentNullString() {
         assertThrows(RuntimeException.class, () -> {
-            InstrumentFactory.createInstrument(null);
+            InstrumentFactory.createRotator(null);
         });
     }
 
     @Test
     public void testCreateInstrumentInvalidString() {
         assertThrows(RuntimeException.class, () -> {
-            InstrumentFactory.createInstrument("InvalidID");
+            InstrumentFactory.createRotator("InvalidID");
         });
     }
 }
