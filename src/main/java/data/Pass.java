@@ -1,13 +1,15 @@
 package data;
 
+import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
 public class Pass {
 
     private Satellite sat;
-    private Date aos;
-    private Date los;
+    private ZonedDateTime aos;
+    private ZonedDateTime los;
     private long durationS;
     private int profileStepS;
     private List<Double> azProfile;
@@ -15,11 +17,11 @@ public class Pass {
     private List<Long> dlFreqHzAdjProfile;
 
 
-    public Pass(Satellite sat, Date aos, Date los, int profileStepS, List<Double> azProfile, List<Double> elProfile, List<Long> dlFreqHzAdjProfile) {
+    public Pass(Satellite sat, ZonedDateTime aos, ZonedDateTime los, int profileStepS, List<Double> azProfile, List<Double> elProfile, List<Long> dlFreqHzAdjProfile) {
         this.sat = sat;
         this.aos = aos;
         this.los = los;
-        this.durationS = (los.getTime()-aos.getTime())/1000;
+        this.durationS = Duration.between(aos, los).getSeconds();
         this.profileStepS = profileStepS;
         this.azProfile = azProfile;
         this.elProfile = elProfile;
@@ -34,19 +36,19 @@ public class Pass {
         this.sat = sat;
     }
 
-    public Date getAos() {
+    public ZonedDateTime getAos() {
         return aos;
     }
 
-    public void setAos(Date aos) {
+    public void setAos(ZonedDateTime aos) {
         this.aos = aos;
     }
 
-    public Date getLos() {
+    public ZonedDateTime getLos() {
         return los;
     }
 
-    public void setLos(Date los) {
+    public void setLos(ZonedDateTime los) {
         this.los = los;
     }
 
