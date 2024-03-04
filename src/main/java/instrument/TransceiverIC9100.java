@@ -78,6 +78,9 @@ public class TransceiverIC9100 implements Transceiver {
     }
 
     public ResultHelper setFrequency(long freqHz) throws InterruptedException {
+        if (!(FreqHelper.isUHF(freqHz) || FreqHelper.isVHF(freqHz))) {
+            return ResultHelper.createFailedResult();
+        }
         if (FreqHelper.isUHF(this.freqHz) != FreqHelper.isUHF(freqHz)) {
             if(!swapMainSub().isSuccessful()) {
                 return ResultHelper.createFailedResult();
