@@ -35,28 +35,28 @@ public class TransceiverIC9100Test {
         setReadAssert(transceiverIC9100, 144000000, Modulation.AM);
 
         //Switch to VHF (testcase 1.b.iv), and test switching frequencies and mode on VHF (testcase 1.b.i)
-        /*setReadAssert(transceiverIC9100, 445000000, Modulation.FM);
+        setReadAssert(transceiverIC9100, 445000000, Modulation.FM);
         setReadAssert(transceiverIC9100, 444000000, Modulation.FM);
         setReadAssert(transceiverIC9100, 445000000, Modulation.AM);
-        setReadAssert(transceiverIC9100, 444000000, Modulation.AM);*/
+        setReadAssert(transceiverIC9100, 444000000, Modulation.AM);
 
         //Invalid frequency test (testcase 1.b.iii)
-        setReadAssert(transceiverIC9100, 140000000, Modulation.FM);
-        transceiverIC9100.setFrequency(135000000);
+        setReadAssert(transceiverIC9100, 144000000, Modulation.FM);
+        transceiverIC9100.setFrequency(140000000);
         transceiverIC9100.readInstrument();
-        assertEquals(transceiverIC9100.getFrequencyHz(), 140000000);
+        assertEquals(transceiverIC9100.getFrequencyHz(), 144000000);
 
-        /*setReadAssert(transceiverIC9100, 440000000, Modulation.FM);
+        setReadAssert(transceiverIC9100, 440000000, Modulation.FM);
         transceiverIC9100.setFrequency(419000000);
         transceiverIC9100.readInstrument();
-        assertEquals(transceiverIC9100.getFrequencyHz(), 440000000);*/
+        assertEquals(transceiverIC9100.getFrequencyHz(), 440000000);
 
         //Single Hz set test (testcase 1.b.v)
-        setReadAssert(transceiverIC9100, 141234567, Modulation.FM);
+        setReadAssert(transceiverIC9100, 144123456, Modulation.FM);
 
         //Sweep frequency (testcase 1.b.ii)
-        long startFreq = 140000000L;
-        long stopFreq = 141000000L;
+        long startFreq = 144500000L;
+        long stopFreq = 145000000L;
         long stepFreq = 10000L;
 
         for (long f = startFreq; f <= stopFreq; f+=stepFreq) {
@@ -64,8 +64,6 @@ public class TransceiverIC9100Test {
         }
         transceiverIC9100.readInstrument();
         assertEquals(transceiverIC9100.getFrequencyHz(), stopFreq);
-
-
     }
 
     @AfterClass
