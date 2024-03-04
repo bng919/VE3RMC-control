@@ -10,7 +10,7 @@ public class Pass {
     private Satellite sat;
     private ZonedDateTime aos;
     private ZonedDateTime los;
-    private long durationS;
+    private int durationS;
     private int profileStepS;
     private List<Double> azProfile;
     private List<Double> elProfile;
@@ -21,7 +21,7 @@ public class Pass {
         this.sat = sat;
         this.aos = aos;
         this.los = los;
-        this.durationS = Duration.between(aos, los).getSeconds();
+        this.durationS = Math.toIntExact(Duration.between(aos, los).getSeconds());
         this.profileStepS = profileStepS;
         this.azProfile = azProfile;
         this.elProfile = elProfile;
@@ -52,7 +52,7 @@ public class Pass {
         this.los = los;
     }
 
-    public long getDurationS() {
+    public int getDurationS() {
         return durationS;
     }
 
