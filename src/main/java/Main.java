@@ -1,42 +1,54 @@
-import audio.AudioRecordWin;
+import audio.AudioRecord;
+import audio.AudioRecorderFactory;
 import data.Pass;
 import data.Satellite;
-import decode.DecoderDireWolf;
+import decode.Decoder;
+import decode.DecoderFactory;
+import instrument.InstrumentFactory;
 import instrument.Rotator;
-import instrument.RotatorGS232B;
 import instrument.Transceiver;
-import instrument.TransceiverIC9100;
 import sattrack.SatTrack;
-import sattrack.SatTrackPredict4Java;
+import sattrack.SatTrackFactory;
 import utils.Log;
+import utils.TLEHelper;
 import utils.Time;
 import utils.enums.Verbosity;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Properties;
 
 public class Main {
 
     public static void main(String [] args) throws InterruptedException {
 
-        new Log(".\\logs\\", Verbosity.DEBUG);
+        FileReader configFile;
+        Properties config = new Properties();
+        try {
+            configFile = new FileReader("config.properties");
+            config.load(configFile);
+        } catch (IOException e) {
+            System.out.println("Cannot open config.properties file!! Terminating.");
+            throw new RuntimeException(e);
+        }
 
-        String[] testTle = {"TEST", "1 39469U 13072H   24062.30883059 +.00013669 +00000+0 +82190-3 0    15",
-                "2 39469 120.5021 125.8073 0193146 215.6961 143.1050 14.97020769549865"};
+        new Log(config.getProperty("LOG_PATH"), Verbosity.valueOf(config.getProperty("LOG_LEVEL")));
+
+        String[] testTle = TLEHelper.fileToStrArray(config.getProperty("TLE_PATH"));
 
         //TODO: Satellite shouldn't need currAz, currAl, or visible to be instantiated
-        Satellite sat = new Satellite("TEST", testTle, 0, 0, false, 437479000, 146000000);
+        Satellite sat = new Satellite("TEST", testTle, 0, 0, false, 145000000, 146000000);
 
-        SatTrack satTrack = new SatTrackPredict4Java();
+        SatTrack satTrack = SatTrackFactory.createSatTrack(config.getProperty("SATELLITE_TRACK_MODEL"));
         Pass pass = satTrack.getNextPass(sat);
         List<Double> azProfile = pass.getAzProfile();
         List<Double> elProfile = pass.getElProfile();
 
-        /*Rotator rotator = InstrumentFactory.createRotator("RotatorGS232B");*/
-        Rotator rotator = new RotatorGS232B();
-
-        Transceiver transceiver = new TransceiverIC9100();
+        Rotator rotator = InstrumentFactory.createRotator(config.getProperty("ROTATOR_MODEL"));
+        Transceiver transceiver = InstrumentFactory.createTransceiver(config.getProperty("TRANSCEIVER_MODEL"));
 
         ZonedDateTime setupTime = pass.getAos().minusMinutes(1);
         Log.debug("Waiting for " + setupTime + " before rotator setup");
@@ -51,8 +63,12 @@ public class Main {
         rotator.goToAzEl(initAz, initEl);
 
 
-        AudioRecordWin audio = new AudioRecordWin(pass.getDurationS(), 44100);
-        DecoderDireWolf dec = new DecoderDireWolf(pass.getDurationS(), "C:\\Amateur Radio\\Direwolf\\Direwolf-Executable\\direwolf-1.7.0-9807304_i686");
+        AudioRecord audio = AudioRecorderFactory.createAudioRecord(config.getProperty("RECORDER_MODEL"));
+        audio.setSampleRate(Integer.parseInt(config.getProperty("RECORDER_SAMPLE_RATE")));
+        audio.setRecordDurationS(pass.getDurationS());
+        Decoder dec = DecoderFactory.createDecoder(config.getProperty("DECODER_MODEL"));
+        dec.setDireWolfDir(config.getProperty("DECODER_PATH"));
+        dec.setDurationS(pass.getDurationS());
 
         Thread audioThread = new Thread(audio);
         Thread decoderThread = new Thread(dec);
@@ -73,7 +89,7 @@ public class Main {
             Log.debug("Set frequency to " + pass.getDlFreqHzAdjProfile().get(i));
             transceiver.setFrequency(pass.getDlFreqHzAdjProfile().get(i));
             long stopTime = System.currentTimeMillis();
-            if (stopTime-startTime < pass.getDurationS()*1000L) {
+            if (stopTime-startTime < pass.getProfileStepS()*1000L) {
                 Time.delayMillis((pass.getProfileStepS()*1000L) - (stopTime-startTime));
             } else {
                 Log.warn("TIME MISALIGNMENT: Setting rotator and transceiver took longer than specified delay.\n" +
