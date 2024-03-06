@@ -29,7 +29,7 @@ public class Log {
     private static int storeDecodedCount = 0;
     private static int storeAudioCount = 0;
 
-    public Log(String path, Verbosity verbose) {
+    public Log(String path, Verbosity verbose) { //TODO: Move to static initializer, then constructor can be private
         start = ZonedDateTime.now(ZoneId.of("UTC"));
         timeStamp = start.format(plainFormatter);
         Log.basePath = path + timeStamp;
