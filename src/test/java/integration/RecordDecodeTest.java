@@ -18,8 +18,12 @@ public class RecordDecodeTest {
 
     @Test
     public void testRecordDecode() {
-        AudioRecordWin audio = new AudioRecordWin(20, 44100);
-        DecoderDireWolf dec = new DecoderDireWolf(20, "C:\\Users\\benng\\Documents\\Uni\\School Work\\Fifth Year\\Fall\\ENPH455\\Code\\direwolf-1.7.0-9807304_i686");
+        AudioRecordWin audio = new AudioRecordWin();
+        audio.setSampleRate(48000);
+        audio.setRecordDurationS(20);
+        DecoderDireWolf dec = new DecoderDireWolf();
+        dec.setDurationS(20);
+        dec.setDireWolfDir("C:\\Users\\benng\\Documents\\Uni\\School Work\\Fifth Year\\Fall\\ENPH455\\Code\\direwolf-1.7.0-9807304_i686");
 
         Thread audioThread = new Thread(audio);
         Thread decoderThread = new Thread(dec);
