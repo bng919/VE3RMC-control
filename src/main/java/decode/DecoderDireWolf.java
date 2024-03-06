@@ -17,10 +17,7 @@ public class DecoderDireWolf implements Decoder {
     private int kissPort = 8001;
     private int durationS;
 
-    public DecoderDireWolf(int durationS, String direWolfDir) {
-        this.direWolfDir = direWolfDir;
-        this.durationS = durationS;
-    }
+    public DecoderDireWolf() {}
 
     public void run() {
         Log.debug("Running DireWolf decoder in thread " + Thread.currentThread().threadId());
@@ -89,6 +86,14 @@ public class DecoderDireWolf implements Decoder {
 
     public List<byte[]> getDecodedData() {
         return decodedData;
+    }
+
+    public void setDireWolfDir(String direWolfDir) {
+        this.direWolfDir = direWolfDir;
+    }
+
+    public void setDurationS(int durationS) {
+        this.durationS = durationS;
     }
 
 }
