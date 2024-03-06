@@ -18,7 +18,9 @@ public class AudioRecordWinTest {
     @Test
     public void testStartRecording() {
         int recordDuration = 10;
-        AudioRecordWin a = new AudioRecordWin(recordDuration,44100);
+        AudioRecordWin a = new AudioRecordWin();
+        a.setSampleRate(44100);
+        a.setRecordDurationS(recordDuration);
         long startTime = java.time.Instant.now().getEpochSecond();
         ResultHelper rst = a.startRecording();
         long stopTime = java.time.Instant.now().getEpochSecond();
