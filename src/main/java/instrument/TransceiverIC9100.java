@@ -1,23 +1,25 @@
 package instrument;
 
-import utils.FreqHelper;
-import utils.ResultHelper;
-import utils.Serial;
+import utils.*;
 import utils.enums.Modulation;
 
 import java.util.concurrent.TimeUnit;
 
 public class TransceiverIC9100 implements Transceiver {
 
-    Serial serial;
+    private final Serial serial;
+    private final String comPort;
+    private final int baudRate;
+    private final byte transAddr;
     private long freqHz;
     private Modulation modSetting;
-    private final byte transAddr = 0x7c;
+
 
     public TransceiverIC9100() throws InterruptedException {
-        //TODO: Read parameters from config file
-        this.serial = new Serial("COM5", 19200, 8, 1, 0);
-        readInstrument();
+        this.comPort = PropertyHelper.getStrProperty("TRANSCEIVER_COM_PORT");
+        this.baudRate = PropertyHelper.getIntProperty("TRANSCEIVER_BAUD");
+        this.transAddr = PropertyHelper.getByteProperty("TRANSCEIVER_ADDRESS");
+        this.serial = new Serial(comPort, baudRate, 8, 1, 0);
     }
 
     private ResultHelper swapMainSub() throws InterruptedException {
@@ -33,12 +35,17 @@ public class TransceiverIC9100 implements Transceiver {
         return ResultHelper.createSuccessfulResult();
     }
 
-    public void readInstrument() throws InterruptedException {
+    public ResultHelper readInstrument() throws InterruptedException {
         this.serial.open();
         Command readFreqCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x03).buildCommand();
         this.serial.write(readFreqCmd.getCmdByteArr());
         TimeUnit.MILLISECONDS.sleep(200);
-        byte[] rst = this.serial.read();
+        byte[] rst;
+        try {
+            rst = this.serial.read();
+        } catch (NegativeArraySizeException e) {
+            return ResultHelper.createFailedResult();
+        }
         byte[] freq = new byte[5];
         this.freqHz = 0;
         for (int i = 0; i < freq.length; i++) {
@@ -62,11 +69,18 @@ public class TransceiverIC9100 implements Transceiver {
         }
 
         this.serial.close();
-
+        return ResultHelper.createSuccessfulResult();
     }
 
-    public ResultHelper testConnect() {
-        return ResultHelper.createResult(this.serial.open() && this.serial.close());
+    public ResultHelper testConnect() throws InterruptedException {
+        if (serial.open() && readInstrument().isSuccessful() && serial.close()) {
+            return ResultHelper.createSuccessfulResult();
+        }
+        else {
+            Log.error("TransceiverIC9100 connection test failed! Could not connect using port " + this.comPort
+                    + " with baud " + this.baudRate);
+            return ResultHelper.createFailedResult();
+        }
     }
 
     public long getFrequencyHz() {

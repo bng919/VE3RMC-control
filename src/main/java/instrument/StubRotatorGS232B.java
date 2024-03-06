@@ -19,8 +19,9 @@ public class StubRotatorGS232B implements Rotator {
         readInstrument();
     }
 
-    public void readInstrument() {
+    public ResultHelper readInstrument() {
         Log.debug("Read from StubRotatorGS232B. Az " + this.currAz + ", El " + this.currEl);
+        return ResultHelper.createSuccessfulResult();
     }
 
     public ResultHelper testConnect() {

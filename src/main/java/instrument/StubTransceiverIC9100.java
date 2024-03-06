@@ -16,8 +16,9 @@ public class StubTransceiverIC9100 implements Transceiver{
         readInstrument();
     }
 
-    public void readInstrument() {
+    public ResultHelper readInstrument() {
         Log.debug("Read from StubTransceiverIC9100. Freq " + this.freqHz + ", Mod " + this.modSetting);
+        return ResultHelper.createSuccessfulResult();
     }
 
     public ResultHelper testConnect() {

@@ -1,9 +1,6 @@
 package instrument;
 
-import utils.HexFormat;
-import utils.Log;
-import utils.ResultHelper;
-import utils.Serial;
+import utils.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,23 +10,28 @@ public class RotatorGS232B implements Rotator {
     private static final int EL_TOLERANCE_DEG = 2;
     private static final int MOTION_TIMEOUT_MILLIS = 40000; //TODO: Scale based on delta to move
     Serial serial;
+    private final String comPort;
+    private final int baudRate;
     private int currAz;
     private int currEl;
 
 
     public RotatorGS232B() throws InterruptedException {
-        //TODO: Read parameters from config file
-        this.serial = new Serial("COM4", 2400, 8, 1, 0);
-        readInstrument();
+        this.comPort = PropertyHelper.getStrProperty("ROTATOR_COM_PORT");
+        this.baudRate = PropertyHelper.getIntProperty("ROTATOR_BAUD");
+        this.serial = new Serial(this.comPort, this.baudRate, 8, 1, 0);
     }
 
-    public void readInstrument() throws InterruptedException {
+    public ResultHelper readInstrument() throws InterruptedException {
         byte[] readAzElCmd = {0x43, 0x32, 0x0D};
 
         this.serial.open();
         this.serial.write(readAzElCmd);
         TimeUnit.MILLISECONDS.sleep(250);
         byte[] rst = this.serial.read();
+        if (rst.length == 0) {
+            return ResultHelper.createFailedResult();
+        }
         this.serial.close();
 
         int azOffset = 3;
@@ -53,17 +55,22 @@ public class RotatorGS232B implements Rotator {
         } catch (ArrayIndexOutOfBoundsException e) {
             Log.error(e.getMessage());
             Log.error(HexFormat.hexDump(rst));
+            return ResultHelper.createFailedResult();
         }
 
         this.currAz = azAngle;
         this.currEl = elAngle;
+
+        return ResultHelper.createSuccessfulResult();
     }
 
-    public ResultHelper testConnect() {
-        if (serial.open() && serial.close()) {
+    public ResultHelper testConnect() throws InterruptedException {
+        if (serial.open() && readInstrument().isSuccessful() && serial.close()) {
             return ResultHelper.createSuccessfulResult();
         }
         else {
+            Log.error("RotatorGS232B connection test failed! Could not connect using port " + this.comPort
+                    + " with baud " + this.baudRate);
             return ResultHelper.createFailedResult();
         }
     }

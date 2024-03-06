@@ -8,8 +8,8 @@ public interface Instrument {
 
     //ResultHelper disconnect();
 
-    void readInstrument() throws InterruptedException;
+    ResultHelper readInstrument() throws InterruptedException;
 
-    ResultHelper testConnect();
+    ResultHelper testConnect() throws InterruptedException;
 
 }
