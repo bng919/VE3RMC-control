@@ -12,12 +12,11 @@ import java.io.IOException;
 public class AudioRecordWin implements AudioRecord {
 
     private int sampleRate;
+
     private int recordDurationS;
 
-    public AudioRecordWin(int recordDurationS, int sampleRate) {
-        this.sampleRate = sampleRate;
-        this.recordDurationS = recordDurationS;
-        //TODO: Other parameters with constructor
+    public AudioRecordWin() {
+
     }
 
     public void run() {
@@ -71,6 +70,14 @@ public class AudioRecordWin implements AudioRecord {
             return ResultHelper.createFailedResult();
         }
         return ResultHelper.createSuccessfulResult();
+    }
+
+    public void setRecordDurationS(int recordDurationS) {
+        this.recordDurationS = recordDurationS;
+    }
+
+    public void setSampleRate(int sampleRate) {
+        this.sampleRate = sampleRate;
     }
 
 }
