@@ -13,6 +13,7 @@ import utils.Log;
 import utils.TLEHelper;
 import utils.Time;
 import utils.enums.Verbosity;
+import utils.PropertyHelper;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -25,30 +26,26 @@ public class Main {
 
     public static void main(String [] args) throws InterruptedException {
 
-        FileReader configFile;
-        Properties config = new Properties();
-        try {
-            configFile = new FileReader("config.properties");
-            config.load(configFile);
-        } catch (IOException e) {
-            System.out.println("Cannot open config.properties file!! Terminating.");
-            throw new RuntimeException(e);
+
+        new Log(PropertyHelper.getStrProperty("LOG_PATH"), Verbosity.valueOf(PropertyHelper.getStrProperty("LOG_LEVEL")));
+
+        Rotator rotator = InstrumentFactory.createRotator(PropertyHelper.getStrProperty("ROTATOR_MODEL"));
+        Transceiver transceiver = InstrumentFactory.createTransceiver(PropertyHelper.getStrProperty("TRANSCEIVER_MODEL"));
+        AudioRecord audio = AudioRecorderFactory.createAudioRecord(PropertyHelper.getStrProperty("RECORDER_MODEL"));
+        Decoder dec = DecoderFactory.createDecoder(PropertyHelper.getStrProperty("DECODER_MODEL"));
+        SatTrack satTrack = SatTrackFactory.createSatTrack(PropertyHelper.getStrProperty("SATELLITE_TRACK_MODEL"));
+
+        if (!transceiver.testConnect().isSuccessful() || !rotator.testConnect().isSuccessful()) {
+            throw new RuntimeException("Instrument setup failed!");
         }
 
-        new Log(config.getProperty("LOG_PATH"), Verbosity.valueOf(config.getProperty("LOG_LEVEL")));
-
-        String[] testTle = TLEHelper.fileToStrArray(config.getProperty("TLE_PATH"));
+        String[] testTle = TLEHelper.fileToStrArray(PropertyHelper.getStrProperty("TLE_PATH"));
 
         //TODO: Satellite shouldn't need currAz, currAl, or visible to be instantiated
-        Satellite sat = new Satellite("TEST", testTle, 0, 0, false, 145000000, 146000000);
-
-        SatTrack satTrack = SatTrackFactory.createSatTrack(config.getProperty("SATELLITE_TRACK_MODEL"));
+        Satellite sat = new Satellite("TEST", testTle, 0, 0, false, PropertyHelper.getIntProperty("SAT_DL_FREQ_HZ"), 146000000);
         Pass pass = satTrack.getNextPass(sat);
         List<Double> azProfile = pass.getAzProfile();
         List<Double> elProfile = pass.getElProfile();
-
-        Rotator rotator = InstrumentFactory.createRotator(config.getProperty("ROTATOR_MODEL"));
-        Transceiver transceiver = InstrumentFactory.createTransceiver(config.getProperty("TRANSCEIVER_MODEL"));
 
         ZonedDateTime setupTime = pass.getAos().minusMinutes(1);
         Log.debug("Waiting for " + setupTime + " before rotator setup");
@@ -61,13 +58,14 @@ public class Main {
         int initEl = elProfile.getFirst().intValue();
         Log.debug("Moving rotator to initial position Az " + initAz + ", El " + initEl);
         rotator.goToAzEl(initAz, initEl);
+        Log.debug("Set transceiver to nominal DL freq " + PropertyHelper.getIntProperty("SAT_DL_FREQ_HZ"));
+        transceiver.setFrequency(PropertyHelper.getIntProperty("SAT_DL_FREQ_HZ"));
 
 
-        AudioRecord audio = AudioRecorderFactory.createAudioRecord(config.getProperty("RECORDER_MODEL"));
-        audio.setSampleRate(Integer.parseInt(config.getProperty("RECORDER_SAMPLE_RATE")));
+        audio.setSampleRate(PropertyHelper.getIntProperty("RECORDER_SAMPLE_RATE"));
         audio.setRecordDurationS(pass.getDurationS());
-        Decoder dec = DecoderFactory.createDecoder(config.getProperty("DECODER_MODEL"));
-        dec.setDireWolfDir(config.getProperty("DECODER_PATH"));
+
+        dec.setDireWolfDir(PropertyHelper.getStrProperty("DECODER_PATH"));
         dec.setDurationS(pass.getDurationS());
 
         Thread audioThread = new Thread(audio);
@@ -103,7 +101,6 @@ public class Main {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
 
         List<byte[]> data = dec.getDecodedData();
         for (byte[] d : data) {
