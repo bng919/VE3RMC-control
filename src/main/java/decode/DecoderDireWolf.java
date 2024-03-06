@@ -2,6 +2,7 @@ package decode;
 
 import utils.HexFormat;
 import utils.Log;
+import utils.PropertyHelper;
 import utils.Time;
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,9 @@ public class DecoderDireWolf implements Decoder {
     }
 
     public void startDecoder() {
-        ProcessBuilder direWolfPb = new ProcessBuilder(direWolfDir + "\\direwolf", "-B 9600");
+        ProcessBuilder direWolfPb = new ProcessBuilder(direWolfDir + "\\direwolf", "-B " + PropertyHelper.getStrProperty("SAT_BAUD"));
+        Log.debug("Starting DireWolf...");
+        Log.debug(String.join(" ", direWolfPb.command().toArray(new String[0])));
         direWolfPb.directory(new File(direWolfDir));
         Process direWolfP = null;
         try {
