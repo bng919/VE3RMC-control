@@ -2,12 +2,17 @@ package instrument;
 
 import utils.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class RotatorGS232B implements Rotator {
 
     private static final int AZ_TOLERANCE_DEG = 2;
     private static final int EL_TOLERANCE_DEG = 2;
+    private final String correctionFilePath;
+    private final int[] correctionList = new int[360];
     private static final int MOTION_TIMEOUT_MILLIS = 40000; //TODO: Scale based on delta to move
     Serial serial;
     private final String comPort;
@@ -15,11 +20,31 @@ public class RotatorGS232B implements Rotator {
     private int currAz;
     private int currEl;
 
-
     public RotatorGS232B() throws InterruptedException {
         this.comPort = PropertyHelper.getStrProperty("ROTATOR_COM_PORT");
         this.baudRate = PropertyHelper.getIntProperty("ROTATOR_BAUD");
+        this.correctionFilePath = PropertyHelper.getStrProperty("ROTATOR_CALIBRATION_PATH");
+        readCorrectionFile();
         this.serial = new Serial(this.comPort, this.baudRate, 8, 1, 0);
+    }
+
+    private void readCorrectionFile() {
+        BufferedReader fileReader;
+        try {
+            fileReader = new BufferedReader(new FileReader(correctionFilePath));
+            String line = fileReader.readLine();
+            int count = 0;
+            while (line != null) {
+                if (count > 359) {
+                    throw new RuntimeException("Too many lines in rotator calibration file at " + this.correctionFilePath);
+                }
+                correctionList[count] = Integer.parseInt(line);
+                line = fileReader.readLine();
+                count++;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ResultHelper readInstrument() throws InterruptedException {
@@ -84,9 +109,11 @@ public class RotatorGS232B implements Rotator {
     }
 
     public ResultHelper goToAz(int az) throws InterruptedException {
-        if (az < 0 || az > 360) {
+        if (az < 0 || az > 359) {
             return ResultHelper.createFailedResult();
         }
+        az = correctionList[az];
+        Log.debug("After correcting for calibration, az = " + az);
         byte[] setAzCmd = "M".getBytes();
         byte[] posByte = String.valueOf(az).getBytes();
         byte[] cmd = {setAzCmd[0], 0x30, 0x30, 0x30, 0x0D};

@@ -37,7 +37,12 @@ public class RotatorGS232BTest {
 
         Assert.assertFalse(rotatorGS232B.goToAz(-1).isSuccessful());
 
+    }
 
+    @Test
+    public void testReadCalFile() throws InterruptedException {
+        RotatorGS232B rotatorGS232B = new RotatorGS232B();
+        // TODO: Testcase
     }
 
 }

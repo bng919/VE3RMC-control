@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/roatorCalibration.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/audio/AudioRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/audio/AudioRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/audio/AudioRecordWin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/audio/AudioRecordWin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/decode/Decoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/decode/Decoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/decode/DecoderDireWolf.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/decode/DecoderDireWolf.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/audio/AudioRecordWinTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/audio/AudioRecordWinTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/decode/DecoderDireWolfTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/decode/DecoderDireWolfTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/integration/RecordDecodeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/integration/RecordDecodeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/instrument/RotatorGS232B.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/instrument/RotatorGS232B.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/instrument/RotatorGS232BTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/instrument/RotatorGS232BTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,14 +19,17 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TestNG Test Class" />
         <option value="Enum" />
+        <option value="TestNG Test Class" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/com/github/davidmoten/predict4java/1.3.1/predict4java-1.3.1.jar!/com/github/amsacode/predict4java/PassPredictor.class" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -40,34 +40,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "TestNG.AudioRecordWinTest.testStartRecording.executor": "Run",
-    "TestNG.DecoderDireWolfTest.testStartDecoder.executor": "Run",
-    "TestNG.InstrumentFactoryTest.executor": "Run",
-    "TestNG.LogTest.executor": "Run",
-    "TestNG.LogTest.testLogCreation.executor": "Run",
-    "TestNG.RecordDecodeTest.executor": "Run",
-    "TestNG.SatTrackPredict4JavaTest.executor": "Debug",
-    "TestNG.TimeTest.testDelayMillis.executor": "Run",
-    "TestNG.TransceiverIC9100Test.testReadInstrument.executor": "Debug",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "TestNG",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.TestNG": "",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;TestNG.AudioRecordWinTest.testStartRecording.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.DecoderDireWolfTest.testStartDecoder.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.FreqHelperTest.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.FreqHelperTest.testIsFreqUHF.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.FreqHelperTest.testIsFreqVHF.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.InstrumentFactoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.LogTest.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.LogTest.testLogCreation.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.PredictTrackTest.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.RecordDecodeTest.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.RotatorGS232BTest.testReadWriteInstrument.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.SatTrackPredict4JavaTest.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.SatTrackPredict4JavaTest.testGetNextPass.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.TimeTest.testDelayMillis.executor&quot;: &quot;Run&quot;,
+    &quot;TestNG.TransceiverIC9100Test.testReadInstrument.executor&quot;: &quot;Debug&quot;,
+    &quot;TestNG.TransceiverIC9100Test.testReadWriteInstrument.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;TestNG&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.TestNG&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Amateur Radio/Development/VE3RMC-control&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.maddyhome.idea.vim.ui.VimEmulationConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\benng\Documents\Uni\School Work\Fifth Year\Fall\ENPH455\Code\VE3RMC-control" />
+      <recent name="C:\Users\benng\Documents\Uni\School Work\Fifth Year\Fall\ENPH455\Code\VE3RMC-control\src\main\java" />
+      <recent name="C:\Users\benng\Documents\Uni\School Work\Fifth Year\Fall\ENPH455\Code\VE3RMC-control\src\main" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="utils" />
@@ -77,44 +92,15 @@
       <recent name="instrument" />
     </key>
   </component>
-  <component name="RunManager" selected="TestNG.RecordDecodeTest">
-    <configuration name="AudioRecordWinTest.testStartRecording" type="TestNG" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="VE3RMC-control" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="audio.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="audio" />
-      <option name="MAIN_CLASS_NAME" value="audio.AudioRecordWinTest" />
-      <option name="METHOD_NAME" value="testStartRecording" />
-      <option name="TEST_OBJECT" value="METHOD" />
-      <properties />
-      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DecoderDireWolfTest.testStartDecoder" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="VE3RMC-control" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="decode.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="decode" />
-      <option name="MAIN_CLASS_NAME" value="decode.DecoderDireWolfTest" />
-      <option name="METHOD_NAME" value="testStartDecoder" />
-      <option name="TEST_OBJECT" value="METHOD" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LogTest" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="FreqHelperTest" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="VE3RMC-control" />
       <extension name="coverage">
         <pattern>
@@ -123,26 +109,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="utils" />
-      <option name="MAIN_CLASS_NAME" value="utils.LogTest" />
+      <option name="MAIN_CLASS_NAME" value="utils.FreqHelperTest" />
       <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LogTest.testLogCreation" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="VE3RMC-control" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="utils.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="utils" />
-      <option name="MAIN_CLASS_NAME" value="utils.LogTest" />
-      <option name="METHOD_NAME" value="testLogCreation" />
-      <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
       <method v="2">
@@ -166,13 +134,49 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="RotatorGS232BTest.testReadWriteInstrument" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="VE3RMC-control" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="instrument.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="instrument" />
+      <option name="MAIN_CLASS_NAME" value="instrument.RotatorGS232BTest" />
+      <option name="METHOD_NAME" value="testReadWriteInstrument" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TransceiverIC9100Test.testReadWriteInstrument" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="VE3RMC-control" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="instrument.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="instrument" />
+      <option name="MAIN_CLASS_NAME" value="instrument.TransceiverIC9100Test" />
+      <option name="METHOD_NAME" value="testReadWriteInstrument" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="TestNG.TransceiverIC9100Test.testReadWriteInstrument" />
+        <item itemvalue="TestNG.RotatorGS232BTest.testReadWriteInstrument" />
         <item itemvalue="TestNG.RecordDecodeTest" />
-        <item itemvalue="TestNG.AudioRecordWinTest.testStartRecording" />
-        <item itemvalue="TestNG.DecoderDireWolfTest.testStartDecoder" />
-        <item itemvalue="TestNG.LogTest.testLogCreation" />
-        <item itemvalue="TestNG.LogTest" />
+        <item itemvalue="TestNG.FreqHelperTest" />
       </list>
     </recent_temporary>
   </component>
@@ -204,6 +208,13 @@
       <workItem from="1709048229012" duration="7230000" />
       <workItem from="1709133796955" duration="10407000" />
       <workItem from="1709163633380" duration="10778000" />
+      <workItem from="1709480384190" duration="5323000" />
+      <workItem from="1709492554932" duration="128000" />
+      <workItem from="1709492700078" duration="13305000" />
+      <workItem from="1709581832405" duration="3895000" />
+      <workItem from="1709685756107" duration="7577000" />
+      <workItem from="1709750645053" duration="805000" />
+      <workItem from="1710352659327" duration="2318000" />
     </task>
     <servers />
   </component>
@@ -214,11 +225,16 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/sattrack/SatTrackPredict4Java.java</url>
-          <line>42</line>
-          <option name="timeStamp" value="1" />
+          <url>file://$PROJECT_DIR$/src/test/java/integration/PredictTrackTest.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="TestNG">
+        <watch expression="freqProfile" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
