@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/roatorCalibration.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/instrument/RotatorGS232B.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/instrument/RotatorGS232B.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/instrument/RotatorGS232BTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/instrument/RotatorGS232BTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,41 +34,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;TestNG.AudioRecordWinTest.testStartRecording.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.DecoderDireWolfTest.testStartDecoder.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.FreqHelperTest.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.FreqHelperTest.testIsFreqUHF.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.FreqHelperTest.testIsFreqVHF.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.InstrumentFactoryTest.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.LogTest.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.LogTest.testLogCreation.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.PredictTrackTest.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.RecordDecodeTest.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.RotatorGS232BTest.testReadWriteInstrument.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.SatTrackPredict4JavaTest.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.SatTrackPredict4JavaTest.testGetNextPass.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.TimeTest.testDelayMillis.executor&quot;: &quot;Run&quot;,
-    &quot;TestNG.TransceiverIC9100Test.testReadInstrument.executor&quot;: &quot;Debug&quot;,
-    &quot;TestNG.TransceiverIC9100Test.testReadWriteInstrument.executor&quot;: &quot;Run&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;TestNG&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.TestNG&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Amateur Radio/Development/VE3RMC-control&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.maddyhome.idea.vim.ui.VimEmulationConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "TestNG.AudioRecordWinTest.testStartRecording.executor": "Run",
+    "TestNG.DecoderDireWolfTest.testStartDecoder.executor": "Run",
+    "TestNG.FreqHelperTest.executor": "Run",
+    "TestNG.FreqHelperTest.testIsFreqUHF.executor": "Run",
+    "TestNG.FreqHelperTest.testIsFreqVHF.executor": "Run",
+    "TestNG.InstrumentFactoryTest.executor": "Run",
+    "TestNG.LogTest.executor": "Run",
+    "TestNG.LogTest.testLogCreation.executor": "Run",
+    "TestNG.PredictTrackTest.executor": "Run",
+    "TestNG.RecordDecodeTest.executor": "Run",
+    "TestNG.RotatorGS232BTest.testReadWriteInstrument.executor": "Run",
+    "TestNG.SatTrackPredict4JavaTest.executor": "Run",
+    "TestNG.SatTrackPredict4JavaTest.testGetNextPass.executor": "Run",
+    "TestNG.TimeTest.testDelayMillis.executor": "Run",
+    "TestNG.TransceiverIC9100Test.testReadInstrument.executor": "Debug",
+    "TestNG.TransceiverIC9100Test.testReadWriteInstrument.executor": "Run",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "TestNG",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.TestNG": "",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Amateur Radio/Development/VE3RMC-control",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.maddyhome.idea.vim.ui.VimEmulationConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -183,7 +177,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-21.0.1-openjdk-21.0.1-3183f394aec4-7d648f2c" />
+        <option value="jdk-21.0.1-openjdk-21.0.1-4caba194b151-23eed401" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
       </set>
     </attachedChunks>
   </component>
@@ -214,7 +209,8 @@
       <workItem from="1709581832405" duration="3895000" />
       <workItem from="1709685756107" duration="7577000" />
       <workItem from="1709750645053" duration="805000" />
-      <workItem from="1710352659327" duration="2318000" />
+      <workItem from="1710352659327" duration="2645000" />
+      <workItem from="1710422645358" duration="2646000" />
     </task>
     <servers />
   </component>
