@@ -39,10 +39,9 @@ public class Main {
             throw new RuntimeException("Instrument setup failed!");
         }
 
-        String[] testTle = TLEHelper.fileToStrArray(PropertyHelper.getStrProperty("TLE_PATH"));
-
+        String[] tle = TLEHelper.fileToStrArray(PropertyHelper.getStrProperty("TLE_PATH"));
         //TODO: Satellite shouldn't need currAz, currAl, or visible to be instantiated
-        Satellite sat = new Satellite("TEST", testTle, 0, 0, false, PropertyHelper.getIntProperty("SAT_DL_FREQ_HZ"), 146000000);
+        Satellite sat = new Satellite("TEST", tle, 0, 0, false, PropertyHelper.getIntProperty("SAT_DL_FREQ_HZ"), 146000000);
         Pass pass = satTrack.getNextPass(sat);
         List<Double> azProfile = pass.getAzProfile();
         List<Double> elProfile = pass.getElProfile();
@@ -82,9 +81,7 @@ public class Main {
 
         for (int i = 0; i < azProfile.size(); i++) {
             long startTime = System.currentTimeMillis();
-            Log.debug("Moving to position Az " + azProfile.get(i).intValue() + ", El " + elProfile.get(i).intValue());
             rotator.goToAzEl(azProfile.get(i).intValue(), elProfile.get(i).intValue());
-            Log.debug("Set frequency to " + pass.getDlFreqHzAdjProfile().get(i));
             transceiver.setFrequency(pass.getDlFreqHzAdjProfile().get(i));
             long stopTime = System.currentTimeMillis();
             if (stopTime-startTime < pass.getProfileStepS()*1000L) {
