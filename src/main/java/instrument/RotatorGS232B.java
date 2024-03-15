@@ -38,7 +38,7 @@ public class RotatorGS232B implements Rotator {
                 if (count > 359) {
                     throw new RuntimeException("Too many lines in rotator calibration file at " + this.correctionFilePath);
                 }
-                correctionList[count] = Integer.parseInt(line);
+                correctionList[count] = Integer.parseInt(line.strip());
                 line = fileReader.readLine();
                 count++;
             }
@@ -173,10 +173,16 @@ public class RotatorGS232B implements Rotator {
         ResultHelper azRst = ResultHelper.createSuccessfulResult();
         ResultHelper elRst = ResultHelper.createSuccessfulResult();
         if (Math.abs(this.currAz - az) > AZ_TOLERANCE_DEG) {
+            Log.info("Moving to position Az " + az);
             azRst = goToAz(az);
+        } else {
+            Log.debug("Az not updated on instrument, new Az less then " + AZ_TOLERANCE_DEG + " from current position");
         }
         if (Math.abs(this.currEl - el) > EL_TOLERANCE_DEG) {
+            Log.info("Moving to position El " + el);
             elRst = goToEl(el);
+        } else {
+            Log.debug("El not updated on instrument, new El less then " + EL_TOLERANCE_DEG + " from current position");
         }
         return azRst.and(elRst);
     }
