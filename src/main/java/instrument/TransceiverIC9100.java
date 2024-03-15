@@ -93,12 +93,14 @@ public class TransceiverIC9100 implements Transceiver {
 
     public ResultHelper setFrequency(long freqHz) throws InterruptedException {
         if (!(FreqHelper.isUHF(freqHz) || FreqHelper.isVHF(freqHz))) {
+            Log.error("Frequency " + freqHz + " is not in valid UHF or VHF amateur bands!");
             return ResultHelper.createFailedResult();
         }
         if (FreqHelper.isUHF(this.freqHz) != FreqHelper.isUHF(freqHz)) {
             if(!swapMainSub().isSuccessful()) {
                 return ResultHelper.createFailedResult();
             }
+            Log.debug("Main/sub band swapped on IC9100");
         }
         byte[] rst = new byte[5];
         int[] digits = new int[10];
@@ -110,16 +112,8 @@ public class TransceiverIC9100 implements Transceiver {
                 rst[i/2] = (byte) ((digits[i] << 4) | digits[i-1]);
             }
         }
-
+        Log.info("Setting frequency to " + freqHz*FreqHelper.HzToMHz + "MHz");
         Command writeFreqCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x00).data(rst).buildCommand();
-
-
-        /*System.out.println("\n");
-        byte[] dat = writeFreqCmd.getCmdByteArr();
-        for (int i = 0; i < dat.length; i++) {
-            System.out.print(dat[i] + ":");
-        }
-        System.out.println("\n");*/
 
         this.serial.open();
         this.serial.write(writeFreqCmd.getCmdByteArr());
