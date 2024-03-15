@@ -2,14 +2,7 @@ package utils;
 
 import utils.enums.Verbosity;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -20,6 +13,7 @@ public class Log {
     public static Verbosity verbose = Verbosity.INFO;
     private static String basePath;
     private static String dataPath;
+    private static String configPath;
     private ZonedDateTime start;
     private static String timeStamp;
     private static File createLog;
@@ -39,6 +33,11 @@ public class Log {
         if(! new File(dataPath).mkdirs()) {
             throw new RuntimeException("Error creating log folder.");
         }
+        configPath = basePath + "\\Configuration";
+        if(! new File(configPath).mkdirs()) {
+            throw new RuntimeException("Error creating log folder.");
+        }
+
         createLog = new File(basePath + "\\log.txt");
         try {
             if(!createLog.createNewFile()) {
@@ -58,6 +57,14 @@ public class Log {
         }
         printToConsoleAndFile("Log saved to: " + createLog.getAbsolutePath());
         printToConsoleAndFile("Run on: " + hostname);
+
+        try {
+            storeConfig(new FileReader(PropertyHelper.getStrProperty("TLE_PATH")), "tle.tle");
+            storeConfig(new FileReader("config.properties"), "config.properties");
+            storeConfig(new FileReader(PropertyHelper.getStrProperty("ROTATOR_CALIBRATION_PATH")), "rotatorCalibration.conf");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static File getNextAudioFile() {
@@ -126,6 +133,7 @@ public class Log {
             outStream.flush();
             outStream.close();
         } catch (IOException e) {
+            Log.error("Could not write data to bin file in Log.");
             throw new RuntimeException(e);
         }
 
@@ -140,9 +148,44 @@ public class Log {
             textWriter.write(HexFormat.hexDump(d));
             textWriter.close();*/
         } catch (IOException e) {
+            Log.error("Could not write data to plain text file in Log.");
             throw new RuntimeException(e);
         }
         storeDecodedCount++;
+    }
+
+    private static void storeTle(String[] tle) {
+        File tleFile = new File(configPath + "\\tle.txt");
+        try {
+            tleFile.createNewFile();
+            Writer textWriter = new OutputStreamWriter(new FileOutputStream(tleFile), StandardCharsets.UTF_8);
+            for (String line : tle) {
+                textWriter.write(line);
+                textWriter.write("\n");
+            }
+            textWriter.close();
+        } catch (IOException e) {
+            Log.error("Could not write TLE to Log file.");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void storeConfig(FileReader configReader, String logFileName) {
+        File logConfigFile = new File(configPath + "\\" + logFileName);
+        try {
+            logConfigFile.createNewFile();
+            BufferedReader configBufferedReader = new BufferedReader(configReader);
+            Writer textWriter = new OutputStreamWriter(new FileOutputStream(logConfigFile), StandardCharsets.UTF_8);
+            String line = configBufferedReader.readLine();
+            while (line != null) {
+                textWriter.write(line);
+                textWriter.write("\n");
+                line = configBufferedReader.readLine();
+            }
+            textWriter.close();
+        } catch (IOException e) {
+            Log.error("Could not write config file to Log file.");
+        }
     }
 
 }
