@@ -17,6 +17,7 @@ import java.util.List;
 
 public class SatTrackPredict4Java implements SatTrack{
 
+    //TODO: Make a class parameter to store satellite, set in constructor.
     private Pass satPassTimeToPass(Satellite satellite, SatPassTime satPassTime, PassPredictor passPredictor) {
         // Convert Predict4Java type SatPassTime to Pass (VE3RMC-control type required by main)
         List<SatPos> positions;
