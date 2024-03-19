@@ -1,6 +1,6 @@
 package integration;
 
-import audio.AudioRecordWin;
+import audio.AudioRecordJavaxSoundSampled;
 import decode.DecoderDireWolf;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -18,7 +18,7 @@ public class RecordDecodeTest {
 
     @Test
     public void testRecordDecode() {
-        AudioRecordWin audio = new AudioRecordWin();
+        AudioRecordJavaxSoundSampled audio = new AudioRecordJavaxSoundSampled();
         audio.setSampleRate(48000);
         audio.setRecordDurationS(20);
         DecoderDireWolf dec = new DecoderDireWolf();
