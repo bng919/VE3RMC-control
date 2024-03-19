@@ -8,7 +8,7 @@ import utils.enums.Verbosity;
 
 import static org.testng.Assert.*;
 
-public class AudioRecordWinTest {
+public class AudioRecordJavaxSoundSampledTest {
 
     @BeforeClass
     public void setup() {
@@ -18,7 +18,7 @@ public class AudioRecordWinTest {
     @Test
     public void testStartRecording() {
         int recordDuration = 10;
-        AudioRecordWin a = new AudioRecordWin();
+        AudioRecordJavaxSoundSampled a = new AudioRecordJavaxSoundSampled();
         a.setSampleRate(44100);
         a.setRecordDurationS(recordDuration);
         long startTime = java.time.Instant.now().getEpochSecond();
