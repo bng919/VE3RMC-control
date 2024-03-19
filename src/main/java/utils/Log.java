@@ -59,9 +59,9 @@ public class Log {
         printToConsoleAndFile("Run on: " + hostname);
 
         try {
-            storeConfig(new FileReader(PropertyHelper.getStrProperty("TLE_PATH")), "tle.tle");
+            storeConfig(new FileReader(PropertyHelper.getStrProperty("TLE_PATH")), "tle.txt");
             storeConfig(new FileReader("config.properties"), "config.properties");
-            storeConfig(new FileReader(PropertyHelper.getStrProperty("ROTATOR_CALIBRATION_PATH")), "rotatorCalibration.conf");
+            storeConfig(new FileReader(PropertyHelper.getStrProperty("ROTATOR_CALIBRATION_PATH")), "rotatorCalibration.txt");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
