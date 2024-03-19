@@ -6,17 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rotatorCalibration.conf" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/audio/AudioRecordWin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/audio/AudioRecorderFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/audio/AudioRecorderFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/decode/Decoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/decode/Decoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sattrack/SatTrackPredict4Java.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sattrack/SatTrackPredict4Java.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Log.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/audio/AudioRecordWinTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/integration/RecordDecodeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/integration/RecordDecodeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tle.tle" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,7 +220,7 @@
       <workItem from="1710422645358" duration="2646000" />
       <workItem from="1710777755241" duration="1516000" />
       <workItem from="1710780888037" duration="14354000" />
-      <workItem from="1710814764631" duration="455000" />
+      <workItem from="1710814764631" duration="949000" />
     </task>
     <servers />
   </component>
