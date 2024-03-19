@@ -4,6 +4,7 @@ import data.Pass;
 import data.Satellite;
 import decode.Decoder;
 import decode.DecoderFactory;
+import instrument.Instrument;
 import instrument.InstrumentFactory;
 import instrument.Rotator;
 import instrument.Transceiver;
@@ -19,6 +20,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -26,27 +28,33 @@ public class Main {
 
     public static void main(String [] args) throws InterruptedException {
 
-
         new Log(PropertyHelper.getStrProperty("LOG_PATH"), Verbosity.valueOf(PropertyHelper.getStrProperty("LOG_LEVEL")));
 
         Rotator rotator = InstrumentFactory.createRotator(PropertyHelper.getStrProperty("ROTATOR_MODEL"));
         Transceiver transceiver = InstrumentFactory.createTransceiver(PropertyHelper.getStrProperty("TRANSCEIVER_MODEL"));
+        List<Instrument> physicalInstruments = new ArrayList<>();
+        physicalInstruments.add(rotator);
+        physicalInstruments.add(transceiver);
+        for (Instrument instrument : physicalInstruments) {
+            if (!instrument.testConnect().isSuccessful() || !instrument.readInstrument().isSuccessful()) {
+                throw new RuntimeException("Instrument setup failed for " + instrument);
+            }
+        }
+
         AudioRecord audio = AudioRecorderFactory.createAudioRecord(PropertyHelper.getStrProperty("RECORDER_MODEL"));
         Decoder dec = DecoderFactory.createDecoder(PropertyHelper.getStrProperty("DECODER_MODEL"));
         SatTrack satTrack = SatTrackFactory.createSatTrack(PropertyHelper.getStrProperty("SATELLITE_TRACK_MODEL"));
 
-        if (!transceiver.testConnect().isSuccessful() || !rotator.testConnect().isSuccessful()) {
-            throw new RuntimeException("Instrument setup failed!");
-        }
-
         String[] tle = TLEHelper.fileToStrArray(PropertyHelper.getStrProperty("TLE_PATH"));
         //TODO: Satellite shouldn't need currAz, currAl, or visible to be instantiated
-        Satellite sat = new Satellite("TEST", tle, 0, 0, false, PropertyHelper.getIntProperty("SAT_DL_FREQ_HZ"), 146000000);
+        Satellite sat = new Satellite(tle[0], tle, 0, 0, false, PropertyHelper.getIntProperty("SAT_DL_FREQ_HZ"), 146000000);
         Pass pass = satTrack.getNextPass(sat);
         List<Double> azProfile = pass.getAzProfile();
         List<Double> elProfile = pass.getElProfile();
-
+        Log.info("Tracking satellite " + sat.getId());
+        Log.info("Set to record pass beginning at " + pass.getAos() + ", ending at " + pass.getLos());
         ZonedDateTime setupTime = pass.getAos().minusMinutes(1);
+        Log.info("Waiting until AOS-1 min to start setup...");
         Log.debug("Waiting for " + setupTime + " before rotator setup");
         while (ZonedDateTime.now(ZoneId.of("UTC")).isBefore(setupTime)) {
 
