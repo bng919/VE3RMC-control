@@ -2,9 +2,9 @@ package utils;
 
 import java.io.UnsupportedEncodingException;
 
-public class HexFormat {
+public class HexadecimalUtils {
 
-    private HexFormat() {}
+    private HexadecimalUtils() {}
 
     public static String hexDump(byte[] d) {
         StringBuilder b = new StringBuilder();

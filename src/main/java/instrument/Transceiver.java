@@ -1,6 +1,6 @@
 package instrument;
 
-import utils.ResultHelper;
+import utils.ResultUtils;
 import utils.enums.Modulation;
 
 public interface Transceiver extends Instrument {
@@ -9,8 +9,8 @@ public interface Transceiver extends Instrument {
 
     Modulation getModulation();
 
-    ResultHelper setFrequency(long freqHz) throws InterruptedException;
+    ResultUtils setFrequency(long freqHz) throws InterruptedException;
 
-    ResultHelper setModulation(Modulation m) throws InterruptedException;
+    ResultUtils setModulation(Modulation m) throws InterruptedException;
 
 }

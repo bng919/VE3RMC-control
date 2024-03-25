@@ -6,8 +6,8 @@ import com.github.amsacode.predict4java.SatNotFoundException;
 import com.github.amsacode.predict4java.SatPassTime;
 import com.github.amsacode.predict4java.SatPos;
 import com.github.amsacode.predict4java.TLE;
-import data.Pass;
-import data.Satellite;
+import data.PassData;
+import data.SatelliteData;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -18,7 +18,7 @@ import java.util.List;
 public class SatTrackPredict4Java implements SatTrack{
 
     //TODO: Make a class parameter to store satellite, set in constructor.
-    private Pass satPassTimeToPass(Satellite satellite, SatPassTime satPassTime, PassPredictor passPredictor) {
+    private PassData satPassTimeToPass(SatelliteData satelliteData, SatPassTime satPassTime, PassPredictor passPredictor) {
         // Convert Predict4Java type SatPassTime to Pass (VE3RMC-control type required by main)
         List<SatPos> positions;
         try {
@@ -35,7 +35,7 @@ public class SatTrackPredict4Java implements SatTrack{
             azProfile.add(p.getAzimuth() / (Math.PI * 2.0) * 360);
             elProfile.add(p.getElevation() / (Math.PI * 2.0) * 360);
             try {
-                freqProfile.add(passPredictor.getDownlinkFreq(satellite.getNominalDlFreqHz(), p.getTime()));
+                freqProfile.add(passPredictor.getDownlinkFreq(satelliteData.getNominalDlFreqHz(), p.getTime()));
             } catch (SatNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -44,10 +44,10 @@ public class SatTrackPredict4Java implements SatTrack{
         ZonedDateTime aos = dateToZonedDateTime(satPassTime.getStartTime());
         ZonedDateTime los = dateToZonedDateTime(satPassTime.getEndTime());
 
-        return new Pass(satellite, aos, los, 5, azProfile, elProfile, freqProfile);
+        return new PassData(satelliteData, aos, los, 5, azProfile, elProfile, freqProfile);
     }
 
-    public Pass getNextPass(Satellite sat) {
+    public PassData getNextPass(SatelliteData sat) {
         TLE tle = new TLE(sat.getTle());
         GroundStationPosition qth = new GroundStationPosition(44.23, -76.48, 95, "VE3RMC");
         ZonedDateTime currDate = ZonedDateTime.now(ZoneId.of("UTC"));
@@ -67,7 +67,7 @@ public class SatTrackPredict4Java implements SatTrack{
         return satPassTimeToPass(sat, nextSatPassTime, passPredictor);
     }
 
-    public List<Pass> getNextTenPasses(Satellite sat) {
+    public List<PassData> getNextTenPasses(SatelliteData sat) {
         TLE tle = new TLE(sat.getTle());
         GroundStationPosition qth = new GroundStationPosition(44.23, -76.48, 95, "VE3RMC");
         ZonedDateTime currDate = ZonedDateTime.now(ZoneId.of("UTC"));
@@ -80,7 +80,7 @@ public class SatTrackPredict4Java implements SatTrack{
             //TODO: Improve error handling
             throw new RuntimeException(e);
         }
-        List<Pass> result = new ArrayList<>();
+        List<PassData> result = new ArrayList<>();
         for (SatPassTime p : passes) {
             result.add(satPassTimeToPass(sat, p, passPredictor));
         }

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.HexFormat;
 import java.util.Properties;
 
-public class PropertyHelper {
+public class ConfigurationUtils {
 
     private static final Properties config = new Properties();
 
@@ -20,7 +20,7 @@ public class PropertyHelper {
         }
     }
 
-    private PropertyHelper() {}
+    private ConfigurationUtils() {}
 
     public static String getStrProperty(String key) {
         return config.getProperty(key);

@@ -1,6 +1,6 @@
 package instrument;
 
-import utils.ResultHelper;
+import utils.ResultUtils;
 
 public interface Instrument {
 
@@ -8,8 +8,8 @@ public interface Instrument {
 
     //ResultHelper disconnect();
 
-    ResultHelper readInstrument() throws InterruptedException;
+    ResultUtils readInstrument() throws InterruptedException;
 
-    ResultHelper testConnect() throws InterruptedException;
+    ResultUtils testConnect() throws InterruptedException;
 
 }

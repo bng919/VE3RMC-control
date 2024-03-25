@@ -59,9 +59,9 @@ public class Log {
         printToConsoleAndFile("Run on: " + hostname);
 
         try {
-            storeConfig(new FileReader(PropertyHelper.getStrProperty("TLE_PATH")), "tle.txt");
+            storeConfig(new FileReader(ConfigurationUtils.getStrProperty("TLE_PATH")), "tle.txt");
             storeConfig(new FileReader("config.properties"), "config.properties");
-            storeConfig(new FileReader(PropertyHelper.getStrProperty("ROTATOR_CALIBRATION_PATH")), "rotatorCalibration.txt");
+            storeConfig(new FileReader(ConfigurationUtils.getStrProperty("ROTATOR_CALIBRATION_PATH")), "rotatorCalibration.txt");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -141,7 +141,7 @@ public class Log {
         try {
             textFile.createNewFile();
             Writer textWriter = new OutputStreamWriter(new FileOutputStream(textFile), StandardCharsets.UTF_8);
-            textWriter.write(HexFormat.hexDump(d));
+            textWriter.write(HexadecimalUtils.hexDump(d));
             textWriter.close();
             //TODO: Which is better?
             /*FileWriter textWriter = new FileWriter(textFile);

@@ -1,9 +1,8 @@
 package integration;
 
-import data.Pass;
-import data.Satellite;
+import data.PassData;
+import data.SatelliteData;
 import instrument.Rotator;
-import instrument.RotatorGS232B;
 import instrument.StubRotatorGS232B;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
@@ -11,18 +10,16 @@ import org.testng.annotations.Test;
 import sattrack.SatTrack;
 import sattrack.SatTrackPredict4Java;
 import utils.Log;
-import utils.Time;
+import utils.TimeUtils;
 import utils.enums.Verbosity;
 
-import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 public class PredictTrackTest {
 
-    Satellite sat;
+    SatelliteData sat;
     /*String[] testTle = {"ISS", "1 25544U 98067A   24063.57780891  .00014558  00000-0  26641-3 0  9995",
             "2 25544  51.6409 118.7785 0005862 320.8537 188.7560 15.49575885442173"};*/
 
@@ -33,7 +30,7 @@ public class PredictTrackTest {
     @BeforeClass
     public void setup() {
         new Log(".\\logs\\", Verbosity.DEBUG);
-        sat = Mockito.mock(Satellite.class);
+        sat = Mockito.mock(SatelliteData.class);
         Mockito.when(sat.getTle()).thenReturn(testTle);
         Mockito.when(sat.getNominalDlFreqHz()).thenReturn(140000000L);
     }
@@ -42,7 +39,7 @@ public class PredictTrackTest {
     public void testPredictTrack() throws InterruptedException {
 
         SatTrack satTrack = new SatTrackPredict4Java();
-        Pass pass = satTrack.getNextPass(sat);
+        PassData pass = satTrack.getNextPass(sat);
         List<Double> azProfile = pass.getAzProfile();
         List<Double> elProfile = pass.getElProfile();
 
@@ -68,7 +65,7 @@ public class PredictTrackTest {
         for (int i = 0; i < azProfile.size(); i++) {
             Log.debug("Moving to position Az " + azProfile.get(i).intValue() + ", El " + elProfile.get(i).intValue());
             rotator.goToAzEl(azProfile.get(i).intValue(), elProfile.get(i).intValue());
-            Time.delayMillis(pass.getProfileStepS()*1000L);
+            TimeUtils.delayMillis(pass.getProfileStepS()*1000L);
         }
 
 

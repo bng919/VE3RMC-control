@@ -14,18 +14,18 @@ public class RotatorGS232B implements Rotator {
     private final String correctionFilePath;
     private final int[] correctionList = new int[360];
     private static final int MOTION_TIMEOUT_MILLIS = 40000; //TODO: Scale based on delta to move
-    Serial serial;
+    SerialUtils serialUtils;
     private final String comPort;
     private final int baudRate;
     private int currAz;
     private int currEl;
 
     public RotatorGS232B() throws InterruptedException {
-        this.comPort = PropertyHelper.getStrProperty("ROTATOR_COM_PORT");
-        this.baudRate = PropertyHelper.getIntProperty("ROTATOR_BAUD");
-        this.correctionFilePath = PropertyHelper.getStrProperty("ROTATOR_CALIBRATION_PATH");
+        this.comPort = ConfigurationUtils.getStrProperty("ROTATOR_COM_PORT");
+        this.baudRate = ConfigurationUtils.getIntProperty("ROTATOR_BAUD");
+        this.correctionFilePath = ConfigurationUtils.getStrProperty("ROTATOR_CALIBRATION_PATH");
         readCorrectionFile();
-        this.serial = new Serial(this.comPort, this.baudRate, 8, 1, 0);
+        this.serialUtils = new SerialUtils(this.comPort, this.baudRate, 8, 1, 0);
     }
 
     private void readCorrectionFile() {
@@ -47,17 +47,17 @@ public class RotatorGS232B implements Rotator {
         }
     }
 
-    public ResultHelper readInstrument() throws InterruptedException {
+    public ResultUtils readInstrument() throws InterruptedException {
         byte[] readAzElCmd = {0x43, 0x32, 0x0D};
 
-        this.serial.open();
-        this.serial.write(readAzElCmd);
+        this.serialUtils.open();
+        this.serialUtils.write(readAzElCmd);
         TimeUnit.MILLISECONDS.sleep(250);
-        byte[] rst = this.serial.read();
+        byte[] rst = this.serialUtils.read();
         if (rst.length == 0) {
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
-        this.serial.close();
+        this.serialUtils.close();
 
         int azOffset = 3;
         int elOffset = 11;
@@ -79,24 +79,24 @@ public class RotatorGS232B implements Rotator {
             elAngle += (rst[2 + elOffset] - 48);
         } catch (ArrayIndexOutOfBoundsException e) {
             Log.error(e.getMessage());
-            Log.error(HexFormat.hexDump(rst));
-            return ResultHelper.createFailedResult();
+            Log.error(HexadecimalUtils.hexDump(rst));
+            return ResultUtils.createFailedResult();
         }
 
         this.currAz = azAngle;
         this.currEl = elAngle;
 
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper testConnect() throws InterruptedException {
-        if (serial.open() && readInstrument().isSuccessful() && serial.close()) {
-            return ResultHelper.createSuccessfulResult();
+    public ResultUtils testConnect() throws InterruptedException {
+        if (serialUtils.open() && readInstrument().isSuccessful() && serialUtils.close()) {
+            return ResultUtils.createSuccessfulResult();
         }
         else {
             Log.error("RotatorGS232B connection test failed! Could not connect using port " + this.comPort
                     + " with baud " + this.baudRate);
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
     }
 
@@ -108,9 +108,9 @@ public class RotatorGS232B implements Rotator {
         return currEl;
     }
 
-    public ResultHelper goToAz(int az) throws InterruptedException {
+    public ResultUtils goToAz(int az) throws InterruptedException {
         if (az < 0 || az > 359) {
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
         az = correctionList[az];
         Log.debug("After correcting for calibration, az = " + az);
@@ -121,26 +121,26 @@ public class RotatorGS232B implements Rotator {
             cmd[cmd.length-2-i] = posByte[posByte.length-1-i];
         }
 
-        this.serial.open();
-        this.serial.write(cmd);
+        this.serialUtils.open();
+        this.serialUtils.write(cmd);
         TimeUnit.MILLISECONDS.sleep(200);
-        this.serial.close();
+        this.serialUtils.close();
 
         long motionStart = System.currentTimeMillis();
         //readInstrument();
         while (this.currAz <= az-AZ_TOLERANCE_DEG || this.currAz >= az+AZ_TOLERANCE_DEG) {
             if ((System.currentTimeMillis()-motionStart) >= MOTION_TIMEOUT_MILLIS) {
-                return ResultHelper.createFailedResult();
+                return ResultUtils.createFailedResult();
             }
             TimeUnit.MILLISECONDS.sleep(200);
             readInstrument();
         }
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper goToEl(int el) throws InterruptedException {
+    public ResultUtils goToEl(int el) throws InterruptedException {
         if (el < 0 || el > 180) {
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
         readInstrument();
         byte[] posByte = String.valueOf(el).getBytes();
@@ -152,26 +152,26 @@ public class RotatorGS232B implements Rotator {
         for (int i = 0; i < currAzByte.length; i++) {
             cmd[cmd.length-6-i] = currAzByte[currAzByte.length-1-i];
         }
-        this.serial.open();
-        this.serial.write(cmd);
+        this.serialUtils.open();
+        this.serialUtils.write(cmd);
         TimeUnit.MILLISECONDS.sleep(200);
-        this.serial.close();
+        this.serialUtils.close();
 
         long motionStart = System.currentTimeMillis();
         while (this.currEl <= el-EL_TOLERANCE_DEG || this.currEl >= el+EL_TOLERANCE_DEG) {
             if ((System.currentTimeMillis()-motionStart) >= MOTION_TIMEOUT_MILLIS) {
-                return ResultHelper.createFailedResult();
+                return ResultUtils.createFailedResult();
             }
             TimeUnit.MILLISECONDS.sleep(200);
             readInstrument();
         }
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper goToAzEl(int az, int el) throws InterruptedException {
+    public ResultUtils goToAzEl(int az, int el) throws InterruptedException {
         // Assume successful
-        ResultHelper azRst = ResultHelper.createSuccessfulResult();
-        ResultHelper elRst = ResultHelper.createSuccessfulResult();
+        ResultUtils azRst = ResultUtils.createSuccessfulResult();
+        ResultUtils elRst = ResultUtils.createSuccessfulResult();
         if (Math.abs(this.currAz - az) > AZ_TOLERANCE_DEG) {
             Log.info("Moving to position Az " + az);
             azRst = goToAz(az);

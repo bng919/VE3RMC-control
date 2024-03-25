@@ -1,9 +1,9 @@
 package decode;
 
-import utils.HexFormat;
+import utils.HexadecimalUtils;
 import utils.Log;
-import utils.PropertyHelper;
-import utils.Time;
+import utils.ConfigurationUtils;
+import utils.TimeUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +26,7 @@ public class DecoderDireWolf implements Decoder {
     }
 
     public void startDecoder() {
-        ProcessBuilder direWolfPb = new ProcessBuilder(direWolfDir + "\\direwolf", "-B " + PropertyHelper.getStrProperty("SAT_BAUD"));
+        ProcessBuilder direWolfPb = new ProcessBuilder(direWolfDir + "\\direwolf", "-B " + ConfigurationUtils.getStrProperty("SAT_BAUD"));
         Log.debug("Starting DireWolf...");
         Log.debug(String.join(" ", direWolfPb.command().toArray(new String[0])));
         direWolfPb.directory(new File(direWolfDir));
@@ -39,7 +39,7 @@ public class DecoderDireWolf implements Decoder {
             throw new RuntimeException(e);
         }
         Log.debug("Waiting for DireWolf to setup");
-        Time.delayMillis(1000); // Give direwolf time to set up
+        TimeUtils.delayMillis(1000); // Give direwolf time to set up
 
         Socket s;
         InputStream in;
@@ -79,7 +79,7 @@ public class DecoderDireWolf implements Decoder {
                     primArr[i] = arr[i];
                 }
                 decodedData.add(primArr);
-                Log.info("Received packet:\n" + HexFormat.hexDump(primArr));
+                Log.info("Received packet:\n" + HexadecimalUtils.hexDump(primArr));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

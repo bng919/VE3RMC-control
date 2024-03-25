@@ -3,7 +3,7 @@ package instrument;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import utils.Serial;
+import utils.SerialUtils;
 
 import static org.testng.Assert.*;
 
@@ -11,11 +11,11 @@ public class InstrumentFactoryTest {
 
     @BeforeClass
     public void setup() {
-        Serial serial = Mockito.mock(Serial.class);
-        Mockito.when(serial.open()).thenReturn(true);
-        Mockito.when(serial.write(Mockito.any(byte[].class))).thenReturn(true);
-        Mockito.when(serial.close()).thenReturn(true);
-        Mockito.when(serial.read()).thenReturn(null);
+        SerialUtils serialUtils = Mockito.mock(SerialUtils.class);
+        Mockito.when(serialUtils.open()).thenReturn(true);
+        Mockito.when(serialUtils.write(Mockito.any(byte[].class))).thenReturn(true);
+        Mockito.when(serialUtils.close()).thenReturn(true);
+        Mockito.when(serialUtils.read()).thenReturn(null);
     }
 
     @Test

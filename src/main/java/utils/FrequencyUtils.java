@@ -1,7 +1,8 @@
 package utils;
 
-public class FreqHelper {
-    private FreqHelper() {}
+public class FrequencyUtils {
+
+    private FrequencyUtils() {}
 
     public static boolean isUHF(long freq) {
         return freq >= 144*MHzToHz && freq <= 147.990*MHzToHz; // See RAC 2m band plan

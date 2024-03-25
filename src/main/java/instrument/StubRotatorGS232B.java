@@ -1,10 +1,7 @@
 package instrument;
 
 import utils.Log;
-import utils.ResultHelper;
-import utils.Serial;
-
-import java.util.concurrent.TimeUnit;
+import utils.ResultUtils;
 
 public class StubRotatorGS232B implements Rotator {
 
@@ -19,14 +16,14 @@ public class StubRotatorGS232B implements Rotator {
         readInstrument();
     }
 
-    public ResultHelper readInstrument() {
+    public ResultUtils readInstrument() {
         Log.debug("Read from StubRotatorGS232B. Az " + this.currAz + ", El " + this.currEl);
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper testConnect() {
+    public ResultUtils testConnect() {
         Log.debug("Test connect from StubRotatorGS232B");
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
     public int getAz() {
@@ -37,21 +34,21 @@ public class StubRotatorGS232B implements Rotator {
         return currEl;
     }
 
-    public ResultHelper goToAz(int az) {
+    public ResultUtils goToAz(int az) {
         Log.debug("Set Az to " + az + " from StubRotatorGS232B");
         this.currAz = az;
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper goToEl(int el) {
+    public ResultUtils goToEl(int el) {
         Log.debug("Set El to " + el + " from StubRotatorGS232B");
         this.currEl = el;
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper goToAzEl(int az, int el) {
-        ResultHelper azRst = goToAz(az);
-        ResultHelper elRst = goToEl(el);
+    public ResultUtils goToAzEl(int az, int el) {
+        ResultUtils azRst = goToAz(az);
+        ResultUtils elRst = goToEl(el);
         return azRst.and(elRst);
     }
 }

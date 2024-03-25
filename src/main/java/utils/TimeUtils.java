@@ -1,6 +1,8 @@
 package utils;
 
-public class Time {
+public class TimeUtils {
+
+    private TimeUtils() {}
 
     public static void delayMillis(long millis) {
         long endTime = System.currentTimeMillis() + millis;

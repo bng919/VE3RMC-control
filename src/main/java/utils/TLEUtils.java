@@ -1,12 +1,12 @@
 package utils;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class TLEHelper {
-    private TLEHelper() {}
+public class TLEUtils {
+
+    private TLEUtils() {}
 
     public static String[] fileToStrArray(String path) {
         BufferedReader tleReader;

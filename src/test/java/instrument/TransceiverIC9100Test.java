@@ -1,12 +1,10 @@
 package instrument;
 
-import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import utils.Log;
-import utils.Serial;
-import utils.Time;
+import utils.SerialUtils;
 import utils.enums.Modulation;
 import utils.enums.Verbosity;
 
@@ -14,7 +12,7 @@ import static org.testng.Assert.*;
 
 public class TransceiverIC9100Test {
 
-    Serial serial;
+    SerialUtils serialUtils;
 
     @BeforeClass
     public void setup() {

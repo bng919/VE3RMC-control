@@ -1,14 +1,14 @@
 package sattrack;
 
-import data.Pass;
-import data.Satellite;
+import data.PassData;
+import data.SatelliteData;
 
 import java.util.List;
 
 public interface SatTrack {
 
-    Pass getNextPass(Satellite sat);
+    PassData getNextPass(SatelliteData sat);
 
-    List<Pass> getNextTenPasses(Satellite sat);
+    List<PassData> getNextTenPasses(SatelliteData sat);
 
 }

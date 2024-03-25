@@ -1,7 +1,7 @@
 package audio;
 
 import utils.Log;
-import utils.ResultHelper;
+import utils.ResultUtils;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -29,7 +29,7 @@ public class AudioRecordJavaxSoundSampled implements AudioRecord {
         startRecording();
     }
 
-    public ResultHelper startRecording() {
+    public ResultUtils startRecording() {
         try {
             Log.info("Starting audio recording service.");
             Log.debug("Setting up audio recorder with sample rate " + sampleRate);
@@ -72,9 +72,9 @@ public class AudioRecordJavaxSoundSampled implements AudioRecord {
 
         } catch (LineUnavailableException | IOException e) {
             Log.error(e.getClass() + "\n" + e.getMessage());
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
     public void setRecordDurationS(int recordDurationS) {

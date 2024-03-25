@@ -1,10 +1,10 @@
 package audio;
 
-import utils.ResultHelper;
+import utils.ResultUtils;
 
 public interface AudioRecord extends Runnable {
 
-    ResultHelper startRecording();
+    ResultUtils startRecording();
 
     //ResultHelper stopRecording();
     void setRecordDurationS(int recordDurationS);

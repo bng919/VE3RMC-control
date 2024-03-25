@@ -1,7 +1,7 @@
 package instrument;
 
 import utils.Log;
-import utils.ResultHelper;
+import utils.ResultUtils;
 import utils.enums.Modulation;
 
 public class StubTransceiverIC9100 implements Transceiver{
@@ -16,14 +16,14 @@ public class StubTransceiverIC9100 implements Transceiver{
         readInstrument();
     }
 
-    public ResultHelper readInstrument() {
+    public ResultUtils readInstrument() {
         Log.debug("Read from StubTransceiverIC9100. Freq " + this.freqHz + ", Mod " + this.modSetting);
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper testConnect() {
+    public ResultUtils testConnect() {
         Log.debug("Test connect from StubRotatorGS232B");
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
     public long getFrequencyHz() {
@@ -34,16 +34,16 @@ public class StubTransceiverIC9100 implements Transceiver{
         return this.modSetting;
     }
 
-    public ResultHelper setFrequency(long freqHz) {
+    public ResultUtils setFrequency(long freqHz) {
         Log.debug("Set freq to " + freqHz);
         this.freqHz = freqHz;
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper setModulation(Modulation m) {
+    public ResultUtils setModulation(Modulation m) {
         Log.debug("Set modulation to " + m);
         this.modSetting = m;
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
 }

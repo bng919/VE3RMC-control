@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TransceiverIC9100 implements Transceiver {
 
-    private final Serial serial;
+    private final SerialUtils serialUtils;
     private final String comPort;
     private final int baudRate;
     private final byte transAddr;
@@ -16,35 +16,35 @@ public class TransceiverIC9100 implements Transceiver {
 
 
     public TransceiverIC9100() throws InterruptedException {
-        this.comPort = PropertyHelper.getStrProperty("TRANSCEIVER_COM_PORT");
-        this.baudRate = PropertyHelper.getIntProperty("TRANSCEIVER_BAUD");
-        this.transAddr = PropertyHelper.getByteProperty("TRANSCEIVER_ADDRESS");
-        this.serial = new Serial(comPort, baudRate, 8, 1, 0);
+        this.comPort = ConfigurationUtils.getStrProperty("TRANSCEIVER_COM_PORT");
+        this.baudRate = ConfigurationUtils.getIntProperty("TRANSCEIVER_BAUD");
+        this.transAddr = ConfigurationUtils.getByteProperty("TRANSCEIVER_ADDRESS");
+        this.serialUtils = new SerialUtils(comPort, baudRate, 8, 1, 0);
     }
 
-    private ResultHelper swapMainSub() throws InterruptedException {
+    private ResultUtils swapMainSub() throws InterruptedException {
         long preSwapVFOFreq = this.freqHz;
         Command swapMainSub = new CommandBuilder().address(this.transAddr).command((byte) 0x07).subCommand((byte) 0xB0)
                 .buildCommand();
-        this.serial.open();
-        this.serial.write(swapMainSub.getCmdByteArr());
+        this.serialUtils.open();
+        this.serialUtils.write(swapMainSub.getCmdByteArr());
         readInstrument();
         if (preSwapVFOFreq == this.freqHz) {
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper readInstrument() throws InterruptedException {
-        this.serial.open();
+    public ResultUtils readInstrument() throws InterruptedException {
+        this.serialUtils.open();
         Command readFreqCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x03).buildCommand();
-        this.serial.write(readFreqCmd.getCmdByteArr());
+        this.serialUtils.write(readFreqCmd.getCmdByteArr());
         TimeUnit.MILLISECONDS.sleep(200);
         byte[] rst;
         try {
-            rst = this.serial.read();
+            rst = this.serialUtils.read();
         } catch (NegativeArraySizeException e) {
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
         byte[] freq = new byte[5];
         this.freqHz = 0;
@@ -59,27 +59,27 @@ public class TransceiverIC9100 implements Transceiver {
         }
 
         Command readModeCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x04).buildCommand();
-        this.serial.write(readModeCmd.getCmdByteArr());
+        this.serialUtils.write(readModeCmd.getCmdByteArr());
         TimeUnit.MILLISECONDS.sleep(200);
-        rst = this.serial.read();
+        rst = this.serialUtils.read();
         if (rst[11] == 0x05) {
             this.modSetting = Modulation.FM;
         } else if (rst[11] == 0x02) {
             this.modSetting = Modulation.AM;
         }
 
-        this.serial.close();
-        return ResultHelper.createSuccessfulResult();
+        this.serialUtils.close();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper testConnect() throws InterruptedException {
-        if (serial.open() && readInstrument().isSuccessful() && serial.close()) {
-            return ResultHelper.createSuccessfulResult();
+    public ResultUtils testConnect() throws InterruptedException {
+        if (serialUtils.open() && readInstrument().isSuccessful() && serialUtils.close()) {
+            return ResultUtils.createSuccessfulResult();
         }
         else {
             Log.error("TransceiverIC9100 connection test failed! Could not connect using port " + this.comPort
                     + " with baud " + this.baudRate);
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
     }
 
@@ -91,14 +91,14 @@ public class TransceiverIC9100 implements Transceiver {
         return this.modSetting;
     }
 
-    public ResultHelper setFrequency(long freqHz) throws InterruptedException {
-        if (!(FreqHelper.isUHF(freqHz) || FreqHelper.isVHF(freqHz))) {
+    public ResultUtils setFrequency(long freqHz) throws InterruptedException {
+        if (!(FrequencyUtils.isUHF(freqHz) || FrequencyUtils.isVHF(freqHz))) {
             Log.error("Frequency " + freqHz + " is not in valid UHF or VHF amateur bands!");
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
-        if (FreqHelper.isUHF(this.freqHz) != FreqHelper.isUHF(freqHz)) {
+        if (FrequencyUtils.isUHF(this.freqHz) != FrequencyUtils.isUHF(freqHz)) {
             if(!swapMainSub().isSuccessful()) {
-                return ResultHelper.createFailedResult();
+                return ResultUtils.createFailedResult();
             }
             Log.debug("Main/sub band swapped on IC9100");
         }
@@ -112,23 +112,23 @@ public class TransceiverIC9100 implements Transceiver {
                 rst[i/2] = (byte) ((digits[i] << 4) | digits[i-1]);
             }
         }
-        Log.info("Setting frequency to " + freqHz*FreqHelper.HzToMHz + "MHz");
+        Log.info("Setting frequency to " + freqHz* FrequencyUtils.HzToMHz + "MHz");
         Command writeFreqCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x00).data(rst).buildCommand();
 
-        this.serial.open();
-        this.serial.write(writeFreqCmd.getCmdByteArr());
+        this.serialUtils.open();
+        this.serialUtils.write(writeFreqCmd.getCmdByteArr());
         TimeUnit.MILLISECONDS.sleep(200);
-        this.serial.close();
+        this.serialUtils.close();
         readInstrument();
         /*System.out.println("this.freqHz = " + this.freqHz);
         System.out.println("freqHz = " + freqHz);*/
         if (this.freqHz != freqHz) {
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultHelper setModulation(Modulation m) throws InterruptedException {
+    public ResultUtils setModulation(Modulation m) throws InterruptedException {
         byte[] writeData = new byte[1];
         if (m == Modulation.FM) {
             writeData[0] = 0x05;
@@ -144,15 +144,15 @@ public class TransceiverIC9100 implements Transceiver {
         }
         System.out.println("\n");*/
 
-        this.serial.open();
-        this.serial.write(writeModeCmd.getCmdByteArr());
+        this.serialUtils.open();
+        this.serialUtils.write(writeModeCmd.getCmdByteArr());
         TimeUnit.MILLISECONDS.sleep(200);
-        this.serial.close();
+        this.serialUtils.close();
         readInstrument();
         if (this.modSetting != m) {
-            return ResultHelper.createFailedResult();
+            return ResultUtils.createFailedResult();
         }
-        return ResultHelper.createSuccessfulResult();
+        return ResultUtils.createSuccessfulResult();
     }
 
     private class CommandBuilder {

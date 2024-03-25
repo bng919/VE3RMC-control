@@ -1,6 +1,6 @@
 package instrument;
 
-import utils.ResultHelper;
+import utils.ResultUtils;
 
 public interface Rotator extends Instrument {
 
@@ -8,10 +8,10 @@ public interface Rotator extends Instrument {
 
     int getEl();
 
-    ResultHelper goToAz(int az) throws InterruptedException;
+    ResultUtils goToAz(int az) throws InterruptedException;
 
-    ResultHelper goToEl(int el) throws InterruptedException;
+    ResultUtils goToEl(int el) throws InterruptedException;
 
-    ResultHelper goToAzEl(int az, int el) throws InterruptedException;
+    ResultUtils goToAzEl(int az, int el) throws InterruptedException;
 
 }
