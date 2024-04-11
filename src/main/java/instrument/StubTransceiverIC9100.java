@@ -21,12 +21,20 @@ import utils.Log;
 import utils.ResultUtils;
 import utils.enums.Modulation;
 
+/**
+ * A stubbed version of {@link TransceiverIC9100} that does not issue any commands to the instrument.
+ * Used for testing other portions of code while the instrument is not connected, but does NOT mock
+ * the responses of the instrument.
+ */
 public class StubTransceiverIC9100 implements Transceiver{
 
     private long freqHz;
     private Modulation modSetting;
 
-    public StubTransceiverIC9100(){
+    /**
+     * Instate this class via the {@link InstrumentFactory} only.
+     */
+    protected StubTransceiverIC9100(){
         Log.debug("Created StubTransceiverIC9100");
         freqHz = 0;
         modSetting = Modulation.FM;
@@ -57,9 +65,9 @@ public class StubTransceiverIC9100 implements Transceiver{
         return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultUtils setModulation(Modulation m) {
-        Log.debug("Set modulation to " + m);
-        this.modSetting = m;
+    public ResultUtils setModulation(Modulation mod) {
+        Log.debug("Set modulation to " + mod);
+        this.modSetting = mod;
         return ResultUtils.createSuccessfulResult();
     }
 

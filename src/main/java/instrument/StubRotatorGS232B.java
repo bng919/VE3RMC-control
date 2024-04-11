@@ -20,13 +20,20 @@ package instrument;
 import utils.Log;
 import utils.ResultUtils;
 
+/**
+ * A stubbed version of {@link RotatorGS232B} that does not issue any commands to the instrument.
+ * Used for testing other portions of code while the instrument is not connected, but does NOT mock
+ * the responses of the instrument.
+ */
 public class StubRotatorGS232B implements Rotator {
 
     private int currAz;
     private int currEl;
 
-
-    public StubRotatorGS232B() {
+    /**
+     * Instate this class via the {@link InstrumentFactory} only.
+     */
+    protected StubRotatorGS232B() {
         Log.debug("Created StubRotatorGS232B");
         currAz = 0;
         currEl = 0;

@@ -22,6 +22,9 @@ import utils.enums.Modulation;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class for communication with the ICOM IC-9100 transceiver.
+ */
 public class TransceiverIC9100 implements Transceiver {
 
     private final SerialUtils serialUtils;
@@ -32,13 +35,24 @@ public class TransceiverIC9100 implements Transceiver {
     private Modulation modSetting;
 
 
-    public TransceiverIC9100() throws InterruptedException {
+    /**
+     * Instate this class via the {@link InstrumentFactory} only.
+     * @throws InterruptedException
+     */
+    protected TransceiverIC9100() throws InterruptedException {
         this.comPort = ConfigurationUtils.getStrProperty("TRANSCEIVER_COM_PORT");
         this.baudRate = ConfigurationUtils.getIntProperty("TRANSCEIVER_BAUD");
         this.transAddr = ConfigurationUtils.getByteProperty("TRANSCEIVER_ADDRESS");
         this.serialUtils = new SerialUtils(comPort, baudRate, 8, 1, 0);
     }
 
+    /**
+     * Swap main and sub bands on the IC-9100. Main and sub cannot both be set to UHF or VHF frequencies at the same time.
+     * For example, if the current main band is in UHF and a VHF frequency is provided to {@link TransceiverIC9100#setFrequency(long)} (or vice versa)
+     * a swap must take place otherwise the set will fail.
+     * @return the success/failure status of the operation.
+     * @throws InterruptedException
+     */
     private ResultUtils swapMainSub() throws InterruptedException {
         long preSwapVFOFreq = this.freqHz;
         Command swapMainSub = new CommandBuilder().address(this.transAddr).command((byte) 0x07).subCommand((byte) 0xB0)
@@ -145,11 +159,11 @@ public class TransceiverIC9100 implements Transceiver {
         return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultUtils setModulation(Modulation m) throws InterruptedException {
+    public ResultUtils setModulation(Modulation mod) throws InterruptedException {
         byte[] writeData = new byte[1];
-        if (m == Modulation.FM) {
+        if (mod == Modulation.FM) {
             writeData[0] = 0x05;
-        } else if (m == Modulation.AM) {
+        } else if (mod == Modulation.AM) {
             writeData[0] = 0x02;
         }
         Command writeModeCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x01).data(writeData).buildCommand();
@@ -166,12 +180,17 @@ public class TransceiverIC9100 implements Transceiver {
         TimeUnit.MILLISECONDS.sleep(200);
         this.serialUtils.close();
         readInstrument();
-        if (this.modSetting != m) {
+        if (this.modSetting != mod) {
             return ResultUtils.createFailedResult();
         }
         return ResultUtils.createSuccessfulResult();
     }
 
+    /**
+     * Builder for creation of {@link Command} class. This structure allows for an instance of {@link Command} to be created
+     * with a variable number of parameters. For example, address and command fields are always required in a valid CI-V command,
+     * but subcommand and data fields may not be depending on the command being created.
+     */
     private class CommandBuilder {
         private byte _addr;
         private byte _cn;
@@ -206,6 +225,9 @@ public class TransceiverIC9100 implements Transceiver {
 
     }
 
+    /**
+     * Class to store the bytes of a CI-V command
+     */
     private class Command {
         private byte addr;
         private byte cn;
@@ -213,13 +235,24 @@ public class TransceiverIC9100 implements Transceiver {
         private byte[] data;
         private byte[] cmd;
 
-        public Command(byte addr, byte cn, byte sc, byte[] data) {
+        /**
+         * Constructor called by {@link CommandBuilder}. See IC-9100 manual for specifics of command, subcommand, and data fields.
+         * @param addr the CI-V address of the IC-9100.
+         * @param cn the command id number.
+         * @param sc the subcommand id number.
+         * @param data the data field.
+         */
+        private Command(byte addr, byte cn, byte sc, byte[] data) {
             this.addr = addr;
             this.cn = cn;
             this.sc = sc;
             this.data = data;
         }
 
+        /**
+         * Return a byte array of the command to be sent to the IC-9100.
+         * @return full command byte array.
+         */
         public byte[] getCmdByteArr() {
             if (sc == (byte) 0xff && data.length == 0) { // No subcommand, no data
                 cmd = new byte[6];

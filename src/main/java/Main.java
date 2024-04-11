@@ -21,10 +21,7 @@ import data.PassData;
 import data.SatelliteData;
 import decode.Decoder;
 import decode.DecoderFactory;
-import instrument.Instrument;
-import instrument.InstrumentFactory;
-import instrument.Rotator;
-import instrument.Transceiver;
+import instrument.*;
 import sattrack.SatTrack;
 import sattrack.SatTrackFactory;
 import utils.Log;
@@ -38,8 +35,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Main program.
+ */
 public class Main {
 
+    /**
+     * Main method of program.
+     * @param args Args are unused.
+     * @throws InterruptedException
+     */
     public static void main(String [] args) throws InterruptedException {
 
         new Log(ConfigurationUtils.getStrProperty("LOG_PATH"), Verbosity.valueOf(ConfigurationUtils.getStrProperty("LOG_LEVEL")));

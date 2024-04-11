@@ -19,14 +19,23 @@ package instrument;
 
 import utils.ResultUtils;
 
+/**
+ * Highest level interface to for communication with hardware.
+ */
 public interface Instrument {
 
-    //ResultHelper connect();
-
-    //ResultHelper disconnect();
-
+    /**
+     * Reads the current parameters from the instrument.
+     * @return the read status.
+     * @throws InterruptedException
+     */
     ResultUtils readInstrument() throws InterruptedException;
 
+    /**
+     * Test the connection with the instrument.
+     * @return the connection status.
+     * @throws InterruptedException
+     */
     ResultUtils testConnect() throws InterruptedException;
 
 }

@@ -19,6 +19,8 @@ package integration;
 
 import data.PassData;
 import data.SatelliteData;
+import instrument.Instrument;
+import instrument.InstrumentFactory;
 import instrument.Rotator;
 import instrument.StubRotatorGS232B;
 import org.mockito.Mockito;
@@ -60,7 +62,7 @@ public class PredictTrackTest {
         List<Double> azProfile = pass.getAzProfile();
         List<Double> elProfile = pass.getElProfile();
 
-        Rotator rotator = new StubRotatorGS232B();
+        Rotator rotator = InstrumentFactory.createRotator("StubRotatorGS232B");
 
         ZonedDateTime setupTime = pass.getAos().minusMinutes(1);
         Log.debug("Waiting for " + setupTime + " before rotator setup");

@@ -17,10 +17,19 @@
 
 package instrument;
 
+/**
+ * Factory to select the appropriate implementation of {@link Transceiver} or {@link Rotator} based on the user specification in the configuration file.
+ */
 public class InstrumentFactory {
 
     private InstrumentFactory() {}
 
+    /**
+     * Select a {@link Rotator} implementation.
+     * @param rotator ID name of the rotator implementation.
+     * @return an implementation of {@link Rotator}
+     * @throws InterruptedException
+     */
     public static Rotator createRotator(String rotator) throws InterruptedException {
         if (rotator == null || rotator.isEmpty()) {
             throw new RuntimeException("InstrumentFactory could not create instrument with null or empty string");
@@ -33,6 +42,12 @@ public class InstrumentFactory {
         }
     }
 
+    /**
+     * Select a {@link Transceiver} implementation.
+     * @param transceiver ID name of the transceiver implementation.
+     * @return an implementation of {@link Transceiver}
+     * @throws InterruptedException
+     */
     public static Transceiver createTransceiver(String transceiver) throws InterruptedException {
         if (transceiver == null || transceiver.isEmpty()) {
             throw new RuntimeException("InstrumentFactory could not create instrument with null or empty string");

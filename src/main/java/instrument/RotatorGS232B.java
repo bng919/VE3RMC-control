@@ -24,6 +24,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class for communication with the Yaesu GS232B rotator controller.
+ */
 public class RotatorGS232B implements Rotator {
 
     private static final int AZ_TOLERANCE_DEG = 2;
@@ -37,7 +40,11 @@ public class RotatorGS232B implements Rotator {
     private int currAz;
     private int currEl;
 
-    public RotatorGS232B() throws InterruptedException {
+    /**
+     * Instate this class via the {@link InstrumentFactory} only.
+     * @throws InterruptedException
+     */
+    protected RotatorGS232B() throws InterruptedException {
         this.comPort = ConfigurationUtils.getStrProperty("ROTATOR_COM_PORT");
         this.baudRate = ConfigurationUtils.getIntProperty("ROTATOR_BAUD");
         this.correctionFilePath = ConfigurationUtils.getStrProperty("ROTATOR_CALIBRATION_PATH");
@@ -45,6 +52,9 @@ public class RotatorGS232B implements Rotator {
         this.serialUtils = new SerialUtils(this.comPort, this.baudRate, 8, 1, 0);
     }
 
+    /**
+     * Read the values of the rotator correction configuration file.
+     */
     private void readCorrectionFile() {
         BufferedReader fileReader;
         try {

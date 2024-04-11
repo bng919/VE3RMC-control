@@ -19,16 +19,49 @@ package instrument;
 
 import utils.ResultUtils;
 
+/**
+ * Defines methods required for communication with an azimuth-elevation rotator.
+ * All rotator models must implement this interface.
+ */
 public interface Rotator extends Instrument {
 
+    /**
+     * Get the current azimuth position in degrees from true north.
+     * {@link Instrument#readInstrument()} should be called before this method to ensure most recent instrument values are available.
+     * @return current azimuth.
+     */
     int getAz();
 
+    /**
+     * Get the current elevation of the rotator in degrees.
+     * {@link Instrument#readInstrument()} should be called before this method to ensure most recent instrument values are available.
+     * @return current elevation.
+     */
     int getEl();
 
+    /**
+     * Move the rotator to a new azimuth position.
+     * @param az New azimuth position in degrees from true north.
+     * @return the success/failure status of the operation.
+     * @throws InterruptedException
+     */
     ResultUtils goToAz(int az) throws InterruptedException;
 
+    /**
+     * Move the rotator to a new elevation position.
+     * @param el New elevation position in degrees from the horizon.
+     * @return the success/failure status of the operation.
+     * @throws InterruptedException
+     */
     ResultUtils goToEl(int el) throws InterruptedException;
 
+    /**
+     * Move the rotator to a new azimuth and elevation position.
+     * @param az New azimuth position in degrees from true north.
+     * @param el New elevation position in degrees from the horizon.
+     * @return the success/failure status of the operation.
+     * @throws InterruptedException
+     */
     ResultUtils goToAzEl(int az, int el) throws InterruptedException;
 
 }
