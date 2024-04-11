@@ -2,6 +2,8 @@ package data;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class PassData {
@@ -93,6 +95,9 @@ public class PassData {
 
     @Override
     public String toString() {
-        return this.sat + " pass beginning " + this.aos + ", ending " + this.los;
+        return this.sat + "\nStart time " + this.aos
+                + "\nEnd time   " + this.los
+                + "\nStart Az: " + this.azProfile.getFirst() + ", End Az: " + this.azProfile.getLast() + "\nMax El: " + Collections.max(this.elProfile)
+                + "\n================================================================";
     }
 }

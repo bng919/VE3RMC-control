@@ -9,6 +9,6 @@ public interface SatTrack {
 
     PassData getNextPass(SatelliteData sat);
 
-    List<PassData> getNextTenPasses(SatelliteData sat);
+    List<PassData> getNext48hOfPasses(SatelliteData sat);
 
 }

@@ -20,6 +20,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -46,9 +47,22 @@ public class Main {
         //TODO: Satellite shouldn't need currAz, currAl, or visible to be instantiated
         SatelliteData sat = new SatelliteData(tle[0], tle, ConfigurationUtils.getIntProperty("SAT_DL_FREQ_HZ"), 146000000);
 
-        System.out.println(satTrack.getNextTenPasses(sat));
+        List<PassData> nextTen = satTrack.getNext48hOfPasses(sat);
+        Log.noPrefix("======================== Next 10 Passes ========================");
+        int index = 0;
+        for (PassData pass : nextTen) {
+            Log.noPrefix("ID (" + index + ")");
+            Log.noPrefix(pass.toString());
+            index++;
+        }
 
-        PassData pass = satTrack.getNextPass(sat);
+        Scanner input = new Scanner(System.in);
+        Log.noPrefix("Enter ID number of pass to record: ");
+        int userSel = input.nextInt();
+        input.close();
+        Log.info("Pass ID " + userSel + " selected by user.");
+
+        PassData pass = nextTen.get(userSel);
         List<Double> azProfile = pass.getAzProfile();
         List<Double> elProfile = pass.getElProfile();
         Log.info("Tracking satellite " + sat.getId());

@@ -46,7 +46,7 @@ public class Log {
         } catch (IOException e) {
             throw new RuntimeException("Error creating log file.");
         }
-        printToConsoleAndFile("VE3RMC-control started " + start.format(richFormatter));
+        prefixAndStore("VE3RMC-control started " + start.format(richFormatter));
         String hostname = null;
         try {
             hostname = new BufferedReader(
@@ -55,8 +55,8 @@ public class Log {
         } catch (IOException e) {
             hostname = "Unknown";
         }
-        printToConsoleAndFile("Log saved to: " + createLog.getAbsolutePath());
-        printToConsoleAndFile("Run on: " + hostname);
+        prefixAndStore("Log saved to: " + createLog.getAbsolutePath());
+        prefixAndStore("Run on: " + hostname);
 
         try {
             storeConfig(new FileReader(ConfigurationUtils.getStrProperty("TLE_PATH")), "tle.txt");
@@ -77,9 +77,8 @@ public class Log {
         return nextAudioFile;
     }
 
-    private static void printToConsoleAndFile(String out) {
-        String timeStamp = ZonedDateTime.now(ZoneId.of("UTC")).format(richFormatter);
-        String formattedOut = timeStamp + " " + out + "\n";
+    private static void printToConsoleAndFile(String out, String timeStamp) {
+        String formattedOut = timeStamp + out + "\n";
         System.out.print(formattedOut);
         try {
             log = new FileWriter(createLog, true);
@@ -96,27 +95,46 @@ public class Log {
         }
     }
 
+    private static void prefixAndStore(String out) {
+        String timeStamp = ZonedDateTime.now(ZoneId.of("UTC")).format(richFormatter) + " ";
+        printToConsoleAndFile(out, timeStamp);
+    }
+
+    private static void prefixAndStore(String out, boolean addTimeStamp) {
+        String timeStamp;
+        if (addTimeStamp) {
+            timeStamp = ZonedDateTime.now(ZoneId.of("UTC")).format(richFormatter) + " ";
+        } else {
+            timeStamp = "";
+        }
+        printToConsoleAndFile(out, timeStamp);
+    }
+
+    public static void noPrefix(String s) {
+        prefixAndStore(s, false);
+    }
+
     public static void debug(String s) {
         if (verbose.isEqOrHigher(Verbosity.DEBUG)) {
-            printToConsoleAndFile("DEBUG: " + s);
+            prefixAndStore("DEBUG: " + s);
         }
     }
 
     public static void info(String s) {
         if (verbose.isEqOrHigher(Verbosity.INFO)) {
-            printToConsoleAndFile("INFO: " + s);
+            prefixAndStore("INFO: " + s);
         }
     }
     
     public static void warn(String s) {
         if (verbose.isEqOrHigher(Verbosity.WARN)) {
-            printToConsoleAndFile("WARN: " + s);
+            prefixAndStore("WARN: " + s);
         }
     }
 
     public static void error(String s) {
         if (verbose.isEqOrHigher(Verbosity.ERROR)) {
-            printToConsoleAndFile("ERROR: " + s);
+            prefixAndStore("ERROR: " + s);
         }
     }
 

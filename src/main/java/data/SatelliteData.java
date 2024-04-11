@@ -33,6 +33,6 @@ public class SatelliteData {
 
     @Override
     public String toString() {
-        return "Satellite " + this.id;
+        return "Satellite: " + this.id;
     }
 }
