@@ -7,5 +7,5 @@
 
 ### Configure Dependencies
 
-# Operation
+## Operation
 ### Example Configuration Files
