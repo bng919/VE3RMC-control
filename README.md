@@ -7,7 +7,7 @@ operating in the 70cm and 2m amateur radio bands.
 ### Features
 - Satellite pass prediction using [Predict4Java](https://github.com/davidmoten/predict4java)
 - Transceiver and rotator control
-- Live data demodulation with [Dire Wolf](https://github.com/wb2osz/direwolf)
+- Live data demodulation with the [Dire Wolf](https://github.com/wb2osz/direwolf) packet radio modem
 - Transmission recorded directly from transceiver
 - Operation customizable via configuration files
 - Ability to specify non-uniform rotator alignment issues in azimuth
@@ -28,20 +28,38 @@ This project is configured to be built using maven.
 `mvn clean package`
 
 This will create a `target` directory and with `agsc-*-jar-with-dependencies.jar`. A `.bat` file is provided in the 
-root directory to run this JAR, or it can be executed directly using `java.exe`.
+root directory to run this JAR, or it can be executed directly using `java.exe` using the following:
 
 `java -jar target/agsc-*-jar-with-dependencies.jar`
 
 ### Configure Dependencies
 Most of the dependencies are included in the JAR file, except for the [Dire Wolf](https://github.com/wb2osz/direwolf) 
-packet radio modem used for demodulation. Dire Wolf must be installed, and the path to the executable specified in 
+packet radio modem which must be installed manually. The path to the Dire Wolf executable must be specified in 
 [config.properties](./config/config.properties).
 
-## Operation
-Before use, verify the settings in the configuration files.
-### Example Configuration Files
+## Usage
+Before use, verify the settings in the configuration files listed below. The program operates according to the following
+flow chart.
+![Flow Chart](./docs/figures/FlowChart.png)
+
+
+
+## Example Configuration Files
 [config.properties](./config/config.properties) contains general settings for the program including
 paths to other configuration files, instrument models, and satellite frequency/baud.
+
+Model parameters can accept the following values. Stub models print a message to the log indicating what action would
+have been taken if using the non-stub models. Provided to allow testing without the instruments connected.
+
+| Parameter             | Accepted Values                                |
+| --------------------- |------------------------------------------------|
+| ROTATOR_MODEL         | - RotatorGS232B<br>- StubRotatorGS232B         |
+| TRANSCEIVER_MODEL     | - TransceiverIC9100<br>- StubTransceiverIC9100 |
+| DECODER_MODEL         | - DireWolf                                     |
+| RECORDER_MODEL        | - JavaxSoundSampled                            |
+| SATELLITE_TRACK_MODEL | - Predict4Java                                 |
+
+
 ```
 # Log settings
 LOG_PATH = .\\logs\\
@@ -105,4 +123,5 @@ the line number, indexed from zero.
 358
 359
 ```
+
 
