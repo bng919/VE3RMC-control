@@ -19,10 +19,21 @@ package utils;
 
 import java.io.UnsupportedEncodingException;
 
+/**
+ * Utility to format a byte array to a readable string.
+ */
 public class HexadecimalUtils {
 
+    /**
+     * Private constructor to prevent instantiation. All methods static.
+     */
     private HexadecimalUtils() {}
 
+    /**
+     * Format a byte array as a string for readability.
+     * @param d The data to be formatted.
+     * @return The formatted string.
+     */
     public static String hexDump(byte[] d) {
         StringBuilder b = new StringBuilder();
         int nCols = 16;
@@ -57,6 +68,5 @@ public class HexadecimalUtils {
         }
         return b.toString();
     }
-
 
 }

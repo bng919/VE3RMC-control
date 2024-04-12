@@ -21,10 +21,22 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Utility for parsing a two line element set from the configuration file.
+ */
 public class TLEUtils {
 
+    /**
+     * Private constructor to prevent instantiation. All methods static.
+     */
     private TLEUtils() {}
 
+    /**
+     * Open a file and parse the TLE from it. File must contain exactly 3 lines with the first being the satellite
+     * name and the remaining the two lines of the Keplerian elements in TLE format.
+     * @param path Path to the TLE configuration file. (Get this from ConfigurationUtils)
+     * @return Array containing the three lines of the file.
+     */
     public static String[] fileToStrArray(String path) {
         BufferedReader tleReader;
         String[] tle = new String[3];
@@ -51,4 +63,5 @@ public class TLEUtils {
         }
         return tle;
     }
+    
 }

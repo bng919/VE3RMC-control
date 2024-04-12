@@ -22,10 +22,14 @@ import java.io.IOException;
 import java.util.HexFormat;
 import java.util.Properties;
 
+/**
+ * Utility for parsing the config.properties file.
+ */
 public class ConfigurationUtils {
 
     private static final Properties config = new Properties();
 
+    // Class initializer. Reads the configuration file as soon as program begins.
     static {
         FileReader configFile;
         try {
@@ -37,16 +41,34 @@ public class ConfigurationUtils {
         }
     }
 
+    /**
+     * Private constructor to prevent instantiation. All methods static.
+     */
     private ConfigurationUtils() {}
 
+    /**
+     * Retrieve a String type property.
+     * @param key Name of property.
+     * @return Value of the property.
+     */
     public static String getStrProperty(String key) {
         return config.getProperty(key);
     }
 
+    /**
+     * Retrieve an int type property.
+     * @param key Name of property.
+     * @return Value of the property.
+     */
     public static int getIntProperty(String key) {
         return Integer.parseInt(config.getProperty(key));
     }
 
+    /**
+     * Retrieve a byte type property.
+     * @param key Name of property.
+     * @return Value of the property.
+     */
     public static byte getByteProperty(String key) {
         return HexFormat.of().parseHex(config.getProperty(key))[0];
     }

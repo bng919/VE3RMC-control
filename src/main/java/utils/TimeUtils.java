@@ -21,15 +21,30 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
+/**
+ * Utility to manage delays and time conversions.
+ */
 public class TimeUtils {
 
+    /**
+     * Private constructor to prevent instantiation. All methods static.
+     */
     private TimeUtils() {}
 
+    /**
+     * Wait for a set amount of time.
+     * @param millis Time to wait in milliseconds.
+     */
     public static void delayMillis(long millis) {
         long endTime = System.currentTimeMillis() + millis;
         while (System.currentTimeMillis() < endTime) {}
     }
 
+    /**
+     * Covert {@link Date} object to an instance of {@link ZonedDateTime} assuming UTC.
+     * @param date Instance of {@link Date} to be converted.
+     * @return Corresponding {@link ZonedDateTime} object in UTC.
+     */
     public static ZonedDateTime dateToZonedDateTime(Date date) {
         return date.toInstant().atZone(ZoneId.of("UTC"));
     }
