@@ -125,4 +125,5 @@ the line number, indexed from zero.
 359
 ```
 
-
+## License
+AGSC is available under the [GPLv3](LICENSE) free software license.
