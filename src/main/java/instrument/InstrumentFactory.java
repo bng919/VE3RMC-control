@@ -22,6 +22,9 @@ package instrument;
  */
 public class InstrumentFactory {
 
+    /**
+     * Private constructor to prevent instantiation (all other methods static).
+     */
     private InstrumentFactory() {}
 
     /**
@@ -59,4 +62,5 @@ public class InstrumentFactory {
             throw new RuntimeException("InstrumentFactory could not create instrument with ID " + transceiver);
         }
     }
+
 }

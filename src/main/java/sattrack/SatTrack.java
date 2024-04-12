@@ -22,10 +22,23 @@ import data.SatelliteData;
 
 import java.util.List;
 
+/**
+ * Defines methods required to interface with an external orbital prediction tool.
+ */
 public interface SatTrack {
 
+    /**
+     * Determine the next pass from the current time of a satellite defined by a {@link SatelliteData} object.
+     * @param sat The satellite to determine the next pass of.
+     * @return {@link PassData} describing the next pass.
+     */
     PassData getNextPass(SatelliteData sat);
 
+    /**
+     * Determine the passes occurring in the next 48h of a satellite defined by a {@link SatelliteData} object.
+     * @param sat The satellite to determine the next pass of.
+     * @return List of {@link PassData}.
+     */
     List<PassData> getNext48hOfPasses(SatelliteData sat);
 
 }

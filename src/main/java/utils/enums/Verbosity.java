@@ -17,6 +17,10 @@
 
 package utils.enums;
 
+/**
+ * Enum to define verbosity levels for {@link utils.Log}. Each level as an associated integer to allow ease of
+ * comparison of levels.
+ */
 public enum Verbosity {
     DEBUG(3),
     INFO(2),
@@ -32,4 +36,5 @@ public enum Verbosity {
     public boolean isEqOrHigher(Verbosity other) {
         return this.printLevel >= other.printLevel;
     }
+
 }

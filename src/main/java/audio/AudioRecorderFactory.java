@@ -16,10 +16,22 @@
  */
 
 package audio;
+
+/**
+ * Factory to select the appropriate implementation of {@link AudioRecord} based on the user specification in the configuration file.
+ */
 public class AudioRecorderFactory {
 
+    /**
+     * Private constructor to prevent instantiation (all other methods static).
+     */
     private AudioRecorderFactory() {}
 
+    /**
+     * Selects a {@link AudioRecord} implementation.
+     * @param audioRecord ID name of the implementation.
+     * @return An implementation of {@link AudioRecord}
+     */
     public static AudioRecord createAudioRecord(String audioRecord) {
         if (audioRecord == null || audioRecord.isEmpty()) {
             throw new RuntimeException("AudioRecorderFactory could not create instrument with null or empty string");
@@ -29,5 +41,4 @@ public class AudioRecorderFactory {
             throw new RuntimeException("AudioRecorderFactory could not create instrument with ID " + audioRecord);
         }
     }
-
 }

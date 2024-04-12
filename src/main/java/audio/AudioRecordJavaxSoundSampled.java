@@ -32,21 +32,23 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Class for recording audio using the {@link javax.sound.sampled} package. The computers default sound card is used
+ * by this class so long as it is compatible with the sample rate specified.
+ */
 public class AudioRecordJavaxSoundSampled implements AudioRecord {
 
     private int sampleRate;
     private int recordDurationS;
 
-    public AudioRecordJavaxSoundSampled() {
-
-    }
+    public AudioRecordJavaxSoundSampled() {}
 
     public void run() {
         Log.debug("Running audio recorder in thread " + Thread.currentThread().threadId());
-        startRecording();
+        recordAudio();
     }
 
-    public ResultUtils startRecording() {
+    public ResultUtils recordAudio() {
         try {
             Log.info("Starting audio recording service.");
             Log.debug("Setting up audio recorder with sample rate " + sampleRate);

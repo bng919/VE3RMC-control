@@ -17,10 +17,22 @@
 
 package decode;
 
+/**
+ * Factory to select the appropriate implementation of {@link Decoder} based on the user specification in the
+ * configuration file.
+ */
 public class DecoderFactory {
 
+    /**
+     * Private constructor to prevent instantiation (all other methods static).
+     */
     private DecoderFactory() {}
 
+    /**
+     * Selects an {@link Decoder} implementation.
+     * @param decoder ID name of the implementation.
+     * @return An implementation of {@link Decoder}
+     */
     public static Decoder createDecoder(String decoder) {
         if (decoder == null || decoder.isEmpty()) {
             throw new RuntimeException("DecoderFactory could not create instrument with null or empty string");
@@ -30,4 +42,5 @@ public class DecoderFactory {
             throw new RuntimeException("DecoderFactory could not create instrument with ID " + decoder);
         }
     }
+
 }

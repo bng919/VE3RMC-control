@@ -28,6 +28,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for communication with the Dire Wolf packet radio modem.
+ * The Dire Wolf executable is started and passed the baud rate of data specified in the configuration file.
+ * A socket connection is opened to the Dire Wolf KISS port to receive the demodulated data.
+ */
 public class DecoderDireWolf implements Decoder {
 
     private List<byte[]> decodedData = new ArrayList<>();
@@ -39,10 +44,10 @@ public class DecoderDireWolf implements Decoder {
 
     public void run() {
         Log.debug("Running DireWolf decoder in thread " + Thread.currentThread().threadId());
-        startDecoder();
+        runDecoder();
     }
 
-    public void startDecoder() {
+    public void runDecoder() {
         ProcessBuilder direWolfPb = new ProcessBuilder(direWolfDir + "\\direwolf", "-B " + ConfigurationUtils.getStrProperty("SAT_BAUD"));
         Log.debug("Starting DireWolf...");
         Log.debug(String.join(" ", direWolfPb.command().toArray(new String[0])));
@@ -108,8 +113,8 @@ public class DecoderDireWolf implements Decoder {
         return decodedData;
     }
 
-    public void setDireWolfDir(String direWolfDir) {
-        this.direWolfDir = direWolfDir;
+    public void setDecoderPath(String decoderPath) {
+        this.direWolfDir = decoderPath;
     }
 
     public void setDurationS(int durationS) {

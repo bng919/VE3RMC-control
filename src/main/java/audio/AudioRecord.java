@@ -19,13 +19,28 @@ package audio;
 
 import utils.ResultUtils;
 
+/**
+ * Defines methods required to configure and begin audio recording. Extends {@link Runnable} to allow audio recording
+ * to take place in a separate thread.
+ */
 public interface AudioRecord extends Runnable {
 
-    ResultUtils startRecording();
+    /**
+     * Record audio at sample rate and for duration specified by calling {@link AudioRecord#setSampleRate(int)} and {@link AudioRecord#setRecordDurationS(int)}
+     * @return The success/failure status of the operation.
+     */
+    ResultUtils recordAudio();
 
-    //ResultHelper stopRecording();
+    /**
+     * Set how long {@link AudioRecord#recordAudio()} will record for.
+     * @param recordDurationS duration of the recording in seconds.
+     */
     void setRecordDurationS(int recordDurationS);
 
+    /**
+     * Set the sample rate to be used by {@link AudioRecord#recordAudio()}.
+     * @param sampleRate sample rate in hertz.
+     */
     void setSampleRate(int sampleRate);
 
 }

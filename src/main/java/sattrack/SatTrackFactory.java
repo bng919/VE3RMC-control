@@ -17,10 +17,22 @@
 
 package sattrack;
 
+/**
+ * Factory to select the appropriate implementation of {@link SatTrack} based on the user specification in the
+ * configuration file.
+ */
 public class SatTrackFactory {
 
+    /**
+     * Private constructor to prevent instantiation (all other methods static).
+     */
     private SatTrackFactory() {}
 
+    /**
+     * Selects a {@link SatTrack} implementation.
+     * @param satTrack - ID name of the implementation.
+     * @return An implementation of {@link SatTrack}.
+     */
     public static SatTrack createSatTrack(String satTrack) {
         if (satTrack == null || satTrack.isEmpty()) {
             throw new RuntimeException("SatTrackFactory could not create instrument with null or empty string");
@@ -30,4 +42,5 @@ public class SatTrackFactory {
             throw new RuntimeException("SatTrackFactory could not create instrument with ID " + satTrack);
         }
     }
+
 }

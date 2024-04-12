@@ -107,7 +107,7 @@ public class Main {
         audio.setSampleRate(ConfigurationUtils.getIntProperty("RECORDER_SAMPLE_RATE"));
         audio.setRecordDurationS(pass.getDurationS());
 
-        dec.setDireWolfDir(ConfigurationUtils.getStrProperty("DECODER_PATH"));
+        dec.setDecoderPath(ConfigurationUtils.getStrProperty("DECODER_PATH"));
         dec.setDurationS(pass.getDurationS());
 
         Thread audioThread = new Thread(audio);
@@ -127,8 +127,8 @@ public class Main {
             rotator.goToAzEl(azProfile.get(i).intValue(), elProfile.get(i).intValue());
             transceiver.setFrequency(pass.getDlFreqHzAdjProfile().get(i));
             long stopTime = System.currentTimeMillis();
-            if (stopTime-startTime < pass.getProfileStepS()*1000L) {
-                TimeUtils.delayMillis((pass.getProfileStepS()*1000L) - (stopTime-startTime));
+            if (stopTime-startTime < pass.getProfileSampleIntervalS()*1000L) {
+                TimeUtils.delayMillis((pass.getProfileSampleIntervalS()*1000L) - (stopTime-startTime));
             } else {
                 Log.warn("TIME MISALIGNMENT: Setting rotator and transceiver took longer than specified delay.\n" +
                         "Rotator position may lag desired position!");

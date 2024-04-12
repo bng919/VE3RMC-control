@@ -43,7 +43,7 @@ public interface Transceiver extends Instrument {
     /**
      * Set a new frequency value on the transceiver.
      * @param freqHz the frequency in hertz to set on the transceiver.
-     * @return the success/failure status of the operation.
+     * @return The success/failure status of the operation.
      * @throws InterruptedException
      */
     ResultUtils setFrequency(long freqHz) throws InterruptedException;
@@ -51,7 +51,7 @@ public interface Transceiver extends Instrument {
     /**
      * Set a new modulation setting on the transceiver.
      * @param mod The {@link Modulation} type to set.
-     * @return the success/failure status of the operation.
+     * @return The success/failure status of the operation.
      * @throws InterruptedException
      */
     ResultUtils setModulation(Modulation mod) throws InterruptedException;

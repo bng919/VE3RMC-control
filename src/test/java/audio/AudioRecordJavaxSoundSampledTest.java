@@ -39,7 +39,7 @@ public class AudioRecordJavaxSoundSampledTest {
         a.setSampleRate(44100);
         a.setRecordDurationS(recordDuration);
         long startTime = java.time.Instant.now().getEpochSecond();
-        ResultUtils rst = a.startRecording();
+        ResultUtils rst = a.recordAudio();
         long stopTime = java.time.Instant.now().getEpochSecond();
         // Check if actual record time matches requested duration with tolerance to account for overhead
         boolean timeEqual = (stopTime-startTime) >= recordDuration && (stopTime-startTime) <= recordDuration+1;

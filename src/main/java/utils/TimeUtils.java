@@ -17,6 +17,10 @@
 
 package utils;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+
 public class TimeUtils {
 
     private TimeUtils() {}
@@ -25,4 +29,9 @@ public class TimeUtils {
         long endTime = System.currentTimeMillis() + millis;
         while (System.currentTimeMillis() < endTime) {}
     }
+
+    public static ZonedDateTime dateToZonedDateTime(Date date) {
+        return date.toInstant().atZone(ZoneId.of("UTC"));
+    }
+
 }

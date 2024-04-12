@@ -24,8 +24,6 @@ import utils.enums.Verbosity;
 
 import java.util.List;
 
-import static org.testng.Assert.*;
-
 public class DecoderDireWolfTest {
 
     @BeforeClass
@@ -36,8 +34,8 @@ public class DecoderDireWolfTest {
     public void testStartDecoder() {
         DecoderDireWolf dec = new DecoderDireWolf();
         dec.setDurationS(20);
-        dec.setDireWolfDir("C:\\Users\\benng\\Documents\\Uni\\School Work\\Fifth Year\\Fall\\ENPH455\\Code\\direwolf-1.7.0-9807304_i686");
-        dec.startDecoder();
+        dec.setDecoderPath("C:\\Users\\benng\\Documents\\Uni\\School Work\\Fifth Year\\Fall\\ENPH455\\Code\\direwolf-1.7.0-9807304_i686");
+        dec.runDecoder();
         List<byte[]> data = dec.getDecodedData();
         for (byte[] d : data) {
             Log.storeDecodedData(d);

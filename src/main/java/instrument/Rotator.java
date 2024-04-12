@@ -42,7 +42,7 @@ public interface Rotator extends Instrument {
     /**
      * Move the rotator to a new azimuth position.
      * @param az New azimuth position in degrees from true north.
-     * @return the success/failure status of the operation.
+     * @return The success/failure status of the operation.
      * @throws InterruptedException
      */
     ResultUtils goToAz(int az) throws InterruptedException;
@@ -50,7 +50,7 @@ public interface Rotator extends Instrument {
     /**
      * Move the rotator to a new elevation position.
      * @param el New elevation position in degrees from the horizon.
-     * @return the success/failure status of the operation.
+     * @return The success/failure status of the operation.
      * @throws InterruptedException
      */
     ResultUtils goToEl(int el) throws InterruptedException;
@@ -59,7 +59,7 @@ public interface Rotator extends Instrument {
      * Move the rotator to a new azimuth and elevation position.
      * @param az New azimuth position in degrees from true north.
      * @param el New elevation position in degrees from the horizon.
-     * @return the success/failure status of the operation.
+     * @return The success/failure status of the operation.
      * @throws InterruptedException
      */
     ResultUtils goToAzEl(int az, int el) throws InterruptedException;

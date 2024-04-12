@@ -50,7 +50,7 @@ public class TransceiverIC9100 implements Transceiver {
      * Swap main and sub bands on the IC-9100. Main and sub cannot both be set to UHF or VHF frequencies at the same time.
      * For example, if the current main band is in UHF and a VHF frequency is provided to {@link TransceiverIC9100#setFrequency(long)} (or vice versa)
      * a swap must take place otherwise the set will fail.
-     * @return the success/failure status of the operation.
+     * @return The success/failure status of the operation.
      * @throws InterruptedException
      */
     private ResultUtils swapMainSub() throws InterruptedException {

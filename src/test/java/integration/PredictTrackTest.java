@@ -19,10 +19,8 @@ package integration;
 
 import data.PassData;
 import data.SatelliteData;
-import instrument.Instrument;
 import instrument.InstrumentFactory;
 import instrument.Rotator;
-import instrument.StubRotatorGS232B;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -84,7 +82,7 @@ public class PredictTrackTest {
         for (int i = 0; i < azProfile.size(); i++) {
             Log.debug("Moving to position Az " + azProfile.get(i).intValue() + ", El " + elProfile.get(i).intValue());
             rotator.goToAzEl(azProfile.get(i).intValue(), elProfile.get(i).intValue());
-            TimeUtils.delayMillis(pass.getProfileStepS()*1000L);
+            TimeUtils.delayMillis(pass.getProfileSampleIntervalS()*1000L);
         }
 
 

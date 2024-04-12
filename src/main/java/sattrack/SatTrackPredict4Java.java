@@ -25,6 +25,7 @@ import com.github.amsacode.predict4java.SatPos;
 import com.github.amsacode.predict4java.TLE;
 import data.PassData;
 import data.SatelliteData;
+import utils.TimeUtils;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -32,11 +33,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SatTrackPredict4Java implements SatTrack{
+/**
+ * Class for interfacing with Predict via the {@link com.github.amsacode.predict4java} package.
+ */
+public class SatTrackPredict4Java implements SatTrack {
 
     //TODO: Make a class parameter to store satellite, set in constructor.
+
+    /**
+     * Convert Predict4Java type {@link SatPassTime} to {@link PassData} (VE3RMC-control type required by main)
+     * @param satelliteData Satellite being tracked.
+     * @param satPassTime Input object of type {@link SatPassTime}.
+     * @param passPredictor Associated {@link PassPredictor} object.
+     * @return Fully populated {@link PassData} object.
+     */
     private PassData satPassTimeToPass(SatelliteData satelliteData, SatPassTime satPassTime, PassPredictor passPredictor) {
-        // Convert Predict4Java type SatPassTime to Pass (VE3RMC-control type required by main)
+        // Step 1: Generate a list of SatPos type at the desired increment (5 s) from AOS to LOS+1 min
         List<SatPos> positions;
         try {
             positions = passPredictor.getPositions(satPassTime.getStartTime(), 5, 0, (int) ((satPassTime.getEndTime().getTime()-satPassTime.getStartTime().getTime())/1000/60)+1);
@@ -48,9 +60,10 @@ public class SatTrackPredict4Java implements SatTrack{
         List<Double> elProfile = new ArrayList<>();
         List<Long> freqProfile = new ArrayList<>();
 
+        // Step 2: Iterate through SatPos list and add azimuth, elevation, frequency to new Lists
         for (SatPos p : positions) {
-            azProfile.add(p.getAzimuth() / (Math.PI * 2.0) * 360);
-            elProfile.add(p.getElevation() / (Math.PI * 2.0) * 360);
+            azProfile.add(p.getAzimuth() / (Math.PI * 2.0) * 360); // Convert to degrees
+            elProfile.add(p.getElevation() / (Math.PI * 2.0) * 360); // Convert to degrees
             try {
                 freqProfile.add(passPredictor.getDownlinkFreq(satelliteData.getNominalDlFreqHz(), p.getTime()));
             } catch (SatNotFoundException e) {
@@ -58,9 +71,10 @@ public class SatTrackPredict4Java implements SatTrack{
             }
         }
 
-        ZonedDateTime aos = dateToZonedDateTime(satPassTime.getStartTime());
-        ZonedDateTime los = dateToZonedDateTime(satPassTime.getEndTime());
+        ZonedDateTime aos = TimeUtils.dateToZonedDateTime(satPassTime.getStartTime());
+        ZonedDateTime los = TimeUtils.dateToZonedDateTime(satPassTime.getEndTime());
 
+        // Step 3: Return new PassData object
         return new PassData(satelliteData, aos, los, 5, azProfile, elProfile, freqProfile);
     }
 
@@ -102,10 +116,6 @@ public class SatTrackPredict4Java implements SatTrack{
             result.add(satPassTimeToPass(sat, p, passPredictor));
         }
         return result;
-    }
-
-    private ZonedDateTime dateToZonedDateTime(Date date) {
-        return date.toInstant().atZone(ZoneId.of("UTC"));
     }
 
 }

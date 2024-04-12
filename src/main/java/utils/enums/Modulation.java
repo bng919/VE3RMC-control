@@ -17,6 +17,9 @@
 
 package utils.enums;
 
+/**
+ * Enum defining modulation types for the transceiver.
+ */
 public enum Modulation {
     FM,
     AM
