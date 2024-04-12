@@ -27,12 +27,15 @@ This project is configured to be built using maven.
 
 `mvn clean package`
 
-This will create a `target` directory and with `agsc-*-jar-with-dependencies.jar`. A `.bat` file is provided in the 
-root directory to run this JAR, or it can be executed directly using `java.exe` using the following:
+This will create a `target` directory and with `agsc-*-jar-with-dependencies.jar`. A batch file [agsc.bat](agsc.bat) is provided in the 
+root directory to run the JAR, or it can be executed directly using `java.exe` using the following:
 
 `java -jar target/agsc-*-jar-with-dependencies.jar`
 
 ### Configure Dependencies
+
+OpenJDK 21.0.1 is recommended.
+
 Most of the dependencies are included in the JAR file, except for the [Dire Wolf](https://github.com/wb2osz/direwolf) 
 packet radio modem which must be installed manually. The path to the Dire Wolf executable must be specified in 
 [config.properties](./config/config.properties).
@@ -41,8 +44,6 @@ packet radio modem which must be installed manually. The path to the Dire Wolf e
 Before use, verify the settings in the configuration files listed below. The program operates according to the following
 flow chart.
 ![Flow Chart](./docs/figures/FlowChart.png)
-
-
 
 ## Example Configuration Files
 [config.properties](./config/config.properties) contains general settings for the program including
