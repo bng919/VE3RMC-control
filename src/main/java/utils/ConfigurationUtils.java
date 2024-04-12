@@ -27,13 +27,14 @@ import java.util.Properties;
  */
 public class ConfigurationUtils {
 
+    private static final String configPath = "./config/config.properties";
     private static final Properties config = new Properties();
 
     // Class initializer. Reads the configuration file as soon as program begins.
     static {
         FileReader configFile;
         try {
-            configFile = new FileReader("config.properties");
+            configFile = new FileReader(configPath);
             config.load(configFile);
         } catch (IOException e) {
             System.out.println("Cannot open config.properties file!! Terminating.");
@@ -71,6 +72,14 @@ public class ConfigurationUtils {
      */
     public static byte getByteProperty(String key) {
         return HexFormat.of().parseHex(config.getProperty(key))[0];
+    }
+
+    /**
+     * Get the relative path to the config file.
+     * @return Config file path.
+     */
+    public static String getConfigPath() {
+        return configPath;
     }
 
 }

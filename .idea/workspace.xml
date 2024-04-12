@@ -6,41 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rotatorCalibration.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/audio/AudioRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/audio/AudioRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/audio/AudioRecordJavaxSoundSampled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/audio/AudioRecordJavaxSoundSampled.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data/DataBaseEntry.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data/Pass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/PassData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data/Satellite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/SatelliteData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/Database.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/DatabaseFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/database/DatabaseMySQL.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/decode/DecoderDireWolf.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/decode/DecoderDireWolf.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/instrument/Instrument.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/instrument/Instrument.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/instrument/Rotator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/instrument/Rotator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/instrument/RotatorGS232B.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/instrument/RotatorGS232B.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/instrument/StubRotatorGS232B.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/instrument/StubRotatorGS232B.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/instrument/StubTransceiverIC9100.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/instrument/StubTransceiverIC9100.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/instrument/Transceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/instrument/Transceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/instrument/TransceiverIC9100.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/instrument/TransceiverIC9100.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sattrack/SatTrack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sattrack/SatTrack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sattrack/SatTrackPredict4Java.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sattrack/SatTrackPredict4Java.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/FreqHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/FrequencyUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/HexFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/HexadecimalUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ConfigurationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ConfigurationUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Log.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/PropertyHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ConfigurationUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ResultHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ResultUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Serial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/SerialUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/TLEHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/TLEUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/TimeUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/audio/AudioRecordJavaxSoundSampledTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/audio/AudioRecordJavaxSoundSampledTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/instrument/InstrumentFactoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/instrument/InstrumentFactoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/instrument/TransceiverIC9100Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/instrument/TransceiverIC9100Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/integration/PredictTrackTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/integration/PredictTrackTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/sattrack/SatTrackPredict4JavaTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/sattrack/SatTrackPredict4JavaTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/utils/FreqHelperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/utils/FrequencyUtilsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/utils/TimeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/utils/TimeUtilsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tle.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +34,9 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$MAVEN_REPOSITORY$/com/github/davidmoten/predict4java/1.3.1/predict4java-1.3.1.jar!/com/github/amsacode/predict4java/PassPredictor.class" root0="SKIP_INSPECTION" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 5
@@ -73,7 +48,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;TestNG.AudioRecordJavaxSoundSampledTest.testStartRecording.executor&quot;: &quot;Run&quot;,
@@ -95,9 +70,9 @@
     &quot;TestNG.TransceiverIC9100Test.testReadWriteInstrument.executor&quot;: &quot;Run&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;TestNG&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.TestNG&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Amateur Radio/Development/VE3RMC-control&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/benng/Documents/Uni/School Work/Fifth Year/Fall/ENPH455/Code/agsc&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -130,13 +105,13 @@
   <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="VE3RMC-control" />
+      <module name="agsc" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="AudioRecordJavaxSoundSampledTest.testStartRecording" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="VE3RMC-control" />
+      <module name="agsc" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="audio.*" />
@@ -154,7 +129,7 @@
       </method>
     </configuration>
     <configuration name="RecordDecodeTest" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="VE3RMC-control" />
+      <module name="agsc" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="integration.*" />
@@ -171,7 +146,7 @@
       </method>
     </configuration>
     <configuration name="RotatorGS232BTest.testReadWriteInstrument" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="VE3RMC-control" />
+      <module name="agsc" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="instrument.*" />
@@ -189,7 +164,7 @@
       </method>
     </configuration>
     <configuration name="TransceiverIC9100Test.testReadWriteInstrument" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="VE3RMC-control" />
+      <module name="agsc" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="instrument.*" />
@@ -260,6 +235,7 @@
       <workItem from="1711034948955" duration="1325000" />
       <workItem from="1711079465697" duration="2133000" />
       <workItem from="1711376850400" duration="1109000" />
+      <workItem from="1712946290562" duration="911000" />
     </task>
     <servers />
   </component>
@@ -273,11 +249,6 @@
           <url>file://$PROJECT_DIR$/src/test/java/integration/PredictTrackTest.java</url>
           <line>48</line>
           <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Main.java</url>
-          <line>48</line>
-          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

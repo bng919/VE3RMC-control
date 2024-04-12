@@ -82,7 +82,7 @@ public class Log {
         }
 
         // Print intro messages
-        prefixAndStore("VE3RMC-control started " + start.format(richFormatter));
+        prefixAndStore("AGSC started " + start.format(richFormatter));
         String hostname = null;
         try {
             hostname = new BufferedReader(
@@ -97,7 +97,7 @@ public class Log {
         // Copy configuration files to log
         try {
             storeConfig(new FileReader(ConfigurationUtils.getStrProperty("TLE_PATH")), "tle.txt");
-            storeConfig(new FileReader("config.properties"), "config.properties");
+            storeConfig(new FileReader(ConfigurationUtils.getConfigPath()), "config.properties");
             storeConfig(new FileReader(ConfigurationUtils.getStrProperty("ROTATOR_CALIBRATION_PATH")), "rotatorCalibration.txt");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

@@ -65,7 +65,6 @@ public class Main {
         SatTrack satTrack = SatTrackFactory.createSatTrack(ConfigurationUtils.getStrProperty("SATELLITE_TRACK_MODEL"));
 
         String[] tle = TLEUtils.fileToStrArray(ConfigurationUtils.getStrProperty("TLE_PATH"));
-        //TODO: Satellite shouldn't need currAz, currAl, or visible to be instantiated
         SatelliteData sat = new SatelliteData(tle[0], tle, ConfigurationUtils.getIntProperty("SAT_DL_FREQ_HZ"), 146000000);
 
         List<PassData> nextTen = satTrack.getNext48hOfPasses(sat);
