@@ -68,7 +68,7 @@ public class Main {
         SatelliteData sat = new SatelliteData(tle[0], tle, ConfigurationUtils.getIntProperty("SAT_DL_FREQ_HZ"), 146000000);
 
         List<PassData> nextTen = satTrack.getNext48hOfPasses(sat);
-        Log.noPrefix("======================== Next 10 Passes ========================");
+        Log.noPrefix("=========================== Next 48h ===========================");
         int index = 0;
         for (PassData pass : nextTen) {
             Log.noPrefix("ID (" + index + ")");
