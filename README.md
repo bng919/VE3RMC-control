@@ -13,7 +13,8 @@ operating in the 70cm and 2m amateur radio bands.
 - Ability to specify non-uniform rotator alignment issues in azimuth
 - Organized data storage
 
-AGSC currently supports the following transceiver and rotator models.
+AGSC currently supports the following transceiver and rotator models. The rotator or transceiver can be disabled by using
+`StubRotator` or `StubTransceiver` models.
 
 #### Transceivers
 - ICOM IC-9100 (Similar ICOM models likely supported)
@@ -52,13 +53,13 @@ paths to other configuration files, instrument models, and satellite frequency/b
 Model parameters can accept the following values. Stub models print a message to the log indicating what action would
 have been taken if using the non-stub models. Provided to allow testing without the instruments connected.
 
-| Parameter             | Accepted Values                                |
-| --------------------- |------------------------------------------------|
-| ROTATOR_MODEL         | - RotatorGS232B<br>- StubRotatorGS232B         |
-| TRANSCEIVER_MODEL     | - TransceiverIC9100<br>- StubTransceiverIC9100 |
-| DECODER_MODEL         | - DireWolf                                     |
-| RECORDER_MODEL        | - JavaxSoundSampled                            |
-| SATELLITE_TRACK_MODEL | - Predict4Java                                 |
+| Parameter             | Accepted Values                           |
+| --------------------- |-------------------------------------------|
+| ROTATOR_MODEL         | - RotatorGS232B<br>- StubRotator          |
+| TRANSCEIVER_MODEL     | - TransceiverIC9100<br>- StubTransceiver  |
+| DECODER_MODEL         | - DireWolf                                |
+| RECORDER_MODEL        | - JavaxSoundSampled                       |
+| SATELLITE_TRACK_MODEL | - Predict4Java                            |
 
 
 ```

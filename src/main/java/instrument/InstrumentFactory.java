@@ -38,8 +38,8 @@ public class InstrumentFactory {
             throw new RuntimeException("InstrumentFactory could not create instrument with null or empty string");
         } else if (rotator.equalsIgnoreCase("RotatorGS232B")) {
             return new RotatorGS232B();
-        } else if (rotator.equalsIgnoreCase("StubRotatorGS232B")) {
-            return new StubRotatorGS232B();
+        } else if (rotator.equalsIgnoreCase("StubRotator")) {
+            return new StubRotator();
         } else {
             throw new RuntimeException("InstrumentFactory could not create instrument with ID " + rotator);
         }
@@ -56,8 +56,8 @@ public class InstrumentFactory {
             throw new RuntimeException("InstrumentFactory could not create instrument with null or empty string");
         } else if (transceiver.equalsIgnoreCase("TransceiverIC9100")) {
             return new TransceiverIC9100();
-        } else if (transceiver.equalsIgnoreCase("StubTransceiverIC9100")) {
-            return new StubTransceiverIC9100();
+        } else if (transceiver.equalsIgnoreCase("StubTransceiver")) {
+            return new StubTransceiver();
         }  else {
             throw new RuntimeException("InstrumentFactory could not create instrument with ID " + transceiver);
         }

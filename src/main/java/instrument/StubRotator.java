@@ -19,56 +19,60 @@ package instrument;
 
 import utils.Log;
 import utils.ResultUtils;
-import utils.enums.Modulation;
 
 /**
- * A stubbed version of {@link TransceiverIC9100} that does not issue any commands to the instrument.
+ * A stubbed rotator class that does not communicate with a physical instrument.
  * Used for testing other portions of code while the instrument is not connected, but does NOT mock
  * the responses of the instrument.
  */
-public class StubTransceiverIC9100 implements Transceiver{
+public class StubRotator implements Rotator {
 
-    private long freqHz;
-    private Modulation modSetting;
+    private int currAz;
+    private int currEl;
 
     /**
      * Instate this class via the {@link InstrumentFactory} only.
      */
-    protected StubTransceiverIC9100(){
-        Log.debug("Created StubTransceiverIC9100");
-        freqHz = 0;
-        modSetting = Modulation.FM;
+    protected StubRotator() {
+        Log.debug("Created StubRotator");
+        currAz = 0;
+        currEl = 0;
         readInstrument();
     }
 
     public ResultUtils readInstrument() {
-        Log.debug("Read from StubTransceiverIC9100. Freq " + this.freqHz + ", Mod " + this.modSetting);
+        Log.debug("Read from StubRotator. Az " + this.currAz + ", El " + this.currEl);
         return ResultUtils.createSuccessfulResult();
     }
 
     public ResultUtils testConnect() {
-        Log.debug("Test connect from StubRotatorGS232B");
+        Log.debug("Test connect from StubRotator");
         return ResultUtils.createSuccessfulResult();
     }
 
-    public long getFrequencyHz() {
-        return this.freqHz;
+    public int getAz() {
+        return currAz;
     }
 
-    public Modulation getModulation() {
-        return this.modSetting;
+    public int getEl() {
+        return currEl;
     }
 
-    public ResultUtils setFrequency(long freqHz) {
-        Log.debug("Set freq to " + freqHz);
-        this.freqHz = freqHz;
+    public ResultUtils goToAz(int az) {
+        Log.debug("Set Az to " + az + " from StubRotator");
+        this.currAz = az;
         return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultUtils setModulation(Modulation mod) {
-        Log.debug("Set modulation to " + mod);
-        this.modSetting = mod;
+    public ResultUtils goToEl(int el) {
+        Log.debug("Set El to " + el + " from StubRotator");
+        this.currEl = el;
         return ResultUtils.createSuccessfulResult();
     }
 
+    public ResultUtils goToAzEl(int az, int el) {
+        ResultUtils azRst = goToAz(az);
+        ResultUtils elRst = goToEl(el);
+        return azRst.and(elRst);
+    }
 }

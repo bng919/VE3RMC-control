@@ -19,60 +19,56 @@ package instrument;
 
 import utils.Log;
 import utils.ResultUtils;
+import utils.enums.Modulation;
 
 /**
- * A stubbed version of {@link RotatorGS232B} that does not issue any commands to the instrument.
+ * A stubbed transceiver class that does not communicate with a physical instrument.
  * Used for testing other portions of code while the instrument is not connected, but does NOT mock
  * the responses of the instrument.
  */
-public class StubRotatorGS232B implements Rotator {
+public class StubTransceiver implements Transceiver{
 
-    private int currAz;
-    private int currEl;
+    private long freqHz;
+    private Modulation modSetting;
 
     /**
      * Instate this class via the {@link InstrumentFactory} only.
      */
-    protected StubRotatorGS232B() {
-        Log.debug("Created StubRotatorGS232B");
-        currAz = 0;
-        currEl = 0;
+    protected StubTransceiver(){
+        Log.debug("Created StubTransceiver");
+        freqHz = 0;
+        modSetting = Modulation.FM;
         readInstrument();
     }
 
     public ResultUtils readInstrument() {
-        Log.debug("Read from StubRotatorGS232B. Az " + this.currAz + ", El " + this.currEl);
+        Log.debug("Read from StubTransceiver. Freq " + this.freqHz + ", Mod " + this.modSetting);
         return ResultUtils.createSuccessfulResult();
     }
 
     public ResultUtils testConnect() {
-        Log.debug("Test connect from StubRotatorGS232B");
+        Log.debug("Test connect from StubRotator");
         return ResultUtils.createSuccessfulResult();
     }
 
-    public int getAz() {
-        return currAz;
+    public long getFrequencyHz() {
+        return this.freqHz;
     }
 
-    public int getEl() {
-        return currEl;
+    public Modulation getModulation() {
+        return this.modSetting;
     }
 
-    public ResultUtils goToAz(int az) {
-        Log.debug("Set Az to " + az + " from StubRotatorGS232B");
-        this.currAz = az;
+    public ResultUtils setFrequency(long freqHz) {
+        Log.debug("Set freq to " + freqHz);
+        this.freqHz = freqHz;
         return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultUtils goToEl(int el) {
-        Log.debug("Set El to " + el + " from StubRotatorGS232B");
-        this.currEl = el;
+    public ResultUtils setModulation(Modulation mod) {
+        Log.debug("Set modulation to " + mod);
+        this.modSetting = mod;
         return ResultUtils.createSuccessfulResult();
     }
 
-    public ResultUtils goToAzEl(int az, int el) {
-        ResultUtils azRst = goToAz(az);
-        ResultUtils elRst = goToEl(el);
-        return azRst.and(elRst);
-    }
 }
