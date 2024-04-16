@@ -35,7 +35,7 @@ public class DecoderDireWolfTest {
         DecoderDireWolf dec = new DecoderDireWolf();
         dec.setDurationS(20);
         dec.setDecoderPath("C:\\Users\\benng\\Documents\\Uni\\School Work\\Fifth Year\\Fall\\ENPH455\\Code\\direwolf-1.7.0-9807304_i686");
-        dec.runDecoder();
+        dec.startDecoder();
         List<byte[]> data = dec.getDecodedData();
         for (byte[] d : data) {
             Log.storeDecodedData(d);

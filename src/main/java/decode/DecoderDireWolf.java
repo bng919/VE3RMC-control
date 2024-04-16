@@ -32,6 +32,9 @@ import java.util.List;
  * Class for communication with the Dire Wolf packet radio modem.
  * The Dire Wolf executable is started and passed the baud rate of data specified in the configuration file.
  * A socket connection is opened to the Dire Wolf KISS port to receive the demodulated data.
+ *
+ * Dire Wolf can be started in a separate thread using {@link DecoderDireWolf#run()} or in the existing thread
+ * using {@link DecoderDireWolf#startDecoder()}.
  */
 public class DecoderDireWolf implements Decoder {
 
@@ -44,11 +47,15 @@ public class DecoderDireWolf implements Decoder {
 
     public void run() {
         Log.debug("Running DireWolf decoder in thread " + Thread.currentThread().threadId());
-        runDecoder();
+        startDecoder();
     }
 
-    public void runDecoder() {
-        ProcessBuilder direWolfPb = new ProcessBuilder(direWolfDir + "\\direwolf", "-B " + ConfigurationUtils.getStrProperty("SAT_BAUD"));
+    public void startDecoder() {
+        /*
+         * Step 1: Configure, then execute command to start dire wolf executable.
+         */
+        ProcessBuilder direWolfPb = new ProcessBuilder(direWolfDir + "\\direwolf", "-B "
+                + ConfigurationUtils.getStrProperty("SAT_BAUD"));
         Log.debug("Starting DireWolf...");
         Log.debug(String.join(" ", direWolfPb.command().toArray(new String[0])));
         direWolfPb.directory(new File(direWolfDir));
@@ -61,8 +68,11 @@ public class DecoderDireWolf implements Decoder {
             throw new RuntimeException(e);
         }
         Log.debug("Waiting for DireWolf to setup");
-        TimeUtils.delayMillis(1000); // Give direwolf time to set up
+        TimeUtils.delayMillis(1000); // Give dire wolf time to set up
 
+        /*
+         * Step 2: Open socket connection to dire wolf KISS port
+         */
         Socket s;
         InputStream in;
         try {
@@ -76,10 +86,13 @@ public class DecoderDireWolf implements Decoder {
 
         Log.info("DireWolf started successfully");
 
+        /*
+         * Step 3: Monitor socket port for data for the duration of the pass
+         */
         long endTime = System.currentTimeMillis() + durationS*1000L;
         Log.debug("Monitoring DireWolf KISS port for " + durationS + "s.");
         durationLoop:
-        while (System.currentTimeMillis() < endTime) {
+        while (System.currentTimeMillis() < endTime) { // While pass active
             try {
                 List<Byte> rst = new ArrayList<Byte>();
                 while (in.available() == 0) {
@@ -96,6 +109,7 @@ public class DecoderDireWolf implements Decoder {
                 Byte[] arr = new Byte[rst.size()];
                 arr = rst.toArray(arr);
 
+                // Convert Byte[] to byte[] (primitive type)
                 byte[] primArr = new byte[arr.length];
                 for (int i = 0; i < primArr.length; i++) {
                     primArr[i] = arr[i];
@@ -106,7 +120,7 @@ public class DecoderDireWolf implements Decoder {
                 throw new RuntimeException(e);
             }
         }
-        direWolfP.destroyForcibly();
+        direWolfP.destroyForcibly(); // Close dire wolf process
     }
 
     public List<byte[]> getDecodedData() {

@@ -50,6 +50,9 @@ public class AudioRecordJavaxSoundSampled implements AudioRecord {
 
     public ResultUtils recordAudio() {
         try {
+            /*
+             * Step 1: Configure audio format and input source, open the source and create a buffer to read datta to.
+             */
             Log.info("Starting audio recording service.");
             Log.debug("Setting up audio recorder with sample rate " + sampleRate);
             AudioFormat format = new AudioFormat(sampleRate, 16, 1, true, true);
@@ -69,6 +72,9 @@ public class AudioRecordJavaxSoundSampled implements AudioRecord {
 
             ByteArrayOutputStream recordBytes = new ByteArrayOutputStream();
 
+            /*
+             * Step 2: Read bytes from audio interface then store to buffer for duration of pass.
+             */
             Log.info("Audio recording started. Will record for " + recordDurationS + "s.");
             long endTime = java.time.Instant.now().getEpochSecond() + recordDurationS;
             while (java.time.Instant.now().getEpochSecond() < endTime) {
@@ -77,11 +83,16 @@ public class AudioRecordJavaxSoundSampled implements AudioRecord {
             }
             Log.info("Audio recording complete.");
 
+            /*
+             * Step 3: Store audio to file.
+             */
             byte[] audioData = recordBytes.toByteArray();
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(audioData);
-            AudioInputStream audioInputStream = new AudioInputStream(byteArrayInputStream, format, audioData.length / format.getFrameSize());
+            AudioInputStream audioInputStream = new AudioInputStream(byteArrayInputStream, format,
+                    audioData.length / format.getFrameSize());
 
-            //TODO: Audio shouldn't be saved here as it breaks modularity. Should pass the stream back to main to be saved there.
+            //TODO: Audio shouldn't be saved here as it breaks modularity.
+            // Should pass the stream back to main to be saved there.
             File writeFile = Log.getNextAudioFile();
             Log.info("Saving audio to " + writeFile.getAbsolutePath());
             AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, writeFile);

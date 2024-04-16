@@ -29,7 +29,7 @@ public interface Decoder extends Runnable {
     /**
      * Activate and monitor the decoder for a duration specified by calling {@link Decoder#setDecoderPath(String)}.
      */
-    void runDecoder();
+    void startDecoder();
 
     /**
      * Return a list of packets decoded by the decoder.

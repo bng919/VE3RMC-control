@@ -46,17 +46,20 @@ public class TLEUtils {
             int count = 1;
             while (line != null) {
                 if (count > 3) {
-                    throw new RuntimeException("Too many lines in tle");
+                    throw new RuntimeException("Too many lines in TLE!");
                 }
-                if (line.charAt(0) == '1') {
+                if (line.charAt(0) == '1') { // TLE lines start with an id number
                     tle[1] = line;
                 } else if (line.charAt(0) == '2') {
                     tle[2] = line;
-                } else {
+                } else { // Otherwise, line must be the name of satellite
                     tle[0] = line;
                 }
                 line = tleReader.readLine();
                 count++;
+            }
+            if (count < 3) {
+                throw new RuntimeException("Too few lines in TLE!");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
