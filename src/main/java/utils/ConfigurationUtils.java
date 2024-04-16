@@ -66,6 +66,15 @@ public class ConfigurationUtils {
     }
 
     /**
+     * Retrieve a double type property.
+     * @param key Name of property.
+     * @return Value of the property.
+     */
+    public static double getDoubleProperty(String key) {
+        return Double.parseDouble(config.getProperty(key));
+    }
+
+    /**
      * Retrieve a byte type property.
      * @param key Name of property.
      * @return Value of the property.

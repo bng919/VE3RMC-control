@@ -25,6 +25,7 @@ import com.github.amsacode.predict4java.SatPos;
 import com.github.amsacode.predict4java.TLE;
 import data.PassData;
 import data.SatelliteData;
+import utils.ConfigurationUtils;
 import utils.TimeUtils;
 
 import java.time.ZoneId;
@@ -80,7 +81,10 @@ public class SatTrackPredict4Java implements SatTrack {
 
     public PassData getNextPass(SatelliteData sat) {
         TLE tle = new TLE(sat.getTle());
-        GroundStationPosition qth = new GroundStationPosition(44.23, -76.48, 95, "VE3RMC");
+        GroundStationPosition qth = new GroundStationPosition(ConfigurationUtils.getDoubleProperty("GS_LAT"),
+                ConfigurationUtils.getDoubleProperty("GS_LON"),
+                ConfigurationUtils.getDoubleProperty("GS_ELE"),
+                ConfigurationUtils.getStrProperty("GS_CALL"));
         ZonedDateTime currDate = ZonedDateTime.now(ZoneId.of("UTC"));
         PassPredictor passPredictor;
         List<SatPassTime> passes;
@@ -89,7 +93,6 @@ public class SatTrackPredict4Java implements SatTrack {
             passPredictor = new PassPredictor(tle, qth);
             passes = passPredictor.getPasses(Date.from(currDate.toInstant()), 48, false);
             nextSatPassTime = passes.getFirst();
-            //positions = passPredictor.getPositions(nextSatPassTime.getStartTime(), 5, 0, (int) ((nextSatPassTime.getEndTime().getTime()-nextSatPassTime.getStartTime().getTime())/1000/60)+1);
         } catch (SatNotFoundException e) {
             //TODO: Improve error handling
             throw new RuntimeException(e);

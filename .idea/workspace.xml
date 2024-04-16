@@ -6,13 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rotatorCalibration.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sattrack/SatTrackPredict4Java.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sattrack/SatTrackPredict4Java.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/ConfigurationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ConfigurationUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Log.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tle.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +45,11 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.agsc [clean,compile,assembly:single].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.agsc [clean,package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.agsc [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.agsc [deploy].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.agsc [package].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;TestNG.AudioRecordJavaxSoundSampledTest.testStartRecording.executor&quot;: &quot;Run&quot;,
@@ -78,7 +79,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.maddyhome.idea.vim.ui.VimEmulationConfigurable&quot;,
@@ -101,6 +102,16 @@
       <recent name="audio" />
       <recent name="instrument" />
     </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean compile assembly:single" />
+      <command value="mvm package" />
+      <command value="mvn deploy" />
+      <command value="mvn package" />
+      <command value="mvn clean" />
+      <command value="mvn clean package" />
+    </option>
   </component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -236,6 +247,9 @@
       <workItem from="1711079465697" duration="2133000" />
       <workItem from="1711376850400" duration="1109000" />
       <workItem from="1712946290562" duration="911000" />
+      <workItem from="1712947220905" duration="368000" />
+      <workItem from="1712948020773" duration="7488000" />
+      <workItem from="1713286841468" duration="1472000" />
     </task>
     <servers />
   </component>
