@@ -39,6 +39,10 @@ public class SatTrackPredict4JavaTest {
 
     @Test
     public void testGetNextPass() {
+        /*
+         * This test case does not assert a result.
+         * To verify, update the testTle, then verify out printed output agrees with a 3rd party tracking program.
+         */
         SatTrack tracker = new SatTrackPredict4Java();
         PassData nextPass = tracker.getNextPass(sat);
         System.out.println(nextPass);

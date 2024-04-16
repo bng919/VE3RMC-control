@@ -35,12 +35,17 @@ public class RecordDecodeTest {
 
     @Test
     public void testRecordDecode() {
+        /*
+         * This test case does not assert a result. It should be run manually to verify that the dire wolf decoder
+         * and audio recording portions of the program are working. Update the decoder path and duration accordingly
+         * before use.
+         */
         AudioRecordJavaxSoundSampled audio = new AudioRecordJavaxSoundSampled();
         audio.setSampleRate(48000);
         audio.setRecordDurationS(20);
         DecoderDireWolf dec = new DecoderDireWolf();
         dec.setDurationS(20);
-        dec.setDecoderPath("C:\\Users\\benng\\Documents\\Uni\\School Work\\Fifth Year\\Fall\\ENPH455\\Code\\direwolf-1.7.0-9807304_i686");
+        dec.setDecoderPath("C:\\direwolf-1.7.0-9807304_i686");
 
         Thread audioThread = new Thread(audio);
         Thread decoderThread = new Thread(dec);
@@ -53,7 +58,6 @@ public class RecordDecodeTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
 
         List<byte[]> data = dec.getDecodedData();
         for (byte[] d : data) {

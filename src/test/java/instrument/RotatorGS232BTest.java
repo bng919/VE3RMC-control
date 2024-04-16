@@ -17,11 +17,17 @@
 
 package instrument;
 
+import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import utils.Log;
 import utils.enums.Verbosity;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 import static org.testng.Assert.*;
 
@@ -34,7 +40,9 @@ public class RotatorGS232BTest {
 
     @Test
     public void testReadWriteInstrument() throws InterruptedException {
-
+        /*
+         * NOTE: This test case requires the GS232B rotator controller to be connected!
+         */
         RotatorGS232B rotatorGS232B = new RotatorGS232B();
 
         Log.info("AZ: " + rotatorGS232B.getAz());
@@ -57,9 +65,31 @@ public class RotatorGS232BTest {
     }
 
     @Test
-    public void testReadCalFile() throws InterruptedException {
+    public void testReadCalFile() {
+        String correctionFilePath = ".\\config\\rotatorCalibration.txt";
         RotatorGS232B rotatorGS232B = new RotatorGS232B();
-        // TODO: Testcase
+        rotatorGS232B.readCorrectionFile(correctionFilePath);
+        int[] correction = rotatorGS232B.getCorrectionList();
+        Assert.assertEquals(correction.length, 360);
+        BufferedReader fileReader;
+        int[] comparison = new int[360];;
+        try {
+            fileReader = new BufferedReader(new FileReader(correctionFilePath));
+            String line = fileReader.readLine();
+            int count = 0;
+            while (line != null) {
+                comparison[count] = Integer.parseInt(line.strip());
+                line = fileReader.readLine();
+                count++;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (int i = 0; i < comparison.length; i++) {
+            Assert.assertEquals(correction[i], comparison[i]);
+        }
+
     }
 
 }

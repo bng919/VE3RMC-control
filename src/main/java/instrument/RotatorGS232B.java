@@ -47,14 +47,14 @@ public class RotatorGS232B implements Rotator {
         this.comPort = ConfigurationUtils.getStrProperty("ROTATOR_COM_PORT");
         this.baudRate = ConfigurationUtils.getIntProperty("ROTATOR_BAUD");
         this.correctionFilePath = ConfigurationUtils.getStrProperty("ROTATOR_CALIBRATION_PATH");
-        readCorrectionFile();
+        readCorrectionFile(correctionFilePath);
         this.serialUtils = new SerialUtils(this.comPort, this.baudRate, 8, 1, 0);
     }
 
     /**
      * Read the values of the rotator correction configuration file.
      */
-    private void readCorrectionFile() {
+    protected void readCorrectionFile(String correctionFilePath) {
         BufferedReader fileReader;
         try {
             fileReader = new BufferedReader(new FileReader(correctionFilePath));
@@ -74,6 +74,14 @@ public class RotatorGS232B implements Rotator {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Get the correction values as a. int[].
+     * @return Correction values.
+     */
+    public int[] getCorrectionList() {
+        return this.correctionList;
     }
 
     public ResultUtils readInstrument() throws InterruptedException {

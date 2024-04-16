@@ -29,18 +29,16 @@ import static org.testng.Assert.*;
 
 public class TransceiverIC9100Test {
 
-    SerialUtils serialUtils;
-
     @BeforeClass
     public void setup() {
         new Log(".\\logs\\", Verbosity.DEBUG);
-        //serial = Mockito.mock(Serial.class);
-        //byte[] rst = {(byte) 0xfe, (byte) 0xfe, 0x7c, 0x00, 0x03, (byte) 0xfd, (byte) 0xfe, (byte) 0xfe, 0x00, 0x7c, 0x03, 0x01, 0x00, 0x07, 0x45, 0x01, (byte) 0xFD};
-        //Mockito.when(serial.read()).thenReturn(rst);
     }
 
     @Test
     public void testReadWriteInstrument() throws InterruptedException {
+        /*
+         * NOTE: This test case requires the IC-9100 to be connected!
+         */
         TransceiverIC9100 transceiverIC9100 = new TransceiverIC9100();
 
         // Switching frequencies and mode on UHF (testcase 1.b.i)

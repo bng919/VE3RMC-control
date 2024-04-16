@@ -26,7 +26,10 @@ public class LogTest {
 
     @Test
     public void testLogCreation() {
-        Log l = new Log(".\\logs\\", Verbosity.DEBUG);
+        /*
+         * This test case does not assert anything. Log file must be verified manually.
+         */
+        new Log(".\\logs\\", Verbosity.DEBUG);
 
         for (Verbosity v : Verbosity.values()) {
             Log.verbose = v;
