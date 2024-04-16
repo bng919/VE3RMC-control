@@ -37,9 +37,8 @@ public class TransceiverIC9100 implements Transceiver {
 
     /**
      * Instate this class via the {@link InstrumentFactory} only.
-     * @throws InterruptedException
      */
-    protected TransceiverIC9100() throws InterruptedException {
+    protected TransceiverIC9100() {
         this.comPort = ConfigurationUtils.getStrProperty("TRANSCEIVER_COM_PORT");
         this.baudRate = ConfigurationUtils.getIntProperty("TRANSCEIVER_BAUD");
         this.transAddr = ConfigurationUtils.getByteProperty("TRANSCEIVER_ADDRESS");
@@ -56,7 +55,7 @@ public class TransceiverIC9100 implements Transceiver {
     private ResultUtils swapMainSub() throws InterruptedException {
         long preSwapVFOFreq = this.freqHz;
         Command swapMainSub = new CommandBuilder().address(this.transAddr).command((byte) 0x07).subCommand((byte) 0xB0)
-                .buildCommand();
+                .buildCommand(); // 0x07 with sub command 0xB0 swaps main/sub
         this.serialUtils.open();
         this.serialUtils.write(swapMainSub.getCmdByteArr());
         readInstrument();
@@ -67,35 +66,59 @@ public class TransceiverIC9100 implements Transceiver {
     }
 
     public ResultUtils readInstrument() throws InterruptedException {
+        /*
+         * Step 1: Send read frequency command
+         */
         this.serialUtils.open();
-        Command readFreqCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x03).buildCommand();
+        Command readFreqCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x03)
+                .buildCommand(); // 0x03 reads frequency
         this.serialUtils.write(readFreqCmd.getCmdByteArr());
-        TimeUnit.MILLISECONDS.sleep(200);
+        TimeUnit.MILLISECONDS.sleep(200); // Delay to allow instrument to respond to command
+
+        /*
+         * Step 2: Read response from instrument.
+         */
         byte[] rst;
         try {
             rst = this.serialUtils.read();
         } catch (NegativeArraySizeException e) {
             return ResultUtils.createFailedResult();
         }
+
+        /*
+         * Step 3: Parse frequency from response.
+         * Frequency is contained in bytes 11 through 15 of response, each digit using half a byte with the least
+         * significant digits first. See IC-9100 manual page 190.
+         */
         byte[] freq = new byte[5];
         this.freqHz = 0;
-        for (int i = 0; i < freq.length; i++) {
+        for (int i = 0; i < freq.length; i++) { // Flip order and store frequency (most significant digit first now)
             freq[freq.length-1-i] = rst[i+11];
         }
         for (int i = 0; i < freq.length; i++) {
+            // Split top and bottom four bits (each digit stored in half a byte).
             int hiBits = (freq[i] & 0xF0) >> 4;
             int loBits = freq[i] & 0x0F;
+            // hiBits and loBits now contain correct digits, now use position to determine multiple.
             this.freqHz += hiBits * (1000000000 / Math.pow(10, i*2));
             this.freqHz += loBits * (100000000 / Math.pow(10, i*2));
         }
 
-        Command readModeCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x04).buildCommand();
+        /*
+         * Step 4: Send read mode command
+         */
+        Command readModeCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x04)
+                .buildCommand(); // 0x04 reads operating mode
         this.serialUtils.write(readModeCmd.getCmdByteArr());
-        TimeUnit.MILLISECONDS.sleep(200);
+        TimeUnit.MILLISECONDS.sleep(200); // Delay to allow instrument to respond to command
+
+        /*
+         * Step 5: Read response from instrument and parse modulation type from 11th byte (see IC-9100 manual pg 190)
+         */
         rst = this.serialUtils.read();
-        if (rst[11] == 0x05) {
+        if (rst[11] == 0x05) { // 0x05 indicates FM
             this.modSetting = Modulation.FM;
-        } else if (rst[11] == 0x02) {
+        } else if (rst[11] == 0x02) { // 0x02 indicates AM
             this.modSetting = Modulation.AM;
         }
 
@@ -123,36 +146,54 @@ public class TransceiverIC9100 implements Transceiver {
     }
 
     public ResultUtils setFrequency(long freqHz) throws InterruptedException {
+        /*
+         * Step 1: Verify frequency is within allowable range.
+         */
         if (!(FrequencyUtils.isUHF(freqHz) || FrequencyUtils.isVHF(freqHz))) {
             Log.error("Frequency " + freqHz + " is not in valid UHF or VHF amateur bands!");
             return ResultUtils.createFailedResult();
         }
+
+        /*
+         * Step 2: Determine if swap of main/sub required (is transceiver already in correct band?)
+         */
         if (FrequencyUtils.isUHF(this.freqHz) != FrequencyUtils.isUHF(freqHz)) {
             if(!swapMainSub().isSuccessful()) {
                 return ResultUtils.createFailedResult();
             }
             Log.debug("Main/sub band swapped on IC9100");
         }
+
+        /*
+         * Step 3: Prepare frequency bytes for data portion of command (see IC-9100 page 190)
+         */
         byte[] rst = new byte[5];
         int[] digits = new int[10];
         long modFreqHz = freqHz;
         for (int i = 0; i < digits.length; i++) {
-            digits[i] = (int) modFreqHz % 10;
-            modFreqHz = modFreqHz / 10;
-            if (i % 2 != 0) {
-                rst[i/2] = (byte) ((digits[i] << 4) | digits[i-1]);
+            digits[i] = (int) modFreqHz % 10; // Get least significant digit
+            modFreqHz = modFreqHz / 10; // Remove least significant digit
+            if (i % 2 != 0) { // Every second digit, prepare a byte (2 digits per byte)
+                rst[i/2] = (byte) ((digits[i] << 4) | digits[i-1]); // Combine two digits into one byte
             }
         }
+
+        /*
+         * Step 4: Send command
+         */
         Log.info("Setting frequency to " + freqHz* FrequencyUtils.HzToMHz + "MHz");
-        Command writeFreqCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x00).data(rst).buildCommand();
+        Command writeFreqCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x00).data(rst)
+                .buildCommand(); // 0x00 to set frequency
 
         this.serialUtils.open();
         this.serialUtils.write(writeFreqCmd.getCmdByteArr());
-        TimeUnit.MILLISECONDS.sleep(200);
+        TimeUnit.MILLISECONDS.sleep(200); // Delay to allow instrument to respond to command
         this.serialUtils.close();
+
+        /*
+         * Step 5: Read from instrument and confirm set was successful.
+         */
         readInstrument();
-        /*System.out.println("this.freqHz = " + this.freqHz);
-        System.out.println("freqHz = " + freqHz);*/
         if (this.freqHz != freqHz) {
             return ResultUtils.createFailedResult();
         }
@@ -160,6 +201,9 @@ public class TransceiverIC9100 implements Transceiver {
     }
 
     public ResultUtils setModulation(Modulation mod) throws InterruptedException {
+        /*
+         * Step 1: Prepare modulation bytes for data portion of command (see IC-9100 page 190), create command
+         */
         byte[] writeData = new byte[1];
         if (mod == Modulation.FM) {
             writeData[0] = 0x05;
@@ -168,17 +212,17 @@ public class TransceiverIC9100 implements Transceiver {
         }
         Command writeModeCmd = new CommandBuilder().address(this.transAddr).command((byte) 0x01).data(writeData).buildCommand();
 
-        /*System.out.println("\n");
-        byte[] dat = writeModeCmd.getCmdByteArr();
-        for (int i = 0; i < dat.length; i++) {
-            System.out.print(dat[i] + ":");
-        }
-        System.out.println("\n");*/
-
+        /*
+         * Step 2: Send command
+         */
         this.serialUtils.open();
         this.serialUtils.write(writeModeCmd.getCmdByteArr());
         TimeUnit.MILLISECONDS.sleep(200);
         this.serialUtils.close();
+
+        /*
+         * Step 3: Read from instrument and confirm set was successful.
+         */
         readInstrument();
         if (this.modSetting != mod) {
             return ResultUtils.createFailedResult();
@@ -226,7 +270,8 @@ public class TransceiverIC9100 implements Transceiver {
     }
 
     /**
-     * Class to store the bytes of a CI-V command
+     * Class to store the bytes of a CI-V command.
+     * See ICOM IC-9100 manual page 183 for details of command structure.
      */
     private class Command {
         private byte addr;
@@ -236,7 +281,8 @@ public class TransceiverIC9100 implements Transceiver {
         private byte[] cmd;
 
         /**
-         * Constructor called by {@link CommandBuilder}. See IC-9100 manual for specifics of command, subcommand, and data fields.
+         * Constructor called by {@link CommandBuilder}. See IC-9100 manual page 183 for specifics of command,
+         * subcommand, and data fields.
          * @param addr the CI-V address of the IC-9100.
          * @param cn the command id number.
          * @param sc the subcommand id number.
@@ -250,7 +296,8 @@ public class TransceiverIC9100 implements Transceiver {
         }
 
         /**
-         * Return a byte array of the command to be sent to the IC-9100.
+         * Return a byte array of the command to be sent to the IC-9100. Command length varies based on number of
+         * parameters set using {@link CommandBuilder}
          * @return full command byte array.
          */
         public byte[] getCmdByteArr() {
@@ -297,6 +344,5 @@ public class TransceiverIC9100 implements Transceiver {
             }
             return cmd;
         }
-
     }
 }
