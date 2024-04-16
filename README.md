@@ -39,7 +39,16 @@ OpenJDK 21.0.1 is recommended.
 
 Most of the dependencies are included in the JAR file, except for the [Dire Wolf](https://github.com/wb2osz/direwolf) 
 packet radio modem which must be installed manually. The path to the Dire Wolf executable must be specified in 
-[config.properties](./config/config.properties).
+[config.properties](./config/config.properties). Dire Wolf has its own configuration file called `direwolf.conf` which resides in the same
+directory as the Dire Wolf executable. To use Dire Wolf with this program, its configuration file must at minimum contain
+the following. KISS port can be changed, but must match the port specified in [config.properties](./config/config.properties).
+
+```
+ADEVICE  0
+CHANNEL 0
+MYCALL N0CALL
+KISSPORT 8001
+```
 
 ## Usage
 Before use, verify the settings in the configuration files listed below. The program operates according to the following
@@ -68,7 +77,7 @@ LOG_PATH = .\\logs\\
 LOG_LEVEL = DEBUG
 
 # Ground station settings
-GS_CALL = MYCALL
+GS_CALL = N0CALL
 GS_LAT = 44.23
 GS_LON = -76.48
 GS_ELE = 95
@@ -92,6 +101,7 @@ TRANSCEIVER_ADDRESS = 7C
 
 # Decoder settings
 DECODER_MODEL = DireWolf
+DECODER_KISS_PORT = 8001
 DECODER_PATH = C:\\Direwolf\\Direwolf-Executable\\direwolf-1.7.0-9807304_i686
 
 # Audio record settings

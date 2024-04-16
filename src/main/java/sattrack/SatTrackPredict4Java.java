@@ -103,7 +103,10 @@ public class SatTrackPredict4Java implements SatTrack {
 
     public List<PassData> getNext48hOfPasses(SatelliteData sat) {
         TLE tle = new TLE(sat.getTle());
-        GroundStationPosition qth = new GroundStationPosition(44.23, -76.48, 95, "VE3RMC");
+        GroundStationPosition qth = new GroundStationPosition(ConfigurationUtils.getDoubleProperty("GS_LAT"),
+                ConfigurationUtils.getDoubleProperty("GS_LON"),
+                ConfigurationUtils.getDoubleProperty("GS_ELE"),
+                ConfigurationUtils.getStrProperty("GS_CALL"));
         ZonedDateTime currDate = ZonedDateTime.now(ZoneId.of("UTC"));
         PassPredictor passPredictor;
         List<SatPassTime> passes;

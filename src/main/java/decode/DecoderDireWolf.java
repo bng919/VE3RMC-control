@@ -37,7 +37,7 @@ public class DecoderDireWolf implements Decoder {
 
     private List<byte[]> decodedData = new ArrayList<>();
     private String direWolfDir;
-    private int kissPort = 8001;
+    private int kissPort = ConfigurationUtils.getIntProperty("DECODER_KISS_PORT");
     private int durationS;
 
     public DecoderDireWolf() {}
