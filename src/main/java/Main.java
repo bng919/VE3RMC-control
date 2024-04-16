@@ -32,6 +32,7 @@ import utils.ConfigurationUtils;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -87,87 +88,96 @@ public class Main {
         }
 
         Scanner input = new Scanner(System.in);
-        Log.noPrefix("Enter ID number of pass to record: ");
-        int userSel = input.nextInt();
+        Log.noPrefix("Enter ID number of pass to record (comma seperated to select multiple): ");
+        String userSel = input.nextLine();
         input.close();
+        List<Integer> passIDs = new ArrayList<>();
+        for (String s : userSel.split(",")) {
+            passIDs.add(Integer.parseInt(s));
+        }
+
         Log.info("Pass ID " + userSel + " selected by user.");
 
-        PassData pass = next48h.get(userSel);
-        List<Double> azProfile = pass.getAzProfile();
-        List<Double> elProfile = pass.getElProfile();
+        int passCount = 1; // Track number of passes completed
 
-        /*
-         * Step 3: Wait until 1 min before pass.
-         */
-        Log.info("Tracking satellite " + sat.getId());
-        Log.info("Set to record pass beginning at " + pass.getAos() + ", ending at " + pass.getLos());
-        ZonedDateTime setupTime = pass.getAos().minusMinutes(1);
-        Log.info("Waiting until AOS minus 1 min to start setup...");
-        Log.debug("Waiting for " + setupTime + " before rotator setup");
-        while (ZonedDateTime.now(ZoneId.of("UTC")).isBefore(setupTime)) {
+        for (int passId : passIDs) { // Loop over all passes selected by user.
+            Log.info("Configuring for pass " + passCount + " of " + passIDs.size());
+            PassData pass = next48h.get(passId);
+            List<Double> azProfile = pass.getAzProfile();
+            List<Double> elProfile = pass.getElProfile();
 
-        }
+            /*
+             * Step 3: Wait until 1 min before pass.
+             */
+            Log.info("Tracking satellite " + sat.getId());
+            Log.info("Set to record pass beginning at " + pass.getAos() + ", ending at " + pass.getLos());
+            ZonedDateTime setupTime = pass.getAos().minusMinutes(1);
+            Log.info("Waiting until AOS minus 1 min to start setup...");
+            Log.debug("Waiting for " + setupTime + " before rotator setup");
+            while (ZonedDateTime.now(ZoneId.of("UTC")).isBefore(setupTime)) {
 
-        /*
-         * Step 4: Configure transceiver, set initial rotator position, and configure threads for the audio recorder
-         * and decoder tools.
-         */
-        int initAz = azProfile.getFirst().intValue();
-        int initEl = elProfile.getFirst().intValue();
-        Log.debug("Moving rotator to initial position Az " + initAz + ", El " + initEl);
-        rotator.goToAzEl(initAz, initEl);
-        Log.debug("Set transceiver to nominal DL freq " + ConfigurationUtils.getIntProperty("SAT_DL_FREQ_HZ"));
-        transceiver.setFrequency(ConfigurationUtils.getIntProperty("SAT_DL_FREQ_HZ"));
+            }
 
-        audio.setSampleRate(ConfigurationUtils.getIntProperty("RECORDER_SAMPLE_RATE"));
-        audio.setRecordDurationS(pass.getDurationS());
-        dec.setDecoderPath(ConfigurationUtils.getStrProperty("DECODER_PATH"));
-        dec.setDurationS(pass.getDurationS());
-        Thread audioThread = new Thread(audio);
-        Thread decoderThread = new Thread(dec);
+            /*
+             * Step 4: Configure transceiver, set initial rotator position, and configure threads for the audio recorder
+             * and decoder tools.
+             */
+            int initAz = azProfile.getFirst().intValue();
+            int initEl = elProfile.getFirst().intValue();
+            Log.debug("Moving rotator to initial position Az " + initAz + ", El " + initEl);
+            rotator.goToAzEl(initAz, initEl);
+            Log.debug("Set transceiver to nominal DL freq " + ConfigurationUtils.getIntProperty("SAT_DL_FREQ_HZ"));
+            transceiver.setFrequency(ConfigurationUtils.getIntProperty("SAT_DL_FREQ_HZ"));
 
-        /*
-         * Step 5: Wait for pass to begin
-         */
-        Log.debug("Waiting for AOS at " + pass.getAos());
-        while (ZonedDateTime.now(ZoneId.of("UTC")).isBefore(pass.getAos())) {
+            audio.setSampleRate(ConfigurationUtils.getIntProperty("RECORDER_SAMPLE_RATE"));
+            audio.setRecordDurationS(pass.getDurationS());
+            dec.setDecoderPath(ConfigurationUtils.getStrProperty("DECODER_PATH"));
+            dec.setDurationS(pass.getDurationS());
+            Thread audioThread = new Thread(audio);
+            Thread decoderThread = new Thread(dec);
 
-        }
+            /*
+             * Step 5: Wait for pass to begin
+             */
+            Log.debug("Waiting for AOS at " + pass.getAos());
+            while (ZonedDateTime.now(ZoneId.of("UTC")).isBefore(pass.getAos())) {
 
-        /*
-         * Step 6: During pass: begin audio recording/decoding, update rotator and transceiver throughout.
-         */
-        audioThread.start();
-        decoderThread.start();
+            }
 
-        for (int i = 0; i < azProfile.size(); i++) {
-            long startTime = System.currentTimeMillis();
-            rotator.goToAzEl(azProfile.get(i).intValue(), elProfile.get(i).intValue());
-            transceiver.setFrequency(pass.getDlFreqHzAdjProfile().get(i));
-            long stopTime = System.currentTimeMillis();
-            if (stopTime-startTime < pass.getProfileSampleIntervalS()*1000L) {
-                TimeUtils.delayMillis((pass.getProfileSampleIntervalS()*1000L) - (stopTime-startTime));
-            } else {
-                Log.warn("TIME MISALIGNMENT: Setting rotator and transceiver took longer than specified delay.\n" +
-                        "Rotator position may lag desired position!");
+            /*
+             * Step 6: During pass: begin audio recording/decoding, update rotator and transceiver throughout.
+             */
+            audioThread.start();
+            decoderThread.start();
+
+            for (int i = 0; i < azProfile.size(); i++) {
+                long startTime = System.currentTimeMillis();
+                rotator.goToAzEl(azProfile.get(i).intValue(), elProfile.get(i).intValue());
+                transceiver.setFrequency(pass.getDlFreqHzAdjProfile().get(i));
+                long stopTime = System.currentTimeMillis();
+                if (stopTime-startTime < pass.getProfileSampleIntervalS()*1000L) {
+                    TimeUtils.delayMillis((pass.getProfileSampleIntervalS()*1000L) - (stopTime-startTime));
+                } else {
+                    Log.warn("TIME MISALIGNMENT: Setting rotator and transceiver took longer than specified delay.\n" +
+                            "Rotator position may lag desired position!");
+                }
+            }
+
+            /*
+             * Step 7: Clean up: Once profiles have been completed, join audio and decoder threads (i.e. wait for them to
+             * finish if they haven't already), then store decoded data.
+             */
+            try {
+                audioThread.join();
+                decoderThread.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            List<byte[]> data = dec.getDecodedData();
+            for (byte[] d : data) {
+                Log.storeDecodedData(d);
             }
         }
-
-        /*
-         * Step 7: Clean up: Once profiles have been completed, join audio and decoder threads (i.e. wait for them to
-         * finish if they haven't already), then store decoded data.
-         */
-        try {
-            audioThread.join();
-            decoderThread.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        List<byte[]> data = dec.getDecodedData();
-        for (byte[] d : data) {
-            Log.storeDecodedData(d);
-        }
-
     }
 }
