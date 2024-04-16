@@ -47,33 +47,43 @@ public class Main {
      */
     public static void main(String [] args) throws InterruptedException {
 
-        new Log(ConfigurationUtils.getStrProperty("LOG_PATH"), Verbosity.valueOf(ConfigurationUtils.getStrProperty("LOG_LEVEL")));
+        /*
+         * Step 1: Setup and configure instrument (and external software) models.
+         */
+        new Log(ConfigurationUtils.getStrProperty("LOG_PATH"), Verbosity.valueOf(ConfigurationUtils
+                .getStrProperty("LOG_LEVEL")));
 
         Rotator rotator = InstrumentFactory.createRotator(ConfigurationUtils.getStrProperty("ROTATOR_MODEL"));
-        Transceiver transceiver = InstrumentFactory.createTransceiver(ConfigurationUtils.getStrProperty("TRANSCEIVER_MODEL"));
+        Transceiver transceiver = InstrumentFactory.createTransceiver(ConfigurationUtils
+                .getStrProperty("TRANSCEIVER_MODEL"));
+
         List<Instrument> physicalInstruments = new ArrayList<>();
         physicalInstruments.add(rotator);
         physicalInstruments.add(transceiver);
-        for (Instrument instrument : physicalInstruments) {
+        for (Instrument instrument : physicalInstruments) { // Verify connection status for all hardware instruments
             if (!instrument.testConnect().isSuccessful() || !instrument.readInstrument().isSuccessful()) {
                 throw new RuntimeException("Instrument setup failed for " + instrument);
             }
         }
 
-        AudioRecord audio = AudioRecorderFactory.createAudioRecord(ConfigurationUtils.getStrProperty("RECORDER_MODEL"));
+        AudioRecord audio = AudioRecorderFactory.createAudioRecord(ConfigurationUtils
+                .getStrProperty("RECORDER_MODEL"));
         Decoder dec = DecoderFactory.createDecoder(ConfigurationUtils.getStrProperty("DECODER_MODEL"));
-        SatTrack satTrack = SatTrackFactory.createSatTrack(ConfigurationUtils.getStrProperty("SATELLITE_TRACK_MODEL"));
+        SatTrack satTrack = SatTrackFactory.createSatTrack(ConfigurationUtils
+                .getStrProperty("SATELLITE_TRACK_MODEL"));
 
         String[] tle = TLEUtils.fileToStrArray(ConfigurationUtils.getStrProperty("TLE_PATH"));
-        SatelliteData sat = new SatelliteData(tle[0], tle, ConfigurationUtils.getIntProperty("SAT_DL_FREQ_HZ"), 146000000);
+        SatelliteData sat = new SatelliteData(tle[0], tle, ConfigurationUtils
+                .getIntProperty("SAT_DL_FREQ_HZ"), 146000000); // Uplink frequency currently unused.
 
-        List<PassData> nextTen = satTrack.getNext48hOfPasses(sat);
+        /*
+         * Step 2: Predict next passes of satellite, get user input
+         */
+        List<PassData> next48h = satTrack.getNext48hOfPasses(sat);
         Log.noPrefix("=========================== Next 48h ===========================");
-        int index = 0;
-        for (PassData pass : nextTen) {
-            Log.noPrefix("ID (" + index + ")");
-            Log.noPrefix(pass.toString());
-            index++;
+        for (int i = next48h.size()-1; i >= 0; i--) {
+            Log.noPrefix("ID (" + i + ")");
+            Log.noPrefix(next48h.get(i).toString());
         }
 
         Scanner input = new Scanner(System.in);
@@ -82,9 +92,13 @@ public class Main {
         input.close();
         Log.info("Pass ID " + userSel + " selected by user.");
 
-        PassData pass = nextTen.get(userSel);
+        PassData pass = next48h.get(userSel);
         List<Double> azProfile = pass.getAzProfile();
         List<Double> elProfile = pass.getElProfile();
+
+        /*
+         * Step 3: Wait until 1 min before pass.
+         */
         Log.info("Tracking satellite " + sat.getId());
         Log.info("Set to record pass beginning at " + pass.getAos() + ", ending at " + pass.getLos());
         ZonedDateTime setupTime = pass.getAos().minusMinutes(1);
@@ -94,7 +108,10 @@ public class Main {
 
         }
 
-        // To rotator initial position
+        /*
+         * Step 4: Configure transceiver, set initial rotator position, and configure threads for the audio recorder
+         * and decoder tools.
+         */
         int initAz = azProfile.getFirst().intValue();
         int initEl = elProfile.getFirst().intValue();
         Log.debug("Moving rotator to initial position Az " + initAz + ", El " + initEl);
@@ -102,22 +119,24 @@ public class Main {
         Log.debug("Set transceiver to nominal DL freq " + ConfigurationUtils.getIntProperty("SAT_DL_FREQ_HZ"));
         transceiver.setFrequency(ConfigurationUtils.getIntProperty("SAT_DL_FREQ_HZ"));
 
-
         audio.setSampleRate(ConfigurationUtils.getIntProperty("RECORDER_SAMPLE_RATE"));
         audio.setRecordDurationS(pass.getDurationS());
-
         dec.setDecoderPath(ConfigurationUtils.getStrProperty("DECODER_PATH"));
         dec.setDurationS(pass.getDurationS());
-
         Thread audioThread = new Thread(audio);
         Thread decoderThread = new Thread(dec);
 
-
+        /*
+         * Step 5: Wait for pass to begin
+         */
         Log.debug("Waiting for AOS at " + pass.getAos());
         while (ZonedDateTime.now(ZoneId.of("UTC")).isBefore(pass.getAos())) {
 
         }
 
+        /*
+         * Step 6: During pass: begin audio recording/decoding, update rotator and transceiver throughout.
+         */
         audioThread.start();
         decoderThread.start();
 
@@ -134,6 +153,10 @@ public class Main {
             }
         }
 
+        /*
+         * Step 7: Clean up: Once profiles have been completed, join audio and decoder threads (i.e. wait for them to
+         * finish if they haven't already), then store decoded data.
+         */
         try {
             audioThread.join();
             decoderThread.join();
