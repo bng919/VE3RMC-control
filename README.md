@@ -67,6 +67,12 @@ have been taken if using the non-stub models. Provided to allow testing without 
 LOG_PATH = .\\logs\\
 LOG_LEVEL = DEBUG
 
+# Ground station settings
+GS_CALL = MYCALL
+GS_LAT = 44.23
+GS_LON = -76.48
+GS_ELE = 95
+
 # Satellite settings
 TLE_PATH = .\\config\\tle.txt
 SAT_DL_FREQ_HZ = 435310000
