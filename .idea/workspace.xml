@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_TEST_SOURCES" value="false" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/utils/enums/VerbosityTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/tle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config/tle.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/instrument/RotatorGS232B.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/instrument/RotatorGS232B.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/decode/DecoderDireWolfTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/decode/DecoderDireWolfTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/instrument/RotatorGS232BTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/instrument/RotatorGS232BTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/instrument/TransceiverIC9100Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/instrument/TransceiverIC9100Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/integration/PredictTrackTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/integration/PredictTrackTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/integration/RecordDecodeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/integration/RecordDecodeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/sattrack/N2YO_ISSTESTPASSES_FEB12_1650UTC.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/sattrack/SatTrackPredict4JavaTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/sattrack/SatTrackPredict4JavaTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/sattrack/TestTLE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/utils/LogTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/utils/LogTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -259,7 +251,7 @@
       <workItem from="1712946290562" duration="911000" />
       <workItem from="1712947220905" duration="368000" />
       <workItem from="1712948020773" duration="7488000" />
-      <workItem from="1713286841468" duration="13769000" />
+      <workItem from="1713286841468" duration="16499000" />
     </task>
     <servers />
   </component>
