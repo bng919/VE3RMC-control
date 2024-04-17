@@ -8,8 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7850219-73d9-4d8f-8a1a-573cf11646b2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/instrument/RotatorRot2ProgImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/instrument/RotatorRot2ProgImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +68,7 @@
     "TestNG.RecordDecodeTest.executor": "Run",
     "TestNG.RotatorGS232BTest.testReadCalFile.executor": "Run",
     "TestNG.RotatorGS232BTest.testReadWriteInstrument.executor": "Run",
+    "TestNG.RotatorRot2ProgImplTest.testReadWriteInstrument.executor": "Run",
     "TestNG.SatTrackPredict4JavaTest.executor": "Run",
     "TestNG.SatTrackPredict4JavaTest.testGetNextPass.executor": "Run",
     "TestNG.TimeTest.testDelayMillis.executor": "Run",
@@ -74,7 +77,7 @@
     "TestNG.VerbosityTest.testIsEqOrHigher.executor": "Run",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "TestNG",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.TestNG": "",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "rot2prog",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/benng/Documents/Uni/School Work/Fifth Year/Fall/ENPH455/Code/agsc",
     "node.js.detected.package.eslint": "true",
@@ -99,11 +102,11 @@
       <recent name="C:\Users\benng\Documents\Uni\School Work\Fifth Year\Fall\ENPH455\Code\VE3RMC-control\src\main" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="instrument" />
       <recent name="utils.enums" />
       <recent name="utils" />
       <recent name="decode" />
       <recent name="database" />
-      <recent name="audio" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -116,14 +119,7 @@
       <command value="mvn clean package" />
     </option>
   </component>
-  <component name="RunManager" selected="TestNG.VerbosityTest.testIsEqOrHigher">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="agsc" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="TestNG.RotatorRot2ProgImplTest.testReadWriteInstrument">
     <configuration name="PredictTrackTest" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="agsc" />
       <extension name="coverage">
@@ -152,6 +148,24 @@
       <option name="PACKAGE_NAME" value="instrument" />
       <option name="MAIN_CLASS_NAME" value="instrument.RotatorGS232BTest" />
       <option name="METHOD_NAME" value="testReadCalFile" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RotatorRot2ProgImplTest.testReadWriteInstrument" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="agsc" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="instrument.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="instrument" />
+      <option name="MAIN_CLASS_NAME" value="instrument.RotatorRot2ProgImplTest" />
+      <option name="METHOD_NAME" value="testReadWriteInstrument" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
@@ -196,11 +210,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="TestNG.RotatorRot2ProgImplTest.testReadWriteInstrument" />
         <item itemvalue="TestNG.VerbosityTest.testIsEqOrHigher" />
         <item itemvalue="TestNG.RotatorGS232BTest.testReadCalFile" />
         <item itemvalue="TestNG.PredictTrackTest" />
         <item itemvalue="TestNG.SatTrackPredict4JavaTest" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -252,6 +266,7 @@
       <workItem from="1712947220905" duration="368000" />
       <workItem from="1712948020773" duration="7488000" />
       <workItem from="1713286841468" duration="16499000" />
+      <workItem from="1713379431887" duration="8461000" />
     </task>
     <servers />
   </component>
