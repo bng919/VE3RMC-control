@@ -21,6 +21,7 @@ AGSC currently supports the following transceiver and rotator models. The rotato
 
 #### Rotators
 - Yaesu rotators compatible with the GS-232B computer controller
+- Alfa rotators compatible with the ROT2Prog controller
 
 ## Setup
 ### Build JAR from source
@@ -62,13 +63,13 @@ paths to other configuration files, instrument models, and satellite frequency/b
 Model parameters can accept the following values. Stub models print a message to the log indicating what action would
 have been taken if using the non-stub models. Provided to allow testing without the instruments connected.
 
-| Parameter             | Accepted Values                           |
-| --------------------- |-------------------------------------------|
-| ROTATOR_MODEL         | - RotatorGS232B<br>- StubRotator          |
-| TRANSCEIVER_MODEL     | - TransceiverIC9100<br>- StubTransceiver  |
-| DECODER_MODEL         | - DireWolf                                |
-| RECORDER_MODEL        | - JavaxSoundSampled                       |
-| SATELLITE_TRACK_MODEL | - Predict4Java                            |
+| Parameter             | Accepted Values                                       |
+| --------------------- |-------------------------------------------------------|
+| ROTATOR_MODEL         | - RotatorGS232B<br>- RotatorRot2Prog<br>- StubRotator |
+| TRANSCEIVER_MODEL     | - TransceiverIC9100<br>- StubTransceiver              |
+| DECODER_MODEL         | - DireWolf                                            |
+| RECORDER_MODEL        | - JavaxSoundSampled                                   |
+| SATELLITE_TRACK_MODEL | - Predict4Java                                        |
 
 
 ```
@@ -110,6 +111,16 @@ RECORDER_SAMPLE_RATE = 48000
 
 # Satellite tracker settings
 SATELLITE_TRACK_MODEL = Predict4Java
+```
+
+For the Alfa ROT2Prog rotator controller, use the following for the rotator settings.
+
+```
+# Rotator settings
+ROTATOR_MODEL = RotatorRot2Prog
+ROTATOR_COM_PORT = COM3
+ROTATOR_BAUD = 600
+ROTATOR_CALIBRATION_PATH = .\\config\\rotatorCalibration.txt
 ```
 
 

@@ -38,6 +38,8 @@ public class InstrumentFactory {
             throw new RuntimeException("InstrumentFactory could not create instrument with null or empty string");
         } else if (rotator.equalsIgnoreCase("RotatorGS232B")) {
             return new RotatorGS232B();
+        } else if (rotator.equalsIgnoreCase("RotatorRot2Prog")) {
+            return new RotatorRot2ProgImpl();
         } else if (rotator.equalsIgnoreCase("StubRotator")) {
             return new StubRotator();
         } else {
